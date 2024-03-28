@@ -3,7 +3,8 @@ import { FlatList, View, TouchableOpacity, Linking, Text } from 'react-native';
 import { Card } from 'react-native-paper';
 import axios from 'axios';
 import styles from '../style/Style';
-import apiKey from '../firebase/Config';
+import apiKey from '../apikey';
+import { articlesData } from '../components/Articles';
 
 const Home = () => {
     const [recipes, setRecipes] = useState([]);
@@ -45,14 +46,36 @@ const Home = () => {
         </TouchableOpacity>
     );
 
+    const renderArticleItem = ({ item }) => (
+        <TouchableOpacity style={styles.articleItem} onPress={() => handleViewArticle(item.url)}>
+            <Card>
+                <Card.Content>
+                    <Text style={styles.articleTitle}>{item.title}</Text>
+                    <Text>{item.content}</Text>
+                </Card.Content>
+            </Card>
+        </TouchableOpacity>
+    );
+
     return (
         <View style={styles.container}>
-            <FlatList
-                data={recipes}
-                renderItem={renderRecipeItem}
-                keyExtractor={(item) => item.id.toString()}
-                horizontal
-            />
+            <View style={styles.recipeContainer}>
+                <Text style={styles.recipeTitle}>Recipes</Text>
+                <FlatList
+                    data={recipes}
+                    renderItem={renderRecipeItem}
+                    keyExtractor={(item) => item.id.toString()}
+                    horizontal
+                />
+            </View>
+            <View style={styles.articleContainer}>
+                <Text style={styles.articleHeading}>Articles</Text>
+                <FlatList
+                    data={articlesData} 
+                    renderItem={renderArticleItem}
+                    keyExtractor={(item) => item.id.toString()}
+                />
+            </View>
         </View>
     );
 };

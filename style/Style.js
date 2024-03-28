@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import Constants from "expo-constants";
 
 
 export default StyleSheet.create({
@@ -7,6 +8,9 @@ export default StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  statusBar: {
+    marginTop: Constants.statusBarHeight + 10
   },
   recipeItem: {
     width: 200, 
@@ -25,4 +29,4 @@ export default StyleSheet.create({
     fontWeight: 'bold', 
     textAlign: 'center',
   }
-});
+  });

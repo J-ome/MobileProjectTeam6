@@ -36,3 +36,5 @@ yarn-error.*
 
 # firebase config
 firebase
+#apikey
+apikey
