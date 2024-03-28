@@ -1,6 +1,8 @@
 import { View, Text } from "react-native"
 
-export default Home = () => {
+
+
+export default Favorites = () => {
     return (
         <View>
             <Text>Home</Text>
