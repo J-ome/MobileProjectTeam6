@@ -12,6 +12,7 @@ const Home = () => {
     useEffect(() => {
         const fetchRecipeInformation = async () => {
             try {
+                const apiKey = "fda60fc993e14793b45bd7cb18f3c8ce";
                 const response = await axios.get(
                     'https://api.spoonacular.com/recipes/informationBulk',
                     {
