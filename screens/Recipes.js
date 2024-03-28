@@ -3,7 +3,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 
 
-export default Recipes = () => {
+const Recipes = () => {
 
     const [recipes, setRecipes] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -11,7 +11,7 @@ export default Recipes = () => {
 useEffect(() => {
     const fetchRecipes = async () => {
         try {
-        const apiKey = "";
+        const apiKey = "fda60fc993e14793b45bd7cb18f3c8ce";
         const apiUrl = "https://api.spoonacular.com/recipes/random";
         const numberOfRecipes = 10;
 
@@ -57,4 +57,5 @@ useEffect(() => {
       );
     };
 
+export default Recipes;
  

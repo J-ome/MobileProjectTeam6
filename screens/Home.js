@@ -3,7 +3,7 @@ import { FlatList, View, TouchableOpacity, Linking, Text } from 'react-native';
 import { Card } from 'react-native-paper';
 import axios from 'axios';
 import styles from '../style/Style';
-import apiKey from '../Firebase/apikey';
+import apiKey from '../firebase/Config';
 
 const Home = () => {
     const [recipes, setRecipes] = useState([]);
@@ -11,6 +11,7 @@ const Home = () => {
     useEffect(() => {
         const fetchRecipeInformation = async () => {
             try {
+                const apiKey = "fda60fc993e14793b45bd7cb18f3c8ce";
                 const response = await axios.get(
                     'https://api.spoonacular.com/recipes/informationBulk',
                     {
