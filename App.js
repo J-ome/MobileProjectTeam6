@@ -9,7 +9,6 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Home from './screens/Home';
 import Recipes from './screens/Recipes';
 import HamburgerMenu from './components/HamburgerMenu';
-import { StyleSheet, View } from 'react-native';
 
 const Stack = createStackNavigator();
 
