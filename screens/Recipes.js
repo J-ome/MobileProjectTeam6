@@ -19,7 +19,7 @@ const Recipes = () => {
       try {
         const apiKey = 'fda60fc993e14793b45bd7cb18f3c8ce';
         const apiUrl = 'https://api.spoonacular.com/recipes/random';
-        const numberOfRecipes = 10;
+        const numberOfRecipes = 3;
 
         const response = await axios.get(apiUrl, {
           params: {
