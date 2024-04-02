@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { View, Text, Image, ActivityIndicator, ScrollView } from "react-native";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
@@ -34,28 +34,28 @@ useEffect(() => {
     }, []);
 
     return (
-        <div>
-          {loading ? (
-            <p>Loading...</p>
-          ) : (
-            <div>
-              <h2>Recipes</h2>
-              <ul>
-                {recipes.map(recipe => (
-                  <li key={recipe.id}>
-                    <h3>{recipe.title}</h3>
-                    <img src={recipe.image} alt={recipe.title} />
-                    <p>{recipe.summary}</p>
-                    <p>Ready in {recipe.readyInMinutes} minutes</p>
-                    {/* Add more details as needed */}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </div>
-      );
-    };
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ScrollView>
+      {loading ? (
+        <ActivityIndicator size="large" color="#0000ff" />
+      ) : (
+        <View>
+          <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 10 }}>Recipes</Text>
+          {recipes.map(recipe => (
+            <View key={recipe.id} style={{ marginBottom: 20 }}>
+              <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{recipe.title}</Text>
+              <Image source={{ uri: recipe.image }} style={{ width: 200, height: 200, marginBottom: 10 }} />
+              <Text>{recipe.summary}</Text>
+              <Text>Ready in {recipe.readyInMinutes} minutes</Text>
+              {/* Add more details as needed */}
+            </View>
+          ))}
+        </View>
+      )}
+      </ScrollView>
+    </View>
+  );
+};
 
 export default Recipes;
  
