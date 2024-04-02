@@ -3,6 +3,7 @@ import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons'
 import { createMaterialBottomTabNavigator } from 'react-native-paper/react-navigation';
 import { PaperProvider } from 'react-native-paper';
 import Home from '../screens/Home'
+import Recipes from '../screens/Recipes';
 import AddRecipe from '../screens/AddRecipe';
 import Favorites from '../screens/Favorites';
 import Profile from '../screens/Profile';
@@ -39,6 +40,10 @@ export default function Navigation() {
                                 iconName = focused
                                     ? 'circle'
                                     : 'circle-outline';
+                            } else if (route.name === 'Recipes') {
+                                iconName = focused
+                                    ? 'circle'
+                                    : 'circle-outline';
                             }
                             return <MaterialCommunityIcons
                                 name={iconName}
@@ -51,6 +56,7 @@ export default function Navigation() {
                     <Tab.Screen name="Add recipe" component={AddRecipe} />
                     <Tab.Screen name="Favorites" component={Favorites} />
                     <Tab.Screen name="Profile" component={Profile} />
+                    <Tab.Screen name="Recipes" component={Recipes} />
                 </Tab.Navigator>
 
             </NavigationContainer>
