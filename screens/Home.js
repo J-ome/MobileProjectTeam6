@@ -5,9 +5,11 @@ import axios from 'axios';
 import styles from '../style/Style';
 import apiKey from '../apikey';
 import { articlesData } from '../components/Articles';
+import { Searchbar } from 'react-native-paper';
 
 const Home = () => {
     const [recipes, setRecipes] = useState([]);
+    const [searchQuery, setSearchQuery] = useState('');
 
     useEffect(() => {
         const fetchRecipeInformation = async () => {
@@ -35,6 +37,8 @@ const Home = () => {
         Linking.openURL(url);
     };
 
+    const handleSearch = (query) => setSearchQuery(query);
+
     const renderRecipeItem = ({ item }) => (
         <TouchableOpacity style={styles.recipeItem} onPress={() => handleViewRecipe(item.spoonacularSourceUrl)}>
             <Card>
@@ -58,7 +62,16 @@ const Home = () => {
     );
 
     return (
+        
         <View style={styles.container}>
+            <View style={styles.searchContainer}>
+                <Searchbar
+                placeholder="Search Recipes"
+                onChangeText={handleSearch}
+                value={searchQuery}
+                style={{ backgroundColor: 'white', borderWidth: 1, borderColor: 'black' }}
+            />
+            </View>
             <View style={styles.recipeContainer}>
                 <Text style={styles.recipeTitle}>Recipes</Text>
                 <FlatList
