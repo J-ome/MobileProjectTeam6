@@ -61,6 +61,7 @@ export default StyleSheet.create({
     marginBottom: 10,
   },
   searchContainer: {
+    marginTop: 0,
     paddingHorizontal: 10,
     paddingBottom: 10, 
 },

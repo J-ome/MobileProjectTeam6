@@ -12,26 +12,25 @@ const Home = () => {
     const [searchQuery, setSearchQuery] = useState('');
 
     useEffect(() => {
-        const fetchRecipeInformation = async () => {
+        const fetchRecipes = async () => {
             try {
-                const apiKey = "fda60fc993e14793b45bd7cb18f3c8ce";
                 const response = await axios.get(
-                    'https://api.spoonacular.com/recipes/informationBulk',
+                    'https://api.spoonacular.com/recipes/complexSearch',
                     {
                         params: {
-                            ids: '715538,716429',
+                            query: searchQuery,
                             apiKey: apiKey,
                         },
                     }
                 );
-                setRecipes(response.data);
+                setRecipes(response.data.results);
             } catch (error) {
-                console.error('Error fetching recipe information:', error);
+                console.error('Error fetching recipes:', error);
             }
         };
 
-        fetchRecipeInformation();
-    }, []);
+        fetchRecipes();
+    }, [searchQuery]);
 
     const handleViewRecipe = (url) => {
         Linking.openURL(url);
@@ -62,15 +61,14 @@ const Home = () => {
     );
 
     return (
-        
         <View style={styles.container}>
             <View style={styles.searchContainer}>
                 <Searchbar
-                placeholder="Search Recipes"
-                onChangeText={handleSearch}
-                value={searchQuery}
-                style={{ backgroundColor: 'white', borderWidth: 1, borderColor: 'black' }}
-            />
+                    placeholder="Search Recipes"
+                    onChangeText={handleSearch}
+                    value={searchQuery}
+                    style={{ backgroundColor: 'white', borderWidth: 1, borderColor: 'black' }}
+                />
             </View>
             <View style={styles.recipeContainer}>
                 <Text style={styles.recipeTitle}>Recipes</Text>
