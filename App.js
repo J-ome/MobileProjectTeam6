@@ -10,6 +10,7 @@ import Home from './screens/Home';
 import Recipes from './screens/Recipes';
 import HamburgerMenu from './components/HamburgerMenu';
 
+
 const Stack = createStackNavigator();
 
 export default function App() {

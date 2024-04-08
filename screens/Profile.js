@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Button, TextInput } from 'react-native';
-import { auth, db, USERS } from '../firebase/Config';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import { auth, db, USERS, createUserWithEmailAndPassword, signInWithEmailAndPassword } from '../firebase/Config';
 import { doc, setDoc } from 'firebase/firestore';
+import firebase from 'firebase/app'
 
 const Profile = () => {
   const [userData, setUserData] = useState(null);
@@ -14,7 +14,7 @@ const Profile = () => {
 
   useEffect(() => {
     // Check if user is authenticated
-    auth.onAuthStateChanged((user) => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
         setLoggedIn(true);
         fetchUserData(user.uid);
@@ -23,6 +23,7 @@ const Profile = () => {
         setUserData(null);
       }
     });
+    return () => unsubscribe(); // Cleanup function to unsubscribe from the auth state listener
   }, []);
 
   const fetchUserData = async (userId) => {
@@ -30,9 +31,9 @@ const Profile = () => {
       const userDataSnapshot = await firebase.database().ref(`users/${userId}`).once('value');
       const userData = userDataSnapshot.val();
       setUserData(userData);
-    } catch (error) {
+   } catch (error) {
       console.error('Error fetching user data:', error);
-    }
+   }
   };
 
   const handleSave = () => {
@@ -43,8 +44,8 @@ const Profile = () => {
 
   const handleLogin = async (email, password) => {
     try {
-      const response = await auth.signInWithEmailAndPassword(email, password);
-      const user = response.user;
+      const userCredential = await signInWithEmailAndPassword(email, password);
+      const user = userCredential.user;
       const userId = user.uid; // Retrieve the unique user ID
       // Now you can retrieve the user data from the database using the userId
       // For example:
@@ -58,13 +59,21 @@ const Profile = () => {
 
   const handleSignUp = async () => {
     try {
-      // Sign up with email and password
-      const userCredential = await createUserWithEmailAndPassword(email, password);
+      const userCredential = await getAuth().createUserWithEmailAndPassword(email, password)
       const user = userCredential.user;
-      const userId = user.uid; // Retrieve the unique user ID
+      const userId = user.uid;
       storeUserData(userId, userData);
     } catch (error) {
       console.error('Error signing up:', error);
+    }
+  };
+  
+  const handleLogout = async () => {
+    try {
+      await auth.signOut();
+      // Additional logout logic if needed
+    } catch (error) {
+      console.error('Error logging out:', error);
     }
   };
   
@@ -100,6 +109,7 @@ const Profile = () => {
             multiline
           />
           <Button title="Save" onPress={handleSave} />
+          <Button title="Logout" onPress={handleLogout} />
         </View>
       ) : (
         <View>
