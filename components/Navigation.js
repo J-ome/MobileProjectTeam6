@@ -23,6 +23,7 @@ export default function Navigation() {
     const HomeDrawer = () => (
         <Drawer.Navigator>
           <Drawer.Screen name="Home" component={Home} />
+          <Drawer.Screen name="Recipes" component={RecipeStack} />
           <Drawer.Screen name="Intolerances" component={Intolerances} />
         </Drawer.Navigator>
       );
@@ -30,7 +31,7 @@ export default function Navigation() {
       const RecipeStack = () => (
         <Stack.Navigator>
           <Stack.Screen name="Recipes" component={Recipes} />
-          <Stack.Screen name="Recipe" component={Recipe} />
+          <Stack.Screen name="Recipe" component={Recipe} options={{ headerShown: false }} />
         </Stack.Navigator>
       );
 
@@ -77,7 +78,7 @@ export default function Navigation() {
                 <Tab.Screen name="Add recipe" component={AddRecipe} />
                 <Tab.Screen name="Favorites" component={Favorites} />
                 <Tab.Screen name="Profile" component={Profile} />
-                <Tab.Screen name="Recipes" component={RecipeStack} />
+                {/* <Tab.Screen name="Recipes" component={RecipeStack} /> */}
                 </Tab.Navigator>
             </NavigationContainer>
         </PaperProvider>
