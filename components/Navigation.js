@@ -8,7 +8,6 @@ import AddRecipe from '../screens/AddRecipe';
 import Favorites from '../screens/Favorites';
 import Profile from '../screens/Profile';
 import Style from '../style/Style';
-import HamburgerMenu from '../components/HamburgerMenu'
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import Intolerances from './Intolerances';
 
