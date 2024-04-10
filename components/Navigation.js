@@ -8,8 +8,12 @@ import AddRecipe from '../screens/AddRecipe';
 import Favorites from '../screens/Favorites';
 import Profile from '../screens/Profile';
 import Style from '../style/Style';
+import HamburgerMenu from '../components/HamburgerMenu'
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import Intolerances from './Intolerances';
 
 const Tab = createMaterialBottomTabNavigator()
+const Drawer = createDrawerNavigator();
 
 export default function Navigation() {
 
@@ -52,13 +56,19 @@ export default function Navigation() {
                         }
                     })}
                 >
-                    <Tab.Screen name="Home" component={Home} />
+                   <Tab.Screen name="Home">
+                    {() => (
+                        <Drawer.Navigator>
+                            <Drawer.Screen name="Home" component={Home} />
+                            <Drawer.Screen name="Intolerances" component={Intolerances} />
+                        </Drawer.Navigator>
+                    )}
+                    </Tab.Screen>
                     <Tab.Screen name="Add recipe" component={AddRecipe} />
                     <Tab.Screen name="Favorites" component={Favorites} />
                     <Tab.Screen name="Profile" component={Profile} />
                     <Tab.Screen name="Recipes" component={Recipes} />
                 </Tab.Navigator>
-
             </NavigationContainer>
         </PaperProvider>
     );
