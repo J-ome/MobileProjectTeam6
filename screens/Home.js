@@ -10,28 +10,29 @@ import { Searchbar } from 'react-native-paper';
 const Home = () => {
     const [recipes, setRecipes] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
+    const [numDisplayedRecipes, setNumDisplayedRecipes] = useState(3);
 
     useEffect(() => {
-        const fetchRecipes = async () => {
-            try {
-                const response = await axios.get(
-                    'https://api.spoonacular.com/recipes/complexSearch',
-                    {
-                        params: {
-                            query: searchQuery,
-                            apiKey: apiKey,
-                        },
-                    }
-                );
-                setRecipes(response.data.results);
-            } catch (error) {
-                console.error('Error fetching recipes:', error);
-            }
-        };
-
         fetchRecipes();
-    }, [searchQuery]);
+    }, [searchQuery, numDisplayedRecipes]); 
 
+    const fetchRecipes = async () => {
+        try {
+            const response = await axios.get(
+                'https://api.spoonacular.com/recipes/complexSearch',
+                {
+                    params: {
+                        query: searchQuery,
+                        number: numDisplayedRecipes, 
+                        apiKey: apiKey,
+                    },
+                }
+            );
+            setRecipes(response.data.results);
+        } catch (error) {
+            console.error('Error fetching recipes:', error);
+        }
+    };
     const handleViewRecipe = (url) => {
         Linking.openURL(url);
     };
@@ -60,6 +61,10 @@ const Home = () => {
         </TouchableOpacity>
     );
 
+    const handleViewMore = () => {
+        setNumDisplayedRecipes(numDisplayedRecipes + 3); // Increment numDisplayedRecipes by 3 when "View More" button is pressed
+    };
+
     return (
         <View style={styles.container}>
             <View style={styles.searchContainer}>
@@ -76,8 +81,10 @@ const Home = () => {
                     data={recipes}
                     renderItem={renderRecipeItem}
                     keyExtractor={(item) => item.id.toString()}
-                    horizontal
                 />
+                <TouchableOpacity onPress={handleViewMore} style={styles.viewMoreButton}>
+                    <Text style={styles.viewMoreButtonText}>View More</Text>
+                </TouchableOpacity>
             </View>
             <View style={styles.articleContainer}>
                 <Text style={styles.articleHeading}>Articles</Text>

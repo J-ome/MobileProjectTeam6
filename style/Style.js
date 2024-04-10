@@ -10,7 +10,7 @@ export default StyleSheet.create({
     marginTop: Constants.statusBarHeight + 10
   },
   recipeItem: {
-    width: 200,
+    width: 300,
     marginBottom: 15,
     borderRadius: 10,
     marginRight: 15,
@@ -21,6 +21,7 @@ export default StyleSheet.create({
     flex: 1, 
     marginTop: 10, 
     marginBottom: 10,
+    alignItems: 'center',
   },
   recipeImage: {
     width: '100%',
@@ -30,6 +31,7 @@ export default StyleSheet.create({
   recipeTitle: {
     fontWeight: 'bold',
     textAlign: 'center',
+    paddingBottom: 20
   },
   articleItem: {
     width: '100%',
