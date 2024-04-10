@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Button, TextInput } from 'react-native';
-import { auth, db, USERS, createUserWithEmailAndPassword, signInWithEmailAndPassword } from '../firebase/Config';
-import { doc, setDoc } from 'firebase/firestore';
-import firebase from 'firebase/app'
+import { auth, db, USERS} from '../firebase/Config';
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { getFirestore, doc, setDoc, getDoc } from 'firebase/firestore';
+import firebase from 'firebase/app';
 
 const Profile = () => {
   const [userData, setUserData] = useState(null);
@@ -11,6 +12,10 @@ const Profile = () => {
   const [bio, setBio] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('');
+  const [name, setName] = useState('');
+  const [signUpEmail, setSignUpEmail] = useState('');
+  const [signUpPassword, setSignUpPassword] = useState('');
 
   useEffect(() => {
     // Check if user is authenticated
@@ -28,13 +33,18 @@ const Profile = () => {
 
   const fetchUserData = async (userId) => {
     try {
-      const userDataSnapshot = await firebase.database().ref(`users/${userId}`).once('value');
-      const userData = userDataSnapshot.val();
-      setUserData(userData);
-   } catch (error) {
+      const userDocRef = doc(db, 'users', userId);
+      const userDocSnapshot = await getDoc(userDocRef);
+      if (userDocSnapshot.exists()) {
+        const userData = userDocSnapshot.data();
+        setUserData(userData);
+      } else {
+        console.log('User data not found');
+      }
+    } catch (error) {
       console.error('Error fetching user data:', error);
-   }
-  };
+    }
+}
 
   const handleSave = () => {
     // Save links and bio locally (not to Firebase)
@@ -44,30 +54,54 @@ const Profile = () => {
 
   const handleLogin = async (email, password) => {
     try {
-      const userCredential = await signInWithEmailAndPassword(email, password);
+      const auth = getAuth();
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      // Login was successful
       const user = userCredential.user;
-      const userId = user.uid; // Retrieve the unique user ID
-      // Now you can retrieve the user data from the database using the userId
-      // For example:
-      const userDataSnapshot = await firebase.database().ref(`users/${userId}`).once('value');
-      const userData = userDataSnapshot.val();
-      console.log('User data:', userData);
+      console.log('Login successful:', user);
     } catch (error) {
-      console.error('Error logging in:', error);
+      // Handling specific errors
+      switch (error.code) {
+        case 'auth/invalid-email':
+          console.error('Invalid email address:', error.message);
+          break;
+        case 'auth/user-disabled':
+          console.error('User account is disabled:', error.message);
+          break;
+        case 'auth/user-not-found':
+          console.error('User not found:', error.message);
+          break;
+        case 'auth/wrong-password':
+          console.error('Incorrect password:', error.message);
+          break;
+        default:
+          console.error('Error logging in:', error.message);
+          break;
+      }
     }
   };
 
   const handleSignUp = async () => {
     try {
-      const userCredential = await getAuth().createUserWithEmailAndPassword(email, password)
+      console.log('Signing up...');
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password, username, name);
       const user = userCredential.user;
-      const userId = user.uid;
-      storeUserData(userId, userData);
+      console.log('Sign-up successful:', user);
+      storeUserData(user.uid, {
+        // Add the user data you want to store in the database
+        // For example:
+        username: username,
+        name: name,
+        email: email,
+        // Add other user data properties as needed
+      });
     } catch (error) {
-      console.error('Error signing up:', error);
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.error('Error signing up:', errorMessage);
     }
-  };
-  
+  }
+
   const handleLogout = async () => {
     try {
       await auth.signOut();
@@ -76,11 +110,19 @@ const Profile = () => {
       console.error('Error logging out:', error);
     }
   };
+
+  const storeUserData = async (userId, userData) => {
+    try {
+      // Reference to the document for the user in the 'users' collection
+      const userDocRef = doc(db, 'users', userId);
   
-  // Function to store user data in the database
-  const storeUserData = (userId, userData) => {
-    // Store user data in Firestore or Realtime Database
-    // ...
+      // Set the user data in the document
+      await setDoc(userDocRef, userData);
+  
+      console.log('User data stored successfully:', userData);
+    } catch (error) {
+      console.error('Error storing user data:', error);
+    }
   };
 
   return (
@@ -114,8 +156,30 @@ const Profile = () => {
       ) : (
         <View>
           <Text>Please log in or sign up to view your profile</Text>
+          <TextInput
+            value={signUpEmail}
+            onChangeText={setSignUpEmail}
+            placeholder="Enter email"
+            inputMode="email"
+            autoCapitalize="none"
+          />
+          <TextInput
+            value={signUpPassword}
+            onChangeText={setSignUpPassword}
+            placeholder="Enter password"
+            secureTextEntry
+          />
           <Button title="Log in" onPress={handleLogin} />
-          <Button title="Sign up" onPress={handleSignUp} />
+          <TextInput
+            value={name}
+            onChangeText={setName}
+            placeholder="Enter name"
+          />
+          <TextInput
+            value={username}
+            onChangeText={setUsername}
+            placeholder="Enter username"
+          />
           <TextInput
             value={email}
             onChangeText={setEmail}
@@ -127,6 +191,7 @@ const Profile = () => {
             placeholder="Enter password"
             secureTextEntry
           />
+            <Button title="Sign up" onPress={handleSignUp} />
         </View>
       )}
     </View>
