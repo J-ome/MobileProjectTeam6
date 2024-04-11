@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Button, TextInput } from 'react-native';
+import { View, Text, Button, TextInput, Alert } from 'react-native';
 import { auth, db, USERS} from '../firebase/Config';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import { getFirestore, doc, setDoc, getDoc } from 'firebase/firestore';
 import firebase from 'firebase/app';
 import style from '../style/Style'
 import { getAuth } from "firebase/auth";
+import { signIn } from '../components/Auth';
 
 const Profile = () => {
   const [userData, setUserData] = useState(null);
@@ -16,8 +17,8 @@ const Profile = () => {
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
   const [name, setName] = useState('');
-  const [signUpEmail, setSignUpEmail] = useState('');
-  const [signUpPassword, setSignUpPassword] = useState('');
+  const [signInEmail, setSignInEmail] = useState('');
+  const [signInPassword, setSignInPassword] = useState('');
 
   useEffect(() => {
     // Check if user is authenticated
@@ -49,39 +50,54 @@ const Profile = () => {
 }
 
   const handleSave = () => {
-    // Save links and bio locally (not to Firebase)
     console.log('Links:', links);
     console.log('Bio:', bio);
   };
 
-  const handleLogin = async (email, password) => {
+  const handleLogin = async () => {
+    if (!signInEmail || !signInPassword) {
+      Alert.alert('Email and password are required.');
+      return;
+    }
+  
     try {
-      const auth = getAuth();
-      const userCredential = signInWithEmailAndPassword(auth, email, password);
-      // Login was successful
-      const user = userCredential.user;
-      console.log('Login successful:', user);
+      await signIn(signInEmail, signInPassword);
+      setEmail('');
+      setPassword('');
     } catch (error) {
-      // Handling specific errors
-      switch (error.code) {
-        case 'auth/invalid-email':
-          console.error('Invalid email address:', error.message);
-          break;
-        case 'auth/user-disabled':
-          console.error('User account is disabled:', error.message);
-          break;
-        case 'auth/user-not-found':
-          console.error('User not found:', error.message);
-          break;
-        case 'auth/wrong-password':
-          console.error('Incorrect password:', error.message);
-          break;
-        default:
-          console.error('Error logging in:', error.message);
-          break;
-      }
+      console.error('Login failed:', error.message);
+      Alert.alert('Login failed:', error.message);
     }
   };
+
+//   const handleLogin = async (email, password) => {
+//     try {
+//       const auth = getAuth();
+//       const userCredential = signInWithEmailAndPassword(auth, email, password);
+//       // Login was successful
+//       const user = userCredential.user;
+//       console.log('Login successful:', user);
+//     } catch (error) {
+//       // Handling specific errors
+//       switch (error.code) {
+//         case 'auth/invalid-email':
+//           console.error('Invalid email address:', error.message);
+//           break;
+//         case 'auth/user-disabled':
+//           console.error('User account is disabled:', error.message);
+//           break;
+//         case 'auth/user-not-found':
+//           console.error('User not found:', error.message);
+//           break;
+//         case 'auth/wrong-password':
+//           console.error('Incorrect password:', error.message);
+//           break;
+//         default:
+//           console.error('Error logging in:', error.message);
+//           break;
+//       }
+//     }
+//   };
 
   const handleSignUp = async () => {
     try {
@@ -156,15 +172,15 @@ const Profile = () => {
         <View style={style.statusBar}>
           <Text>Please log in or sign up to view your profile</Text>
           <TextInput
-            value={signUpEmail}
-            onChangeText={setSignUpEmail}
+            value={signInEmail}
+            onChangeText={setSignInEmail}
             placeholder="Enter email"
             inputMode="email"
             autoCapitalize="none"
           />
           <TextInput
-            value={signUpPassword}
-            onChangeText={setSignUpPassword}
+            value={signInPassword}
+            onChangeText={setSignInPassword}
             placeholder="Enter password"
             secureTextEntry
           />
