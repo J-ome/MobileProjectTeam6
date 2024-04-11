@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Button, TextInput } from 'react-native';
 import { auth, db, USERS} from '../firebase/Config';
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import { getFirestore, doc, setDoc, getDoc } from 'firebase/firestore';
 import firebase from 'firebase/app';
+import style from '../style/Style'
+import { getAuth } from "firebase/auth";
 
 const Profile = () => {
   const [userData, setUserData] = useState(null);
@@ -55,7 +57,7 @@ const Profile = () => {
   const handleLogin = async (email, password) => {
     try {
       const auth = getAuth();
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const userCredential = signInWithEmailAndPassword(auth, email, password);
       // Login was successful
       const user = userCredential.user;
       console.log('Login successful:', user);
@@ -89,11 +91,9 @@ const Profile = () => {
       console.log('Sign-up successful:', user);
       storeUserData(user.uid, {
         // Add the user data you want to store in the database
-        // For example:
         username: username,
         name: name,
         email: email,
-        // Add other user data properties as needed
       });
     } catch (error) {
       const errorCode = error.code;
@@ -105,7 +105,6 @@ const Profile = () => {
   const handleLogout = async () => {
     try {
       await auth.signOut();
-      // Additional logout logic if needed
     } catch (error) {
       console.error('Error logging out:', error);
     }
@@ -126,9 +125,9 @@ const Profile = () => {
   };
 
   return (
-    <View>
+    <View style={style.container}>
       {loggedIn ? (
-        <View>
+        <View style={style.statusBar}> 
           {userData && (
             <>
               <Text>Name: {userData.name}</Text>
@@ -154,7 +153,7 @@ const Profile = () => {
           <Button title="Logout" onPress={handleLogout} />
         </View>
       ) : (
-        <View>
+        <View style={style.statusBar}>
           <Text>Please log in or sign up to view your profile</Text>
           <TextInput
             value={signUpEmail}
