@@ -121,6 +121,12 @@ const Profile = () => {
   const handleLogout = async () => {
     try {
       await auth.signOut();
+      setSignInEmail("");
+      setEmail("");
+      setSignInPassword("");
+      setUsername("");
+      setName("");
+      setPassword("");
     } catch (error) {
       console.error('Error logging out:', error);
     }
