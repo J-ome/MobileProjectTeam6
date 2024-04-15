@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Button, TextInput, Alert } from 'react-native';
+import { View, Text, Button, TextInput, Alert, Pressable } from 'react-native';
 import { auth, db, USERS} from '../firebase/Config';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import { getFirestore, doc, setDoc, getDoc } from 'firebase/firestore';
@@ -171,8 +171,8 @@ const Profile = () => {
             placeholder="Enter bio"
             multiline
           />
-          <Button title="Save" onPress={handleSave} />
-          <Button title="Logout" onPress={handleLogout} />
+          <Pressable onPress={handleSave}>Save</Pressable>
+          <Pressable onPress={handleLogout}>Logout</Pressable>
         </View>
       ) : (
         <View style={style.statusBar}>
@@ -190,7 +190,7 @@ const Profile = () => {
             placeholder="Enter password"
             secureTextEntry
           />
-          <Button title="Log in" onPress={handleLogin} />
+          <Pressable onPress={handleLogin} >Log in</Pressable>
           <TextInput
             value={name}
             onChangeText={setName}
@@ -212,7 +212,7 @@ const Profile = () => {
             placeholder="Enter password"
             secureTextEntry
           />
-            <Button title="Sign up" onPress={handleSignUp} />
+          <Pressable onPress={handleSignUp}> Sign Up </Pressable>
         </View>
       )}
     </View>
