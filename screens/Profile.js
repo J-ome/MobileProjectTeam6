@@ -171,8 +171,12 @@ const Profile = () => {
             placeholder="Enter bio"
             multiline
           />
-          <Pressable onPress={handleSave}>Save</Pressable>
-          <Pressable onPress={handleLogout}>Logout</Pressable>
+          <Pressable onPress={handleSave}>
+          <Text>Save</Text>
+          </Pressable>
+          <Pressable onPress={handleLogout}>
+          <Text>Logout</Text>
+          </Pressable>
         </View>
       ) : (
         <View style={style.statusBar}>
@@ -190,7 +194,9 @@ const Profile = () => {
             placeholder="Enter password"
             secureTextEntry
           />
-          <Pressable onPress={handleLogin} >Log in</Pressable>
+          <Pressable onPress={handleLogin} >
+            <Text>Log in</Text>
+          </Pressable>
           <TextInput
             value={name}
             onChangeText={setName}
@@ -212,7 +218,9 @@ const Profile = () => {
             placeholder="Enter password"
             secureTextEntry
           />
-          <Pressable onPress={handleSignUp}> Sign Up </Pressable>
+          <Pressable onPress={handleSignUp}> 
+          <Text>Sign Up</Text>
+          </Pressable>
         </View>
       )}
     </View>
