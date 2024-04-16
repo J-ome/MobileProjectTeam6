@@ -67,4 +67,15 @@ export default StyleSheet.create({
     paddingHorizontal: 10,
     paddingBottom: 10, 
 },
+recipeItemContainer:{
+  flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingTop: 20, 
+},
+goBackIcon: {
+  position: 'absolute', 
+  top: 20, 
+  left: 20, 
+}
 });
