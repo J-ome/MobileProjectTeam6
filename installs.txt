@@ -8,3 +8,5 @@
 // npm install @react-navigation/stack
 // npm install axios
 // npx expo install expo-constants
+16.4.2024
+// npx install-expo-modules@latest
