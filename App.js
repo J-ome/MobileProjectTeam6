@@ -4,15 +4,17 @@ import Navigation from './components/Navigation';
 import { PaperProvider } from 'react-native-paper';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import React from 'react';
-
+import { AuthProvider } from './components/AuthContext';
 
 export default function App() {
   
   return (
-          <PaperProvider>
-            <SafeAreaProvider>
-              <Navigation/>
-            </SafeAreaProvider>
-          </PaperProvider>
-    );
+    <PaperProvider>
+      <SafeAreaProvider>
+        <AuthProvider>
+          <Navigation/>
+        </AuthProvider>
+      </SafeAreaProvider>
+    </PaperProvider>
+  );
 }

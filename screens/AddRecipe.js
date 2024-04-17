@@ -1,15 +1,18 @@
-import React, { useState } from 'react';
-import { auth, db, storage, createUserWithEmailAndPassword, signInWithEmailAndPassword } from '../firebase/Config';
-import { View, Text, TextInput, TouchableOpacity, ScrollView, Image } from 'react-native';
+import React, { useState, useEffect} from 'react';
+import { doc, collection, addDoc,} from 'firebase/firestore';
+import { View, Text, TextInput, TouchableOpacity, ScrollView, Image, Alert } from 'react-native';
+import {auth, onAuthStateChanged } from 'firebase/auth';
+import { db } from '../firebase/Config';
 import * as ImagePicker from 'expo-image-picker';
+import { useAuth } from '../components/AuthContext';
 
 const AddRecipe = () => {
-    const [image, setImage] = useState(null)
+    const { user } = useAuth(); // Access current user from AuthContext
     const [recipe, setRecipe] = useState({
         title: '',
         ingredients: '',
         instructions: '',
-        image: image,
+        image: '',
     });
 
     const handleChange = (name, value) => {
@@ -19,60 +22,78 @@ const AddRecipe = () => {
         });
     };
 
-    const handleImageChange = (result) => {
-        console.log("Handling image change with result:", result);
-        if (result.assets && result.assets.length > 0 && result.assets[0].uri) {
-            setRecipe({
-                ...recipe,
-                image: result.assets[0].uri,
-            });
-        } else {
-            console.error("Invalid image object");
-        }
-    };
-
     const handleSubmit = async () => {
         try {
-            const currentUser = auth.currentUser;
-            if (currentUser) {
-                if (recipe.image) {
-                    const response = await fetch(recipe.image);
-                    const blob = await response.blob();
-
-                    // Upload image to Firebase Storage
-                    const imageRef = storage.ref().child(`images/${currentUser.uid}_${Date.now()}.jpg`);
-                    await imageRef.put(blob, { contentType: 'image/jpeg' });
-
-                    // Get image URL
-                    const imageUrl = await imageRef.getDownloadURL();
-
-                    // Add recipe to 'myownrecipes' collection under the user's UID
-                    await db.collection('users').doc(currentUser.uid).collection('myownrecipes').add({
-                        ...recipe,
-                        image: imageUrl,
-                    });
-
-                    alert('Recipe added successfully!');
-                    // Clear form
-                    setRecipe({
-                        title: '',
-                        ingredients: '',
-                        instructions: '',
-                        image: null,
-                    });
-                } else {
-                    alert('Please select an image.');
-                }
-            } else {
+            if (!user) {
                 alert('Please sign in to add a recipe.');
+                return;
             }
+    
+            const { title, ingredients, instructions, image } = recipe;
+            if (!title || !ingredients || !instructions || !image) {
+                console.log('Recipe:', recipe);
+                console.log('Title:', title);
+                console.log('Ingredients:', ingredients);
+                console.log('Instructions:', instructions);
+                console.log('Image:', image);
+                alert('Please fill in all fields');
+                return;
+            }
+    
+            // Reference to the collection 'myownrecipes' under the user's document
+            const userDocRef = doc(db, 'users', user.uid);
+            const recipesCollectionRef = collection(userDocRef, 'myownrecipes');
+    
+            // Add recipe to 'myownrecipes' collection under the user's UID
+            await addDoc(recipesCollectionRef, {
+                title: title,
+                ingredients: ingredients,
+                instructions: instructions,
+                image: image,
+            });
+    
+            alert('Recipe added successfully!');
+            // Clear form
+            setRecipe({
+                title: '',
+                ingredients: '',
+                instructions: '',
+                image: null,
+            });
         } catch (error) {
             console.error('Error adding recipe: ', error);
             alert('An error occurred while adding the recipe.');
         }
     };
 
-    const pickImage = async () => {
+    const handleLaunchCamera = async () => {
+        try {
+            const result = await ImagePicker.launchCameraAsync({
+                mediaTypes: ImagePicker.MediaTypeOptions.Images,
+                allowsEditing: true,
+                aspect: [4, 3],
+                quality: 1,
+            });
+    
+            if (!result.cancelled) {
+                const pickedImage = result.assets[0];
+                console.log('Picked image:', pickedImage);
+                if (pickedImage && pickedImage.uri) {
+                    console.log('Image picked from camera:', pickedImage.uri);
+                    setRecipe({
+                        ...recipe,
+                        image: pickedImage.uri,
+                    });
+                } else {
+                    console.log('No URI found in the picked image');
+                }
+            }
+        } catch (error) {
+            console.log('Error picking image from camera:', error);
+        }
+    };
+    
+    const handleLaunchImageLibrary = async () => {
         try {
             const result = await ImagePicker.launchImageLibraryAsync({
                 mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -80,21 +101,49 @@ const AddRecipe = () => {
                 aspect: [4, 3],
                 quality: 1,
             });
-
+    
             if (!result.cancelled) {
-                const imagePicked = result.assets[0];
-                console.log('Picked Image: ', imagePicked);
-                if (imagePicked && imagePicked.uri) {
-                    setImage(imagePicked.uri)
+                const pickedImage = result.assets[0];
+                console.log('Picked image:', pickedImage);
+                if (pickedImage && pickedImage.uri) {
+                    console.log('Image picked from library:', pickedImage.uri);
+                    setRecipe({
+                        ...recipe,
+                        image: pickedImage.uri,
+                    });
                 } else {
-                    console.log("No URI found in the picked image")
+                    console.log('No URI found in the picked image');
                 }
             }
         } catch (error) {
-            console.log("error picking image from library", error)
+            console.log('Error picking image from library:', error);
         }
-    }
+    };
 
+    const pickImage = async () => {
+        try {
+            Alert.alert(
+                'Choose Image Source',
+                'Would you like to take a photo or choose from the gallery?',
+                [
+                    {
+                        text: 'Take a Photo',
+                        onPress: () => handleLaunchCamera(),
+                    },
+                    {
+                        text: 'Choose from Gallery',
+                        onPress: () => handleLaunchImageLibrary(),
+                    },
+                    {
+                        text: 'Cancel',
+                        style: 'cancel',
+                    },
+                ]
+            );
+        } catch (error) {
+            console.log('Error picking image:', error);
+        }
+    };
 
     return (
         <ScrollView>
@@ -126,7 +175,7 @@ const AddRecipe = () => {
                 />
 
                 <Text>Image:</Text>
-                {image && <Image source={{ uri: image }} style={{ width: 100, height: 100 }} />}
+                {recipe.image && <Image source={{ uri: recipe.image }} style={{ width: 100, height: 100 }} />}
                 <TouchableOpacity onPress={pickImage} style={{ marginBottom: 20 }}>
                     <Text>Select Image</Text>
                 </TouchableOpacity>
