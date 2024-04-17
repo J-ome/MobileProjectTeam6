@@ -5,6 +5,7 @@ import {auth, onAuthStateChanged } from 'firebase/auth';
 import { db } from '../firebase/Config';
 import * as ImagePicker from 'expo-image-picker';
 import { useAuth } from '../components/AuthContext';
+import Style from '../style/Style';
 
 const AddRecipe = () => {
     const { user } = useAuth(); // Access current user from AuthContext
@@ -147,6 +148,7 @@ const AddRecipe = () => {
 
     return (
         <ScrollView>
+            <Text style={Style.header}>Add Recipe</Text>
             <View style={{ padding: 20 }}>
                 <Text>Title:</Text>
                 <TextInput

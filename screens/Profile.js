@@ -276,6 +276,7 @@ const Profile = () => {
   return (
     <>
       <View style={style.container}>
+      <Text style={style.header}>Profile</Text>
         {loggedIn ? (
           <View style={style.statusBar}>
             <Pressable onPress={handleChooseProfilePicture}><Text>Choose profile picture</Text></Pressable>

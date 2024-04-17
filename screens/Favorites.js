@@ -1,11 +1,11 @@
 import { View, Text } from "react-native"
-
+import Style from "../style/Style"
 
 
 export default Favorites = () => {
     return (
         <View>
-            <Text>Home</Text>
+            <Text style={Style.header}>Favorites</Text>
         </View>
     )
 }

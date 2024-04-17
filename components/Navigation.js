@@ -20,25 +20,8 @@ const Stack = createStackNavigator();
 export default function Navigation() {
 
 
-    const HomeDrawer = () => (
-        <Drawer.Navigator>
-          <Drawer.Screen name="Home" component={Home} />
-          <Drawer.Screen name="Recipes" component={RecipeStack} />
-          <Drawer.Screen name="Intolerances" component={Intolerances} />
-        </Drawer.Navigator>
-      );
-      
-      const RecipeStack = () => (
-        <Stack.Navigator>
-          <Stack.Screen name="Recipes" component={Recipes} />
-          <Stack.Screen name="Recipe" component={Recipe} options={{ headerShown: false }} />
-        </Stack.Navigator>
-      );
-
-    return (
-        <PaperProvider>
-            <NavigationContainer>
-                <Tab.Navigator
+      const HomeTab = () => (
+        <Tab.Navigator
                     // style={Style.statusBar}
                     labeled={false}
 
@@ -74,12 +57,29 @@ export default function Navigation() {
                         }
                     })}
                 >
-                <Tab.Screen name="Home" component={HomeDrawer} />
+                <Tab.Screen name="Home" component={Home} />
                 <Tab.Screen name="Add recipe" component={AddRecipe} />
                 <Tab.Screen name="Favorites" component={Favorites} />
                 <Tab.Screen name="Profile" component={Profile} />
                 {/* <Tab.Screen name="Recipes" component={RecipeStack} /> */}
                 </Tab.Navigator>
+      );
+      
+      const RecipeStack = () => (
+        <Stack.Navigator>
+          <Stack.Screen name="Recipes" component={Recipes} />
+          <Stack.Screen name="Recipe" component={Recipe} options={{ headerShown: false }} />
+        </Stack.Navigator>
+      );
+
+    return (
+        <PaperProvider>
+            <NavigationContainer>
+            <Drawer.Navigator>
+                <Drawer.Screen name="Recipe App" component={HomeTab} />
+                <Drawer.Screen name="Recipes" component={RecipeStack} />
+                <Drawer.Screen name="Intolerances" component={Intolerances} />
+            </Drawer.Navigator>
             </NavigationContainer>
         </PaperProvider>
     );
