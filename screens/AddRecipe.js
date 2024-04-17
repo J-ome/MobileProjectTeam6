@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { auth, db, storage, createUserWithEmailAndPassword, signInWithEmailAndPassword } from '../firebase/Config';
 import { View, Text, TextInput, TouchableOpacity, ScrollView, Image } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
+import Style from '../style/Style';
 
 const AddRecipe = () => {
     const [image, setImage] = useState(null)
@@ -98,6 +99,7 @@ const AddRecipe = () => {
 
     return (
         <ScrollView>
+            <Text style={Style.header}>Add Recipe</Text>
             <View style={{ padding: 20 }}>
                 <Text>Title:</Text>
                 <TextInput

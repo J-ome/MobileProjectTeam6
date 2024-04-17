@@ -9,6 +9,11 @@ export default StyleSheet.create({
   statusBar: {
     marginTop: Constants.statusBarHeight + 10
   },
+  header: {
+    fontSize: 18,
+    fontWeight: "bold"
+
+  },
   recipeItem: {
     width: 300,
     marginBottom: 15,
