@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { View, TouchableOpacity, Linking, Text, ScrollView } from 'react-native';
-import { Card } from 'react-native-paper';
+import { View, TouchableOpacity, Linking, Text, ScrollView, Image, StatusBar } from 'react-native';
+import { Card, Divider } from 'react-native-paper';
 import axios from 'axios';
 import styles from '../style/Style';
 import apiKey from '../apikey';
@@ -77,7 +77,15 @@ const Home = () => {
     };
 
     return (
-        <ScrollView>
+        <View style={styles.container}>
+            <StatusBar backgroundColor={'#5FD35D'} />
+            <ScrollView>
+            <View>
+                <Image
+                    source={require('../assets/Ellipse1.png')}
+                    style={styles.logo} />
+            </View>
+            <View style={styles.homeContent}>
             <View style={styles.searchContainer}>
                 <Searchbar
                     placeholder="Search Recipes"
@@ -86,8 +94,8 @@ const Home = () => {
                     style={{ backgroundColor: 'white', borderWidth: 1, borderColor: 'black' }}
                 />
             </View>
+            <Text style={styles.recipeTitle}>What are you planning to cook today?</Text>
             <View style={styles.recipeContainer}>
-                <Text style={styles.recipeTitle}>Recipes</Text>
                 {recipes.map((recipe, index) => (
                     <TouchableOpacity key={index} style={styles.recipeItem} onPress={() => navigateToRecipe(recipe)}>
                         <Card>
@@ -102,8 +110,9 @@ const Home = () => {
                     <Text style={styles.viewMoreButtonText}>View More</Text>
                 </TouchableOpacity>
             </View>
+            <Divider bold={true} style={styles.divider} />
+            <Text style={styles.recipeTitle}>Articles</Text>
             <View style={styles.articleContainer}>
-                <Text style={styles.articleHeading}>Articles</Text>
                 {articlesData.map((article, index) => (
                     <TouchableOpacity key={index} style={styles.articleItem} onPress={() => handleViewArticle(article.url)}>
                         <Card>
@@ -115,7 +124,9 @@ const Home = () => {
                     </TouchableOpacity>
                 ))}
             </View>
-        </ScrollView>
+            </View>
+            </ScrollView>
+        </View>
     );
 };
 
