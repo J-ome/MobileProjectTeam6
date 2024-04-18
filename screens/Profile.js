@@ -3,11 +3,12 @@ import { View, Text, Button, TextInput, Alert, Pressable, Image } from 'react-na
 import * as ImagePicker from 'expo-image-picker';
 import { auth, db, USERS } from '../firebase/Config';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, deleteUser } from "firebase/auth";
-import { getFirestore, doc, setDoc, getDoc } from 'firebase/firestore';
+import { getFirestore, doc, setDoc, getDoc, updateDoc } from 'firebase/firestore';
 import firebase from 'firebase/app';
 import style from '../style/Style'
 import { getAuth } from "firebase/auth";
 import { signIn } from '../components/Auth';
+import { useAuth } from '../components/AuthContext';
 
 const Profile = () => {
   const [userData, setUserData] = useState(null);
@@ -22,19 +23,37 @@ const Profile = () => {
   const [signInPassword, setSignInPassword] = useState('');
   const [profileImage, setProfileImage] = useState(null);
 
+  const { user, logout } = useAuth
+  ();
+
   useEffect(() => {
     // Check if user is authenticated
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      if (user) {
-        setLoggedIn(true);
-        fetchUserData(user.uid);
+    if (user) {
+      setLoggedIn(true);
+      fetchUserData(user.uid);
+      fetchProfileImage(user.uid);
+    } else {
+      setLoggedIn(false);
+      setUserData(null);
+    }
+  }, [user]);
+
+  const fetchProfileImage = async (userId) => {
+    try {
+      const userDocRef = doc(db, 'users', userId);
+      const userDocSnapshot = await getDoc(userDocRef);
+      if (userDocSnapshot.exists()) {
+        const userData = userDocSnapshot.data();
+        if (userData.profileImage) {
+          setProfileImage(userData.profileImage);
+        }
       } else {
-        setLoggedIn(false);
-        setUserData(null);
+        console.log('User data not found');
       }
-    });
-    return () => unsubscribe(); // Cleanup function to unsubscribe from the auth state listener
-  }, []);
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+    }
+  };
 
   const fetchUserData = async (userId) => {
     try {
@@ -75,35 +94,6 @@ const Profile = () => {
       Alert.alert('Login failed:', error.message);
     }
   };
-
-  //   const handleLogin = async (email, password) => {
-  //     try {
-  //       const auth = getAuth();
-  //       const userCredential = signInWithEmailAndPassword(auth, email, password);
-  //       // Login was successful
-  //       const user = userCredential.user;
-  //       console.log('Login successful:', user);
-  //     } catch (error) {
-  //       // Handling specific errors
-  //       switch (error.code) {
-  //         case 'auth/invalid-email':
-  //           console.error('Invalid email address:', error.message);
-  //           break;
-  //         case 'auth/user-disabled':
-  //           console.error('User account is disabled:', error.message);
-  //           break;
-  //         case 'auth/user-not-found':
-  //           console.error('User not found:', error.message);
-  //           break;
-  //         case 'auth/wrong-password':
-  //           console.error('Incorrect password:', error.message);
-  //           break;
-  //         default:
-  //           console.error('Error logging in:', error.message);
-  //           break;
-  //       }
-  //     }
-  //   };
 
   const handleSignUp = async () => {
     try {
@@ -197,19 +187,21 @@ const Profile = () => {
         aspect: [4, 3],
         quality: 1,
       });
-
+  
       if (!result.cancelled) {
         const pickedImage = result.assets[0];
         console.log('Picked image:', pickedImage);
         if (pickedImage && pickedImage.uri) {
-          console.log('Image captured from camera:', pickedImage.uri);
+          console.log('Image picked from camera:', pickedImage.uri);
           setProfileImage(pickedImage.uri);
+          // Push the image URI to Firestore
+          await pushImageToFirestore(pickedImage.uri);
         } else {
           console.log('No URI found in the picked image');
         }
       }
     } catch (error) {
-      console.log('Error capturing image from camera:', error);
+      console.log('Error picking image from camera:', error);
     }
   };
 
@@ -221,19 +213,39 @@ const Profile = () => {
         aspect: [4, 3],
         quality: 1,
       });
-
+  
       if (!result.cancelled) {
         const pickedImage = result.assets[0];
         console.log('Picked image:', pickedImage);
         if (pickedImage && pickedImage.uri) {
           console.log('Image picked from library:', pickedImage.uri);
           setProfileImage(pickedImage.uri);
+          // Push the image URI to Firestore
+          await pushImageToFirestore(pickedImage.uri);
         } else {
           console.log('No URI found in the picked image');
         }
       }
     } catch (error) {
       console.log('Error picking image from library:', error);
+    }
+  };
+
+  const pushImageToFirestore = async (imageUri) => {
+    try {
+      const user = auth.currentUser;
+      if (user) {
+        const userId = user.uid;
+        const userDocRef = doc(db, 'users', userId);
+        await updateDoc(userDocRef, {
+          profileImage: imageUri,
+        });
+        console.log('Profile image pushed to Firestore successfully');
+      } else {
+        console.log('User not authenticated');
+      }
+    } catch (error) {
+      console.log('Error pushing profile image to Firestore:', error);
     }
   };
 

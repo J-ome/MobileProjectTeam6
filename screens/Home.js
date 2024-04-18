@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, View, TouchableOpacity, Linking, Text, ScrollView, Image, StatusBar } from 'react-native';
-import { Card, Divider } from 'react-native-paper';
+import { View, TouchableOpacity, Linking, Text, ScrollView } from 'react-native';
+import { Card } from 'react-native-paper';
 import axios from 'axios';
 import styles from '../style/Style';
 import apiKey from '../apikey';
@@ -37,6 +37,7 @@ const Home = () => {
             console.error('Error fetching recipes:', error);
         }
     };
+
     const handleViewRecipe = (url) => {
         Linking.openURL(url);
     };
@@ -44,7 +45,6 @@ const Home = () => {
     const navigateToRecipe = (recipe) => {
         navigation.navigate('Recipes', { screen: 'Recipe', params: { recipe } });
     };
-    
 
     const handleSearch = (query) => setSearchQuery(query);
 
@@ -77,51 +77,49 @@ const Home = () => {
     };
 
     return (
-    <View style={styles.container}>
-        <StatusBar backgroundColor={'#5FD35D'} />
-    <ScrollView>
-    <View>
-        <Image
-            source={require('../assets/Ellipse1.png')}
-            style={styles.logo} />
-    </View>
-    <View style={styles.homeContent}>
-        <View style={styles.searchContainer}>
-            <Searchbar
-                placeholder="Search Recipes"
-                onChangeText={handleSearch}
-                value={searchQuery}
-                style={{ backgroundColor: 'white', borderWidth: 1, borderColor: 'black' }}
-            />
-        </View>
-            <Text style={styles.recipeTitle}>What are you planning to cook today?</Text>
+        <ScrollView>
+            <View style={styles.searchContainer}>
+                <Searchbar
+                    placeholder="Search Recipes"
+                    onChangeText={handleSearch}
+                    value={searchQuery}
+                    style={{ backgroundColor: 'white', borderWidth: 1, borderColor: 'black' }}
+                />
+            </View>
             <View style={styles.recipeContainer}>
-            <FlatList
-                data={recipes}
-                renderItem={renderRecipeItem}
-                keyExtractor={(item) => item.id.toString()}
-            />
-            <TouchableOpacity onPress={handleViewMore} style={styles.viewMoreButton}>
-                <Text style={styles.viewMoreButtonText}>View More</Text>
-            </TouchableOpacity>
-        </View>
-        <Divider bold={true} style={styles.divider} />
-        <Text style={styles.recipeTitle}>Articles</Text>
-        <View style={styles.articleContainer}>
-            <FlatList
-                data={articlesData} 
-                renderItem={renderArticleItem}
-                keyExtractor={(item) => item.id.toString()}
-            />
-        </View>
-        </View>
-    </ScrollView>
-    
-</View>
-
+                <Text style={styles.recipeTitle}>Recipes</Text>
+                {recipes.map((recipe, index) => (
+                    <TouchableOpacity key={index} style={styles.recipeItem} onPress={() => navigateToRecipe(recipe)}>
+                        <Card>
+                            <Card.Content>
+                                <Text style={styles.recipeTitle}>{recipe.title}</Text>
+                            </Card.Content>
+                            <Card.Cover source={{ uri: recipe.image }} style={styles.recipeImage} />
+                        </Card>
+                    </TouchableOpacity>
+                ))}
+                <TouchableOpacity onPress={handleViewMore} style={styles.viewMoreButton}>
+                    <Text style={styles.viewMoreButtonText}>View More</Text>
+                </TouchableOpacity>
+            </View>
+            <View style={styles.articleContainer}>
+                <Text style={styles.articleHeading}>Articles</Text>
+                {articlesData.map((article, index) => (
+                    <TouchableOpacity key={index} style={styles.articleItem} onPress={() => handleViewArticle(article.url)}>
+                        <Card>
+                            <Card.Content>
+                                <Text style={styles.articleTitle}>{article.title}</Text>
+                                <Text>{article.content}</Text>
+                            </Card.Content>
+                        </Card>
+                    </TouchableOpacity>
+                ))}
+            </View>
+        </ScrollView>
     );
 };
 
 
 export default Home;
+
 

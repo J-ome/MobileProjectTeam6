@@ -27,26 +27,35 @@ const Recipes = () => {
             number: numberOfRecipes,
           },
         });
-
-        // Fetch summaries for each recipe
-        const recipesWithSummaries = await Promise.all(
+    
+        const recipesWithDetails = await Promise.all(
           response.data.recipes.map(async recipe => {
+            // Fetch summary
             const summaryResponse = await axios.get(`https://api.spoonacular.com/recipes/${recipe.id}/summary`, {
               params: {
                 apiKey,
               },
             });
             const summary = stripHtmlTags(summaryResponse.data.summary);
-            return { ...recipe, summary, fullSummary: summary };
+    
+            // Fetch ingredients
+            const ingredientsResponse = await axios.get(`https://api.spoonacular.com/recipes/${recipe.id}/ingredientWidget.json`, {
+              params: {
+                apiKey,
+              },
+            });
+            const ingredients = ingredientsResponse.data.ingredients.map(ingredient => ingredient.name);
+    
+            return { ...recipe, summary, ingredients, fullSummary: summary };
           })
         );
-
+    
         // Limit summary length to 150 characters
-        const updatedRecipes = recipesWithSummaries.map(recipe => ({
+        const updatedRecipes = recipesWithDetails.map(recipe => ({
           ...recipe,
           summary: recipe.summary.length > 150 ? recipe.summary.slice(0, 150) + '...' : recipe.summary
         }));
-
+    
         setRecipes(updatedRecipes);
         setLoading(false);
       } catch (error) {
@@ -69,6 +78,7 @@ const Recipes = () => {
 
     // Function to navigate to Recipe screen
     const navigateToRecipe = (recipe) => {
+      console.log("Navigating to Recipe:", recipe);
       navigation.navigate('Recipe', { recipe });
     };
 

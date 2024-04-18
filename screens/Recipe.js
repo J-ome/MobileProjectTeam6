@@ -23,8 +23,12 @@ const Recipe = ({ route }) => {
     <View style={styles.recipeItemContainer}>
       <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 10 }}>{recipe.title}</Text>
       <Image source={{ uri: recipe.image }} style={{ width: 200, height: 200, marginBottom: 10 }} />
-      <Text>{recipe.fullSummary}</Text>
+      {Array.isArray(recipe.ingredients) && (
+        <Text>Ingredients: {recipe.ingredients.join(', ')}</Text>
+        
+      )}
       <Text>Ready in {recipe.readyInMinutes} minutes</Text>
+      <Text>Ingredients: {JSON.stringify(recipe.ingredients)}</Text>
       
       <TouchableOpacity onPress={() => navigation.goBack()} style={styles.goBackIcon}>
         <Ionicons name="chevron-back-outline" size={24} color="black" />
