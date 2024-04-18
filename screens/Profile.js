@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Button, TextInput, Alert, Pressable, Image } from 'react-native';
+import { View, Text, Alert, Pressable, Image } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { auth, db, USERS } from '../firebase/Config';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, deleteUser } from "firebase/auth";
@@ -9,6 +9,8 @@ import style from '../style/Style'
 import { getAuth } from "firebase/auth";
 import { signIn } from '../components/Auth';
 import { useAuth } from '../components/AuthContext';
+import { TextInput, Button } from 'react-native-paper';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const Profile = () => {
   const [userData, setUserData] = useState(null);
@@ -276,9 +278,11 @@ const Profile = () => {
   return (
     <>
       <View style={style.container}>
+        <ScrollView>
       <Text style={style.header}>Profile</Text>
+      <View style={style.screenContent}>
         {loggedIn ? (
-          <View style={style.statusBar}>
+          <View>
             <Pressable onPress={handleChooseProfilePicture}><Text>Choose profile picture</Text></Pressable>
             {profileImage && <Image source={{ uri: profileImage }} style={{ width: 100, height: 100 }} />}
 
@@ -314,50 +318,76 @@ const Profile = () => {
             </Pressable>
           </View>
         ) : (
-          <View style={style.statusBar}>
-            <Text>Please log in or sign up to view your profile</Text>
+          <View style={style.profileContent}>
+            <Text style={style.title}>Please log in or sign up to view your profile</Text>
             <TextInput
               value={signInEmail}
               onChangeText={setSignInEmail}
-              placeholder="Enter email"
               inputMode="email"
               autoCapitalize="none"
+              mode='outlined'
+              style={style.textInput}
+              label={'Enter email'}
             />
             <TextInput
               value={signInPassword}
               onChangeText={setSignInPassword}
-              placeholder="Enter password"
               secureTextEntry
+              mode='outlined'
+              style={style.textInput}
+              label={'Enter password'}
             />
-            <Pressable onPress={handleLogin} >
-              <Text>Log in</Text>
-            </Pressable>
+            {/* <Pressable 
+              onPress={handleLogin} 
+              style={style.btn}>
+              <Text style={style.title}>Log in</Text>
+            </Pressable> */}
+            <Button
+              onPress={handleLogin}
+              style={style.btn}
+              mode='contained'>Log in</Button>
             <TextInput
               value={name}
               onChangeText={setName}
-              placeholder="Enter name"
+              mode='outlined'
+              style={style.textInput}
+              label={'Enter name'}
             />
             <TextInput
               value={username}
               onChangeText={setUsername}
-              placeholder="Enter username"
+              mode='outlined'
+              style={style.textInput}
+              label={'Enter username'}
             />
             <TextInput
               value={email}
               onChangeText={setEmail}
-              placeholder="Enter email"
+              mode='outlined'
+              style={style.textInput}
+              label={'Enter email'}
             />
             <TextInput
               value={password}
               onChangeText={setPassword}
-              placeholder="Enter password"
               secureTextEntry
+              mode='outlined'
+              style={style.textInput}
+              label={'Enter password'}
             />
-            <Pressable onPress={handleSignUp}>
-              <Text>Sign Up</Text>
-            </Pressable>
+            {/* <Pressable 
+              onPress={handleSignUp}
+              style={style.btn}>
+              <Text style={style.title}>Sign Up</Text>
+            </Pressable> */}
+            <Button
+              onPress={handleSignUp}
+              style={style.btn}
+              mode='contained'>Sign in</Button>
           </View>
         )}
+        </View>
+        </ScrollView>
       </View>
     </>
   );

@@ -7,8 +7,8 @@ export const MyTheme = {
   roundness: 5,
   colors: {
     ...MD3LightTheme.colors,
-    primary: '#58b3c5',
-    onPrimary:'#40b081',
+    primary: '#5FD35D',
+    onPrimary:'#E4F1E4',
     // onSurfaceVariant: '#5FD35D',
     outline: 'black',
     secondaryContainer: '#5FD35D',
@@ -25,7 +25,8 @@ export default StyleSheet.create({
   },
   header: {
     fontSize: 18,
-    fontWeight: "bold"
+    fontWeight: "bold",
+    padding: 15
   },
   logo: {
     width: 80,
@@ -52,12 +53,13 @@ export default StyleSheet.create({
     height: 150,
     resizeMode: 'cover',
   },
-  recipeTitle: {
+  title: {
     fontWeight: 'bold',
     paddingBottom: 20,
     color: '#5FD35D',
     fontSize: 16,
-    marginLeft: 20
+    marginLeft: 20,
+    marginTop: 15
   },
   articleItem: {
     width: '100%',
@@ -98,40 +100,49 @@ export default StyleSheet.create({
     marginTop: 0,
     paddingHorizontal: 10,
     paddingBottom: 10, 
-},
-recipeItemContainer:{
-  flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingTop: 20, 
-},
-goBackIcon: {
-  position: 'absolute', 
-  top: 20, 
-  left: 20, 
-},
-divider: {
-  margin: 40,
-  borderBottomWidth: 1
-},
-homeContent: {
-  backgroundColor: '#ffffff',
-  borderTopRightRadius: 30,
-  borderTopLeftRadius: 30,
-  paddingTop: 20
-},
-headerTitle: {
-  backgroundColor: '#5FD35D'
-},
-logoContainer: {
-  position: 'relative', 
-  height: 160
-}
-// bottomTab: {
-//   borderTop: 1,
-//   // borderTopColor: 'black',
+  },
+  recipeItemContainer:{
+    flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingTop: 20, 
+  },
+  goBackIcon: {
+    position: 'absolute', 
+    top: 20, 
+    left: 20, 
+  },
+  divider: {
+    margin: 40,
+    borderBottomWidth: 1
+  },
+  screenContent: {
+    backgroundColor: '#ffffff',
+    borderTopRightRadius: 30,
+    borderTopLeftRadius: 30,
+    paddingTop: 20,
+    flex: 1
+  },
+  headerTitle: {
+    backgroundColor: '#5FD35D'
+  },
+  logoContainer: {
+    position: 'relative', 
+    height: 160
+  },
+  profileContent: {
 
-// }
+  },
+  textInput: {
+    marginBottom: 10,
+    // marginTop:10,
+    marginLeft: 30,
+    marginRight: 30,
+  },
+  btn: {
+    marginHorizontal: 60,
+    marginVertical: 10
+  }
 });
 
 
