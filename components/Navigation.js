@@ -81,7 +81,6 @@ export default function Navigation() {
                 drawerStyle: {
                 backgroundColor: '#ffffff'}}}>
                 <Drawer.Screen name="Recipe App" component={HomeTab} options={{headerStyle: {backgroundColor: '#5FD35D'}}} />
-                <Drawer.Screen name="Home" component={ArticleStack} />
                 <Drawer.Screen name="Recipes" component={RecipeStack} />
                 <Drawer.Screen name="Intolerances" component={Intolerances} />
             </Drawer.Navigator>
