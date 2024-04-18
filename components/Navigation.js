@@ -43,13 +43,9 @@ export default function Navigation() {
                                     : 'heart-outline';
                             } else if (route.name === 'Profile') {
                                 iconName = focused
-                                    ? 'circle'
-                                    : 'circle-outline';
-                            } else if (route.name === 'Recipes') {
-                                iconName = focused
-                                    ? 'circle'
-                                    : 'circle-outline';
-                            }
+                                    ? 'account-cog'
+                                    : 'account-cog-outline';
+                            } 
                             return <MaterialCommunityIcons
                                 name={iconName}
                                 size={28}
@@ -67,7 +63,7 @@ export default function Navigation() {
       
       const RecipeStack = () => (
         <Stack.Navigator>
-          <Stack.Screen name="Recipes" component={Recipes} />
+          <Stack.Screen name="Recipeslist" component={Recipes} />
           <Stack.Screen name="Recipe" component={Recipe} options={{ headerShown: false }} />
         </Stack.Navigator>
       );
