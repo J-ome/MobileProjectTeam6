@@ -2,7 +2,6 @@ export const articlesData = [
     {
         id: 1,
         title: 'Article 1 Title',
-        content: 'This is the content of article 1. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
     },
     {
         id: 2,

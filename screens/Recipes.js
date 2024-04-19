@@ -1,15 +1,15 @@
+import React, { useEffect, useState } from "react";
 import { View, Text, Image, ActivityIndicator, ScrollView, TouchableOpacity } from "react-native";
 import axios from "axios";
 import { useNavigation } from '@react-navigation/native';
-import { useEffect, useState } from "react";
-
+import { Ionicons } from '@expo/vector-icons';
+import styles from '../style/Style';
 
 const stripHtmlTags = (htmlString) => {
   return htmlString.replace(/<[^>]*>/g, '');
 };
 
 const Recipes = () => {
-
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
@@ -17,7 +17,7 @@ const Recipes = () => {
   useEffect(() => {
     const fetchRecipes = async () => {
       try {
-        const apiKey = 'fda60fc993e14793b45bd7cb18f3c8ce';
+        const apiKey = '9f10e0eb0b2c4c90b99d59927578355f';
         const apiUrl = 'https://api.spoonacular.com/recipes/random';
         const numberOfRecipes = 1;
 
@@ -27,7 +27,7 @@ const Recipes = () => {
             number: numberOfRecipes,
           },
         });
-    
+
         const recipesWithDetails = await Promise.all(
           response.data.recipes.map(async recipe => {
             // Fetch summary
@@ -37,7 +37,7 @@ const Recipes = () => {
               },
             });
             const summary = stripHtmlTags(summaryResponse.data.summary);
-    
+
             // Fetch ingredients
             const ingredientsResponse = await axios.get(`https://api.spoonacular.com/recipes/${recipe.id}/ingredientWidget.json`, {
               params: {
@@ -45,17 +45,38 @@ const Recipes = () => {
               },
             });
             const ingredients = ingredientsResponse.data.ingredients.map(ingredient => ingredient.name);
-    
-            return { ...recipe, summary, ingredients, fullSummary: summary };
+
+            // Fetch instructions
+            const instructionsResponse = await axios.get(`https://api.spoonacular.com/recipes/${recipe.id}/analyzedInstructions`, {
+              params: {
+                apiKey,
+              },
+            });
+            const instructions = instructionsResponse.data[0]?.steps.map(step => step.step);
+
+            // Fetch nutrition details
+            const nutritionResponse = await axios.get(`https://api.spoonacular.com/recipes/${recipe.id}/nutritionWidget.json`, {
+              params: {
+                apiKey,
+              },
+            });
+            const nutritionDetails = {
+              carbs: nutritionResponse.data.nutrients.find(nutrient => nutrient.name === 'Carbohydrates'),
+              fat: nutritionResponse.data.nutrients.find(nutrient => nutrient.name === 'Fat'),
+              protein: nutritionResponse.data.nutrients.find(nutrient => nutrient.name === 'Protein'),
+              kcals: nutritionResponse.data.nutrients.find(nutrient => nutrient.name === 'Calories'),
+            };
+
+            return { ...recipe, summary, ingredients, instructions, nutritionDetails, fullSummary: summary };
           })
         );
-    
+
         // Limit summary length to 150 characters
         const updatedRecipes = recipesWithDetails.map(recipe => ({
           ...recipe,
           summary: recipe.summary.length > 150 ? recipe.summary.slice(0, 150) + '...' : recipe.summary
         }));
-    
+
         setRecipes(updatedRecipes);
         setLoading(false);
       } catch (error) {
@@ -67,7 +88,6 @@ const Recipes = () => {
     fetchRecipes();
   }, []);
 
-  // Function to toggle between full and truncated summary
   const toggleSummary = (index) => {
     const updatedRecipes = [...recipes];
     updatedRecipes[index].summary = updatedRecipes[index].summary === updatedRecipes[index].fullSummary
@@ -76,11 +96,10 @@ const Recipes = () => {
     setRecipes(updatedRecipes);
   };
 
-    // Function to navigate to Recipe screen
-    const navigateToRecipe = (recipe) => {
-      console.log("Navigating to Recipe:", recipe);
-      navigation.navigate('Recipe', { recipe });
-    };
+  const navigateToRecipe = (recipe) => {
+    console.log("Navigating to Recipe:", recipe);
+    navigation.navigate('Recipe', { recipe });
+  };
 
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -91,20 +110,27 @@ const Recipes = () => {
           <View>
             <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 10 }}>Recipes</Text>
             {recipes.map((recipe, index) => (
-           <TouchableOpacity key={recipe.id} style={{ marginBottom: 20 }} onPress={() => navigateToRecipe(recipe)}>
-           <View>
-             <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{recipe.title}</Text>
-             <Image source={{ uri: recipe.image }} style={{ width: 200, height: 200, marginBottom: 10 }} />
-             <Text>{recipe.summary}</Text>
-             {recipe.fullSummary.length > 150 && (
-               <TouchableOpacity onPress={() => toggleSummary(index)}>
-                 <Text style={{ color: 'blue' }}>{recipe.summary === recipe.fullSummary ? 'View Less' : 'View More'}</Text>
-               </TouchableOpacity>
-             )}
-             <Text>Ready in {recipe.readyInMinutes} minutes</Text>
-             {/* Add more details as needed */}
-           </View>
-         </TouchableOpacity>
+              <TouchableOpacity key={recipe.id} style={{ marginBottom: 20 }} onPress={() => navigateToRecipe(recipe)}>
+                <View>
+                  <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{recipe.title}</Text>
+                  <Image source={{ uri: recipe.image }} style={{ width: 200, height: 200, marginBottom: 10 }} />
+                  <Text>{recipe.summary}</Text>
+                  {recipe.fullSummary.length > 150 && (
+                    <TouchableOpacity onPress={() => toggleSummary(index)}>
+                      <Text style={{ color: 'blue' }}>{recipe.summary === recipe.fullSummary ? 'View Less' : 'View More'}</Text>
+                    </TouchableOpacity>
+                  )}
+                  <Text>Ready in {recipe.readyInMinutes} minutes</Text>
+
+                  {/* Display nutrition details */}
+                  <View style={{ marginTop: 10 }}>
+                    <Text>Carbs: {recipe.nutritionDetails.carbs.amount} {recipe.nutritionDetails.carbs.unit}</Text>
+                    <Text>Fat: {recipe.nutritionDetails.fat.amount} {recipe.nutritionDetails.fat.unit}</Text>
+                    <Text>Protein: {recipe.nutritionDetails.protein.amount} {recipe.nutritionDetails.protein.unit}</Text>
+                    <Text>Kcals: {recipe.nutritionDetails.kcals.amount} {recipe.nutritionDetails.kcals.unit}</Text>
+                  </View>
+                </View>
+              </TouchableOpacity>
             ))}
           </View>
         )}
