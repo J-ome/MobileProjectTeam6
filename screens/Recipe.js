@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, TouchableOpacity, FlatList } from 'react-native';
+import { View, Text, Image, TouchableOpacity, FlatList, ScrollView, SafeAreaView } from 'react-native';
 import { db } from '../firebase/Config';
 import { doc, collection, setDoc, deleteDoc, getDoc, addDoc } from 'firebase/firestore';
 import { useAuth } from '../components/AuthContext';
@@ -89,6 +89,8 @@ const Recipe = ({ route }) => {
   }
 
   return (
+    <SafeAreaView style={{flex: 1}}>
+      <ScrollView>
     <View style={styles.recipeItemContainer}>
       <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 10 }}>{recipe.title}</Text>
       <Image source={{ uri: recipe.image }} style={{ width: 200, height: 200, marginBottom: 10 }} />
@@ -132,6 +134,8 @@ const Recipe = ({ route }) => {
         <Ionicons name="chevron-back-outline" size={24} color="black" />
       </TouchableOpacity>
     </View>
+    </ScrollView>
+    </SafeAreaView>
   );
 };
 
