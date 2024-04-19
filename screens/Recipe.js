@@ -2,11 +2,19 @@ import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import styles from '../style/Style';
 
 const Recipe = ({ route }) => {
   const { recipe } = route.params;
   const navigation = useNavigation(); 
+  const [isFavorite, setIsFavorite] = useState(false);
+
+  const toggleFavorite = () => {
+      // Toggle the state to add/remove recipe from favorites
+      setIsFavorite(!isFavorite);
+      // Add your logic to add/remove the recipe from favorites in the database
+    };
 
   if (!recipe) {
     return (

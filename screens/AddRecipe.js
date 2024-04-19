@@ -16,6 +16,8 @@ const AddRecipe = () => {
         image: '',
     });
 
+
+
     const handleChange = (name, value) => {
         setRecipe({
             ...recipe,
@@ -144,6 +146,21 @@ const AddRecipe = () => {
         } catch (error) {
             console.log('Error picking image:', error);
         }
+    };
+
+    const handleIngredientChange = (ingredientName, isChecked) => {
+        let updatedIngredients = [...recipe.ingredients];
+        if (isChecked) {
+            // Add ingredient to the list
+            updatedIngredients.push(ingredientName);
+        } else {
+            // Remove ingredient from the list
+            updatedIngredients = updatedIngredients.filter(ingredient => ingredient !== ingredientName);
+        }
+        setRecipe({
+            ...recipe,
+            ingredients: updatedIngredients,
+        });
     };
 
     return (
