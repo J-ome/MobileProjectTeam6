@@ -120,6 +120,11 @@ goBackIcon: {
     marginTop: 20
   },
   logo: {
-    
+    alignSelf: 'center'
+  },
+  divider: {
+    marginHorizontal: 50,
+    marginVertical: 20,
+    borderBottomWidth: 1
   }
 });
