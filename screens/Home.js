@@ -63,7 +63,7 @@ const Home = () => {
         <TouchableOpacity style={styles.articleItem}
          onPress={() => handleViewArticle(item.url)}
          >
-            <Card>
+            <Card mode='contained'>
                 <Card.Content>
                     <Text style={styles.articleTitle}>{item.title}</Text>
                     <Text>{item.content}</Text>
@@ -71,6 +71,10 @@ const Home = () => {
             </Card>
         </TouchableOpacity>
     );
+
+    const handleViewArticle = (articleId) => {
+        navigation.navigate('Article1', { articleId: articleId });
+      };
 
     const handleViewMore = () => {
         setNumDisplayedRecipes(numDisplayedRecipes + 3); 
@@ -98,7 +102,7 @@ const Home = () => {
             <View style={styles.recipeContainer}>
                 {recipes.map((recipe, index) => (
                     <TouchableOpacity key={index} style={styles.recipeItem} onPress={() => navigateToRecipe(recipe)}>
-                        <Card>
+                        <Card mode='contained'>
                             <Card.Content>
                                 <Text style={styles.recipeTitle}>{recipe.title}</Text>
                             </Card.Content>
@@ -115,7 +119,7 @@ const Home = () => {
             <View style={styles.articleContainer}>
                 {articlesData.map((article, index) => (
                     <TouchableOpacity key={index} style={styles.articleItem} onPress={() => handleViewArticle(article.url)}>
-                        <Card>
+                        <Card mode='contained'>
                             <Card.Content>
                                 <Text style={styles.articleTitle}>{article.title}</Text>
                                 <Text>{article.content}</Text>

@@ -12,6 +12,7 @@ export const MyTheme = {
     // onSurfaceVariant: '#5FD35D',
     outline: 'black',
     secondaryContainer: '#5FD35D',
+    surfaceVariant: '#E4F1E4'
   }
 }
 
@@ -60,6 +61,11 @@ export default StyleSheet.create({
     fontSize: 16,
     marginLeft: 20,
     marginTop: 15
+  },
+  recipeTitle: {
+    fontWeight: 'bold',
+    color: '#645e5e',
+    paddingBottom: 13
   },
   articleItem: {
     width: '100%',

@@ -54,7 +54,7 @@ export default function Navigation() {
                         }
                     })}
                 >
-                <Tab.Screen name="Home" component={Home} />
+                <Tab.Screen name="Home" component={ArticleStack} />
                 <Tab.Screen name="Add recipe" component={AddRecipe} />
                 <Tab.Screen name="Favorites" component={Favorites} />
                 <Tab.Screen name="Profile" component={Profile} />
@@ -63,13 +63,14 @@ export default function Navigation() {
       
       const RecipeStack = () => (
         <Stack.Navigator>
-          <Stack.Screen name="Recipeslist" component={Recipes} />
+          <Stack.Screen name="Recipeslist" component={Recipes} options={{ headerShown: false }} />
           <Stack.Screen name="Recipe" component={Recipe} options={{ headerShown: false }} />
         </Stack.Navigator>
       );
 
       const ArticleStack = () => (
         <Stack.Navigator>
+            <Stack.Screen name="HomeArticle" component={Home} options={{ headerShown: false }} />
            <Stack.Screen name="Article1" component={Article1} options={{ headerShown: false }} />  
         </Stack.Navigator>
       )
@@ -80,7 +81,7 @@ export default function Navigation() {
             <Drawer.Navigator screenOptions={{
                 drawerStyle: {
                 backgroundColor: '#ffffff'}}}>
-                <Drawer.Screen name="Recipe App" component={HomeTab} options={{headerStyle: {backgroundColor: '#5FD35D'}}} />
+                <Drawer.Screen name="Culinary Cosmos" component={HomeTab} options={{headerStyle: {backgroundColor: '#5FD35D'}}} />
                 <Drawer.Screen name="Recipes" component={RecipeStack} />
                 <Drawer.Screen name="Intolerances" component={Intolerances} />
             </Drawer.Navigator>
