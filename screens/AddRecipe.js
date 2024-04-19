@@ -2,7 +2,7 @@ import React, { useState, useEffect} from 'react';
 import { doc, collection, addDoc,} from 'firebase/firestore';
 import { View, Text, TextInput, TouchableOpacity, ScrollView, Image, Alert } from 'react-native';
 import {auth, onAuthStateChanged } from 'firebase/auth';
-import { db } from '../Firebase/Config';
+import { db } from '../firebase/Config';
 import * as ImagePicker from 'expo-image-picker';
 import { useAuth } from '../components/AuthContext';
 import Style from '../style/Style';
