@@ -4,7 +4,8 @@ import Navigation from './components/Navigation';
 import { PaperProvider } from 'react-native-paper';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import React from 'react';
-import { AuthProvider } from './components/AuthContext';
+import { AuthProvider } from './components/AuthContext';import { MyTheme } from './style/Style';
+
 
 export default function App() {
   

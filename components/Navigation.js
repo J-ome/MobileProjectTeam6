@@ -8,7 +8,8 @@ import Recipes from '../screens/Recipes';
 import AddRecipe from '../screens/AddRecipe';
 import Favorites from '../screens/Favorites';
 import Profile from '../screens/Profile';
-import Style from '../style/Style';
+import Article1 from '../components/Article1'
+import Style, {MyTheme} from '../style/Style';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import Intolerances from './Intolerances';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -22,9 +23,9 @@ export default function Navigation() {
 
       const HomeTab = () => (
         <Tab.Navigator
-                    // style={Style.statusBar}
+                    style={Style.bottomTab}
                     labeled={false}
-
+                    barStyle={{ backgroundColor: '#ffffff' }}
                     screenOptions={({ route }) => ({
                         tabBarIcon: ({ focused, color, size }) => {
                             let iconName;
@@ -57,7 +58,6 @@ export default function Navigation() {
                 <Tab.Screen name="Add recipe" component={AddRecipe} />
                 <Tab.Screen name="Favorites" component={Favorites} />
                 <Tab.Screen name="Profile" component={Profile} />
-                {/* <Tab.Screen name="Recipes" component={RecipeStack} /> */}
                 </Tab.Navigator>
       );
       
@@ -68,11 +68,19 @@ export default function Navigation() {
         </Stack.Navigator>
       );
 
+      const ArticleStack = () => (
+        <Stack.Navigator>
+           <Stack.Screen name="Article1" component={Article1} options={{ headerShown: false }} />  
+        </Stack.Navigator>
+      )
+
     return (
-        <PaperProvider>
+        <PaperProvider theme={MyTheme}>
             <NavigationContainer>
-            <Drawer.Navigator>
-                <Drawer.Screen name="Recipe App" component={HomeTab} />
+            <Drawer.Navigator screenOptions={{
+                drawerStyle: {
+                backgroundColor: '#ffffff'}}}>
+                <Drawer.Screen name="Recipe App" component={HomeTab} options={{headerStyle: {backgroundColor: '#5FD35D'}}} />
                 <Drawer.Screen name="Recipes" component={RecipeStack} />
                 <Drawer.Screen name="Intolerances" component={Intolerances} />
             </Drawer.Navigator>
