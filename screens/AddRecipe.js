@@ -2,7 +2,7 @@ import React, { useState, useEffect} from 'react';
 import { doc, collection, addDoc,} from 'firebase/firestore';
 import { View, Text, TextInput, TouchableOpacity, ScrollView, Image, Alert } from 'react-native';
 import {auth, onAuthStateChanged } from 'firebase/auth';
-import { db } from '../firebase/Config';
+import { db } from '../Firebase/Config';
 import * as ImagePicker from 'expo-image-picker';
 import { useAuth } from '../components/AuthContext';
 import Style from '../style/Style';
@@ -15,6 +15,8 @@ const AddRecipe = () => {
         instructions: '',
         image: '',
     });
+
+
 
     const handleChange = (name, value) => {
         setRecipe({
@@ -144,6 +146,21 @@ const AddRecipe = () => {
         } catch (error) {
             console.log('Error picking image:', error);
         }
+    };
+
+    const handleIngredientChange = (ingredientName, isChecked) => {
+        let updatedIngredients = [...recipe.ingredients];
+        if (isChecked) {
+            // Add ingredient to the list
+            updatedIngredients.push(ingredientName);
+        } else {
+            // Remove ingredient from the list
+            updatedIngredients = updatedIngredients.filter(ingredient => ingredient !== ingredientName);
+        }
+        setRecipe({
+            ...recipe,
+            ingredients: updatedIngredients,
+        });
     };
 
     return (

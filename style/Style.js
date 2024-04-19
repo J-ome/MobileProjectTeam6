@@ -26,15 +26,8 @@ export default StyleSheet.create({
   },
   header: {
     fontSize: 18,
-    fontWeight: "bold",
-    padding: 15
-  },
-  logo: {
-    width: 80,
-    height: 80,
-    margin: 20,
-    alignSelf: 'center',
-    
+    fontWeight: "bold"
+
   },
   recipeItem: {
     width: 300,
@@ -43,7 +36,7 @@ export default StyleSheet.create({
     elevation: 3,
     alignSelf: 'center'
   },
-   recipeContainer: {
+  recipeContainer: {
     flex: 1, 
     marginTop: 10, 
     marginBottom: 10,
@@ -106,49 +99,16 @@ export default StyleSheet.create({
     marginTop: 0,
     paddingHorizontal: 10,
     paddingBottom: 10, 
-  },
-  recipeItemContainer:{
-    flex: 1,
-      alignItems: 'center',
-      justifyContent: 'center',
-      paddingTop: 20, 
-  },
-  goBackIcon: {
-    position: 'absolute', 
-    top: 20, 
-    left: 20, 
-  },
-  divider: {
-    margin: 40,
-    borderBottomWidth: 1
-  },
-  screenContent: {
-    backgroundColor: '#ffffff',
-    borderTopRightRadius: 30,
-    borderTopLeftRadius: 30,
-    paddingTop: 20,
-    flex: 1
-  },
-  headerTitle: {
-    backgroundColor: '#5FD35D'
-  },
-  logoContainer: {
-    position: 'relative', 
-    height: 160
-  },
-  profileContent: {
-
-  },
-  textInput: {
-    marginBottom: 10,
-    // marginTop:10,
-    marginLeft: 30,
-    marginRight: 30,
-  },
-  btn: {
-    marginHorizontal: 60,
-    marginVertical: 10
-  }
+},
+recipeItemContainer:{
+  flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingTop: 20, 
+},
+goBackIcon: {
+  position: 'absolute', 
+  top: 20, 
+  left: 20, 
+}
 });
-
-
