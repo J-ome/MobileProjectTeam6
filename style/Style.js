@@ -26,8 +26,8 @@ export default StyleSheet.create({
   },
   header: {
     fontSize: 18,
-    fontWeight: "bold"
-
+    fontWeight: "bold",
+    paddingHorizontal: 30
   },
   recipeItem: {
     width: 300,
@@ -126,5 +126,13 @@ goBackIcon: {
     marginHorizontal: 50,
     marginVertical: 20,
     borderBottomWidth: 1
+  },
+  btn: {
+    marginBottom: 20,
+    marginHorizontal: 50
+  },
+  textInput: {
+    marginHorizontal: 40,
+    marginBottom: 10
   }
 });
