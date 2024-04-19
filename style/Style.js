@@ -110,5 +110,16 @@ goBackIcon: {
   position: 'absolute', 
   top: 20, 
   left: 20, 
-}
+},
+  screenContent: {
+    flex: 1,
+    backgroundColor: '#ffffff',
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    paddingTop: 20,
+    marginTop: 20
+  },
+  logo: {
+    
+  }
 });
