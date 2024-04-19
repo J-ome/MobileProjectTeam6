@@ -12,6 +12,7 @@ export const MyTheme = {
     // onSurfaceVariant: '#5FD35D',
     outline: 'black',
     secondaryContainer: '#5FD35D',
+    surfaceVariant: '#E4F1E4'
   }
 }
 
@@ -25,8 +26,8 @@ export default StyleSheet.create({
   },
   header: {
     fontSize: 18,
-    fontWeight: "bold"
-
+    fontWeight: "bold",
+    paddingHorizontal: 30
   },
   recipeItem: {
     width: 300,
@@ -53,6 +54,11 @@ export default StyleSheet.create({
     fontSize: 16,
     marginLeft: 20,
     marginTop: 15
+  },
+  recipeTitle: {
+    fontWeight: 'bold',
+    color: '#645e5e',
+    paddingBottom: 13
   },
   articleItem: {
     width: '100%',
@@ -104,5 +110,29 @@ goBackIcon: {
   position: 'absolute', 
   top: 20, 
   left: 20, 
-}
+},
+  screenContent: {
+    flex: 1,
+    backgroundColor: '#ffffff',
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    paddingTop: 20,
+    marginTop: 20
+  },
+  logo: {
+    alignSelf: 'center'
+  },
+  divider: {
+    marginHorizontal: 50,
+    marginVertical: 20,
+    borderBottomWidth: 1
+  },
+  btn: {
+    marginBottom: 20,
+    marginHorizontal: 50
+  },
+  textInput: {
+    marginHorizontal: 40,
+    marginBottom: 10
+  }
 });
