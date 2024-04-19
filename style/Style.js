@@ -12,7 +12,6 @@ export default StyleSheet.create({
   header: {
     fontSize: 18,
     fontWeight: "bold"
-
   },
   recipeItem: {
     width: 300,
@@ -22,7 +21,7 @@ export default StyleSheet.create({
     overflow: 'hidden',
     elevation: 3,
   },
-   recipeContainer: {
+  recipeContainer: {
     flex: 1, 
     marginTop: 10, 
     marginBottom: 10,
@@ -71,16 +70,28 @@ export default StyleSheet.create({
     marginTop: 0,
     paddingHorizontal: 10,
     paddingBottom: 10, 
-},
-recipeItemContainer:{
-  flex: 1,
+  },
+  recipeItemContainer: {
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     paddingTop: 20, 
-},
-goBackIcon: {
-  position: 'absolute', 
-  top: 20, 
-  left: 20, 
-}
+  },
+  goBackIcon: {
+    position: 'absolute', 
+    top: 20, 
+    left: 20, 
+  },
+  donutChartContainer: {
+    margin: '20px 40px 0 40px', 
+  },
+  donutInnerText: {
+    width: 100,
+    height: 65,
+    fontSize: 13,
+    position: 'absolute',
+    top: 80,
+    left: 50,
+    textAlign: 'center',
+  },
 });
