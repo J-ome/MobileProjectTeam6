@@ -117,7 +117,8 @@ goBackIcon: {
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     paddingTop: 20,
-    marginTop: 20
+    marginTop: 20,
+    paddingBottom: 50
   },
   logo: {
     alignSelf: 'center'
@@ -128,7 +129,8 @@ goBackIcon: {
     borderBottomWidth: 1
   },
   btn: {
-    marginBottom: 20,
+    marginBottom: 30,
+    marginTop: 10,
     marginHorizontal: 50
   },
   textInput: {

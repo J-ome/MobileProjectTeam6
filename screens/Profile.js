@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Alert, Pressable, Image } from 'react-native';
+import { View, Text, Alert, Pressable, Image, ScrollView } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { auth, db, USERS } from '../firebase/Config';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, deleteUser } from "firebase/auth";
@@ -10,7 +10,7 @@ import { getAuth } from "firebase/auth";
 import { signIn } from '../components/Auth';
 import { useAuth } from '../components/AuthContext';
 import { TextInput, Button } from 'react-native-paper';
-import { ScrollView } from 'react-native-gesture-handler';
+// import { ScrollView } from 'react-native-gesture-handler';
 
 const Profile = () => {
   const [userData, setUserData] = useState(null);
