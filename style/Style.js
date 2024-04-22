@@ -9,7 +9,7 @@ export const MyTheme = {
     ...MD3LightTheme.colors,
     primary: '#5FD35D',
     onPrimary:'#E4F1E4',
-    // onSurfaceVariant: '#5FD35D',
+    // onSurfaceVariant: '#b73a9e',
     outline: 'black',
     secondaryContainer: '#5FD35D',
     surfaceVariant: '#E4F1E4'
@@ -27,7 +27,8 @@ export default StyleSheet.create({
   header: {
     fontSize: 18,
     fontWeight: "bold",
-    paddingHorizontal: 30
+    paddingHorizontal: 30,
+    paddingTop: 20
   },
   recipeItem: {
     width: 300,
@@ -99,18 +100,18 @@ export default StyleSheet.create({
     marginTop: 0,
     paddingHorizontal: 10,
     paddingBottom: 10, 
-},
-recipeItemContainer:{
-  flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingTop: 20, 
-},
-goBackIcon: {
-  position: 'absolute', 
-  top: 20, 
-  left: 20, 
-},
+  },
+  recipeItemContainer:{
+    flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingTop: 20, 
+  },
+  goBackIcon: {
+    position: 'absolute', 
+    top: 20, 
+    left: 20, 
+  },
   screenContent: {
     flex: 1,
     backgroundColor: '#ffffff',
@@ -129,12 +130,54 @@ goBackIcon: {
     borderBottomWidth: 1
   },
   btn: {
-    marginBottom: 30,
+    marginBottom: 20,
     marginTop: 10,
     marginHorizontal: 50
   },
   textInput: {
     marginHorizontal: 40,
     marginBottom: 10
+  },
+  profileContent: {
+    paddingLeft: 30,
+    gap: 10
+  },
+  profileImageBtn: {
+    backgroundColor: '#E4F1E4',
+    borderRadius: 20,
+    padding: 12,
+  },
+  profileText: {
+    fontWeight: '500'
+  },
+  profileImageContent: {
+    alignItems: 'center',
+    gap: 30,
+    marginBottom: 40
+  },
+  profileImage: {
+    width: 110,
+    height: 110,
+    borderRadius: 60
+  },
+  profileInput: {
+    width: 300
+  },
+  save: {
+    backgroundColor: '#E4F1E4',
+    borderRadius: 20,
+    padding: 12,
+    width: 100,
+    marginTop: 18
+  },
+  saveText: {
+    textAlign: "center",
+    fontWeight: '500'
+  },
+  logoutDelete: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingRight: 30,
+    marginTop: 30
   }
 });

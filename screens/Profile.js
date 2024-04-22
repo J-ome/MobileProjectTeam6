@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Alert, Pressable, Image, ScrollView } from 'react-native';
+import { View, Text, Alert, Pressable, Image } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { auth, db, USERS } from '../firebase/Config';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, deleteUser } from "firebase/auth";
@@ -10,7 +10,7 @@ import { getAuth } from "firebase/auth";
 import { signIn } from '../components/Auth';
 import { useAuth } from '../components/AuthContext';
 import { TextInput, Button } from 'react-native-paper';
-// import { ScrollView } from 'react-native-gesture-handler';
+import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler';
 
 const Profile = () => {
   const [userData, setUserData] = useState(null);
@@ -278,44 +278,61 @@ const Profile = () => {
   return (
     <>
       <View style={style.container}>
+        <GestureHandlerRootView>
         <ScrollView>
       <Text style={style.header}>Profile</Text>
       <View style={style.screenContent}>
         {loggedIn ? (
-          <View>
-            <Pressable onPress={handleChooseProfilePicture}><Text>Choose profile picture</Text></Pressable>
-            {profileImage && <Image source={{ uri: profileImage }} style={{ width: 100, height: 100 }} />}
-
+          <View >
+            <View style={style.profileImageContent}>
+            <Pressable onPress={handleChooseProfilePicture} style={style.profileImageBtn}>
+              <Text style={style.profileText}>Choose profile picture</Text>
+            </Pressable>
+            {profileImage && <Image source={{ uri: profileImage }} style={style.profileImage} />}
+            </View>
+            <View style={style.profileContent}>
             {userData && (
               <>
-                <Text>Name: {userData.name}</Text>
-                <Text>Username: {userData.username}</Text>
-                <Text>Email: {userData.email}</Text>
+                <Text style={style.profileText}>Name: {userData.name}</Text>
+                <Text style={style.profileText}>Username: {userData.username}</Text>
+                <Text style={style.profileText}>Email: {userData.email}</Text>
               </>
             )}
-            <Text>Links:</Text>
+            <Text style={style.profileText}>Links:</Text>
             <TextInput
               value={links}
               onChangeText={setLinks}
-              placeholder="Enter links"
               multiline
+              mode='outlined'
+              style={style.profileInput}
+              label={'Enter links'}
             />
-            <Text>Bio:</Text>
-            <TextInput
+            <Text style={style.profileText}>Bio:</Text>
+            <TextInput 
               value={bio}
               onChangeText={setBio}
-              placeholder="Enter bio"
               multiline
+              mode='outlined'
+              style={style.profileInput}
+              label={'Enter bio'}
             />
-            <Pressable onPress={handleSave}>
-              <Text>Save</Text>
+            <Pressable onPress={handleSave} style={style.save}>
+              <Text style={style.saveText}>Save</Text>
             </Pressable>
-            <Pressable onPress={handleLogout}>
+            {/* <Button onPress={handleSave} style={style.save} mode='contained-tonal'>Save</Button> */}
+            <View style={style.logoutDelete}>
+            {/* <Pressable onPress={handleLogout}>
               <Text>Logout</Text>
-            </Pressable>
-            <Pressable onPress={handleDeleteAccount}>
+            </Pressable> */}
+            <Button onPress={handleLogout} mode='contained-tonal'>Logout</Button>
+            {/* <Pressable onPress={handleDeleteAccount}>
               <Text>Delete Account</Text>
-            </Pressable>
+            </Pressable> */}
+            <Button onPress={handleDeleteAccount} 
+            // style={{backgroundColor: '#efa0a0'}} 
+            mode='contained-tonal'>Delete Account</Button>
+            </View>
+            </View>
           </View>
         ) : (
           <View style={style.profileContent}>
@@ -383,11 +400,12 @@ const Profile = () => {
             <Button
               onPress={handleSignUp}
               style={style.btn}
-              mode='contained'>Sign in</Button>
+              mode='contained'>Sign up</Button>
           </View>
         )}
         </View>
         </ScrollView>
+        </GestureHandlerRootView>
       </View>
     </>
   );
