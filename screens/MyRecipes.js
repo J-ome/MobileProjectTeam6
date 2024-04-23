@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { View, Text, FlatList, ActivityIndicator } from "react-native";
 import { db, auth } from "../firebase/Config"; // Assuming you have Firebase auth setup
 import { collection, getDocs } from "firebase/firestore";
-import RecipeCard from "./RecipeCard";
 
 
 
