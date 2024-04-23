@@ -1,11 +1,12 @@
 import React, { useState, useEffect} from 'react';
 import { doc, collection, addDoc,} from 'firebase/firestore';
-import { View, Text, TextInput, TouchableOpacity, ScrollView, Image, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, Image, Alert } from 'react-native';
 import {auth, onAuthStateChanged } from 'firebase/auth';
 import { db } from '../firebase/Config';
 import * as ImagePicker from 'expo-image-picker';
 import { useAuth } from '../components/AuthContext';
 import Style from '../style/Style';
+import { TextInput, Button } from 'react-native-paper';
 
 const AddRecipe = () => {
     const { user } = useAuth(); // Access current user from AuthContext
@@ -165,46 +166,48 @@ const AddRecipe = () => {
 
     return (
         <ScrollView>
+            <View style={Style.container}>
             <Text style={Style.header}>Add Recipe</Text>
-            <View style={{ padding: 20 }}>
-                <Text>Title:</Text>
+            <View style={Style.screenContent}>
+                <View style={Style.addRecipeContent}>
                 <TextInput
-                    style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 20 }}
                     value={recipe.title}
                     onChangeText={(text) => handleChange('title', text)}
-                    placeholder="Enter title"
+                    mode='outlined'
+                    style={Style.profileInput}
+                    label={'Enter title'}
                 />
-
-                <Text>Ingredients:</Text>
                 <TextInput
-                    style={{ height: 100, borderColor: 'gray', borderWidth: 1, marginBottom: 20 }}
                     value={recipe.ingredients}
                     onChangeText={(text) => handleChange('ingredients', text)}
                     multiline={true}
-                    placeholder="Enter ingredients"
+                    mode='outlined'
+                    style={Style.addRecipeInput}
+                    label={'Enter ingredients'}
                 />
-
-                <Text>Instructions:</Text>
                 <TextInput
-                    style={{ height: 100, borderColor: 'gray', borderWidth: 1, marginBottom: 20 }}
                     value={recipe.instructions}
                     onChangeText={(text) => handleChange('instructions', text)}
                     multiline={true}
-                    placeholder="Enter instructions"
+                    mode='outlined'
+                    style={Style.addRecipeInput}
+                    label={'Enter instructions'}
                 />
 
-                <Text>Image:</Text>
                 {recipe.image && <Image source={{ uri: recipe.image }} style={{ width: 100, height: 100 }} />}
-                <TouchableOpacity onPress={pickImage} style={{ marginBottom: 20 }}>
-                    <Text>Select Image</Text>
+                <TouchableOpacity onPress={pickImage} style={Style.addRecipeImageBtn}>
+                    <Text style={Style.profileText}>Select Image</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity
+                {/* <TouchableOpacity
                     style={{ backgroundColor: 'blue', padding: 10, alignItems: 'center', borderRadius: 5 }}
                     onPress={handleSubmit}
                 >
                     <Text style={{ color: 'white' }}>Add Recipe</Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
+                <Button onPress={handleSubmit} mode='contained-tonal' style={Style.addRecipeBtn}>Add recipe</Button>
+            </View>
+            </View>
             </View>
         </ScrollView>
     );
