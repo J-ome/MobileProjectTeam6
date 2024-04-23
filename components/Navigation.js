@@ -9,6 +9,7 @@ import AddRecipe from '../screens/AddRecipe';
 import Favorites from '../screens/Favorites';
 import Profile from '../screens/Profile';
 import Article1 from '../components/Article1'
+import MyRecipes from '../screens/MyRecipes'
 import Style, {MyTheme} from '../style/Style';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import Intolerances from './Intolerances';
@@ -21,8 +22,39 @@ const Stack = createStackNavigator();
 export default function Navigation() {
 
 
-      const HomeTab = () => (
-        <Tab.Navigator
+    const RecipeStack = () => (
+        <Stack.Navigator>
+          <Stack.Screen name="Recipeslist" component={Recipes} options={{ headerShown: false }} />
+          <Stack.Screen name="Recipe" component={Recipe} options={{ headerShown: false }} />
+        </Stack.Navigator>
+      );
+
+      const ArticleStack = () => (
+        <Stack.Navigator>
+            <Stack.Screen name="HomeArticle" component={Home} options={{ headerShown: false }} />
+           <Stack.Screen name="Article1" component={Article1} options={{ headerShown: false }} />  
+        </Stack.Navigator>
+      )
+
+      const ProfileStack = () => (
+        <Stack.Navigator>
+            <Stack.Screen name="ProfileStack" component={Profile} options={{ headerShown: false }} />
+           <Stack.Screen name="MyRecipes" component={MyRecipes} options={{ headerShown: false }} /> 
+           <Stack.Screen name="Intolerances" component={Intolerances} options={{ headerShown: false }} /> 
+        </Stack.Navigator>
+      )
+
+    return (
+        <PaperProvider theme={MyTheme}>
+            <NavigationContainer>
+            {/* <Drawer.Navigator screenOptions={{
+                drawerStyle: {
+                backgroundColor: '#ffffff'}}}>
+                <Drawer.Screen name="Culinary Cosmos" component={HomeTab} options={{headerStyle: {backgroundColor: '#5FD35D'}}} />
+                <Drawer.Screen name="Recipes" component={RecipeStack} />
+                <Drawer.Screen name="Intolerances" component={Intolerances} />
+            </Drawer.Navigator> */}
+             <Tab.Navigator
                     style={Style.bottomTab}
                     labeled={false}
                     barStyle={{ backgroundColor: '#ffffff' }}
@@ -44,8 +76,12 @@ export default function Navigation() {
                                     : 'heart-outline';
                             } else if (route.name === 'Profile') {
                                 iconName = focused
-                                    ? 'account-cog'
-                                    : 'account-cog-outline';
+                                    ? 'account'
+                                    : 'account-outline';
+                            } else if (route.name === 'Recipes') {
+                                iconName = focused
+                                    ? 'clipboard-text'
+                                    : 'clipboard-text-outline';
                             } 
                             return <MaterialCommunityIcons
                                 name={iconName}
@@ -54,37 +90,12 @@ export default function Navigation() {
                         }
                     })}
                 >
-                <Tab.Screen name="Home" component={ArticleStack} />
-                <Tab.Screen name="Add recipe" component={AddRecipe} />
-                <Tab.Screen name="Favorites" component={Favorites} />
-                <Tab.Screen name="Profile" component={Profile} />
+                    <Tab.Screen name="Home" component={ArticleStack} />
+                    <Tab.Screen name="Recipes" component={RecipeStack} />
+                    <Tab.Screen name="Add recipe" component={AddRecipe} />
+                    <Tab.Screen name="Favorites" component={Favorites} />
+                    <Tab.Screen name="Profile" component={ProfileStack} />
                 </Tab.Navigator>
-      );
-      
-      const RecipeStack = () => (
-        <Stack.Navigator>
-          <Stack.Screen name="Recipeslist" component={Recipes} options={{ headerShown: false }} />
-          <Stack.Screen name="Recipe" component={Recipe} options={{ headerShown: false }} />
-        </Stack.Navigator>
-      );
-
-      const ArticleStack = () => (
-        <Stack.Navigator>
-            <Stack.Screen name="HomeArticle" component={Home} options={{ headerShown: false }} />
-           <Stack.Screen name="Article1" component={Article1} options={{ headerShown: false }} />  
-        </Stack.Navigator>
-      )
-
-    return (
-        <PaperProvider theme={MyTheme}>
-            <NavigationContainer>
-            <Drawer.Navigator screenOptions={{
-                drawerStyle: {
-                backgroundColor: '#ffffff'}}}>
-                <Drawer.Screen name="Culinary Cosmos" component={HomeTab} options={{headerStyle: {backgroundColor: '#5FD35D'}}} />
-                <Drawer.Screen name="Recipes" component={RecipeStack} />
-                <Drawer.Screen name="Intolerances" component={Intolerances} />
-            </Drawer.Navigator>
             </NavigationContainer>
         </PaperProvider>
     );

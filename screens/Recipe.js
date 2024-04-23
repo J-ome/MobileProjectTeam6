@@ -70,9 +70,9 @@ const Recipe = ({ route }) => {
 
   // Prepare data for the donut chart
   const donutChartData = [
-    { name: 'Carbs', number: Math.round(recipe.nutritionDetails?.carbs?.amount || 0), color: 'green' },
-    { name: 'Protein', number: Math.round(recipe.nutritionDetails?.protein?.amount || 0), color: 'lightpink' },
-    { name: 'Fats', number: Math.round(recipe.nutritionDetails?.fat?.amount || 0), color: 'wheat' },
+    { name: 'Carbs: ' + Math.round(recipe.nutritionDetails?.carbs?.amount || 0) + ' g', number: Math.round(recipe.nutritionDetails?.carbs?.amount || 0), color: 'green', },
+    { name: 'Protein: ' + Math.round(recipe.nutritionDetails?.protein?.amount || 0) + ' g', number: Math.round(recipe.nutritionDetails?.protein?.amount || 0), color: 'lightpink' },
+    { name: 'Fats: ' + Math.round(recipe.nutritionDetails?.fat?.amount || 0) + ' g', number: Math.round(recipe.nutritionDetails?.fat?.amount || 0), color: 'wheat' },
   ];
   const [isFavorite, setIsFavorite] = useState(false);
 
