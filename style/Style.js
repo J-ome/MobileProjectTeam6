@@ -122,7 +122,8 @@ export default StyleSheet.create({
     paddingBottom: 50
   },
   logo: {
-    alignSelf: 'center'
+    alignSelf: 'center',
+    margin: 20
   },
   divider: {
     marginHorizontal: 50,

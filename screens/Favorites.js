@@ -72,6 +72,8 @@ const Favorites = () => {
       return <ActivityIndicator size="large" color="#0000ff" />;
     } else if (auth.currentUser) {
       return (
+        <>
+        <Text style={Style.header}>Recipes</Text>
         <FlatList
           data={userFavorites}
           keyExtractor={(item) => item.id}
@@ -83,14 +85,18 @@ const Favorites = () => {
             </View>
           )}
         />
+        </>
       );
     } else {
       return (
+        <View>
+          <Text style={Style.header}>Recipes</Text>
         <View style={{ alignItems: "center" }}>
           <Text style={{ marginVertical: 20 }}>Log in or Sign Up to view your favorites</Text>
           <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
             <Text style={{ color: "blue" }}>Log In or Sign Up</Text>
           </TouchableOpacity>
+        </View>
         </View>
       );
     }
