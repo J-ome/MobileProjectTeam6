@@ -205,7 +205,7 @@ const AddRecipe = () => {
                 >
                     <Text style={{ color: 'white' }}>Add Recipe</Text>
                 </TouchableOpacity> */}
-                <Button onPress={handleSubmit} mode='contained-tonal' style={Style.addRecipeBtn}>Add recipe</Button>
+                <Button onPress={handleSubmit} mode='contained' style={Style.addRecipeBtn}>Add recipe</Button>
             </View>
             </View>
             </View>
