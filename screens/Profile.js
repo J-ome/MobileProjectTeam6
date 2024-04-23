@@ -11,6 +11,8 @@ import { signIn } from '../components/Auth';
 import { useAuth } from '../components/AuthContext';
 import { TextInput, Button } from 'react-native-paper';
 import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler';
+import MyRecipes from '../screens/MyRecipes'
+import { useNavigation } from '@react-navigation/native';
 
 const Profile = () => {
   const [userData, setUserData] = useState(null);
@@ -24,6 +26,7 @@ const Profile = () => {
   const [signInEmail, setSignInEmail] = useState('');
   const [signInPassword, setSignInPassword] = useState('');
   const [profileImage, setProfileImage] = useState(null);
+  const navigation = useNavigation();
 
   const { user, logout } = useAuth
   ();
@@ -272,8 +275,14 @@ const Profile = () => {
     );
   };
 
+  const handleViewMyRecipes = () => {
+    navigation.navigate('MyRecipes');
+  };
 
-
+  const handleViewIntolerances = () => {
+    navigation.navigate('Intolerances');
+  };
+  
 
   return (
     <>
@@ -319,6 +328,8 @@ const Profile = () => {
             <Pressable onPress={handleSave} style={style.save}>
               <Text style={style.saveText}>Save</Text>
             </Pressable>
+            <Text>You can find your own recipes <Pressable onPress={handleViewMyRecipes}><Text style={style.profileBtn}>HERE</Text></Pressable>.</Text>
+            <Text>You can find the meaning of intolerances <Pressable onPress={handleViewIntolerances}><Text>HERE</Text></Pressable>.</Text>
             {/* <Button onPress={handleSave} style={style.save} mode='contained-tonal'>Save</Button> */}
             <View style={style.logoutDelete}>
             {/* <Pressable onPress={handleLogout}>

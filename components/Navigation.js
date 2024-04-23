@@ -9,6 +9,7 @@ import AddRecipe from '../screens/AddRecipe';
 import Favorites from '../screens/Favorites';
 import Profile from '../screens/Profile';
 import Article1 from '../components/Article1'
+import MyRecipes from '../screens/MyRecipes'
 import Style, {MyTheme} from '../style/Style';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import Intolerances from './Intolerances';
@@ -32,6 +33,14 @@ export default function Navigation() {
         <Stack.Navigator>
             <Stack.Screen name="HomeArticle" component={Home} options={{ headerShown: false }} />
            <Stack.Screen name="Article1" component={Article1} options={{ headerShown: false }} />  
+        </Stack.Navigator>
+      )
+
+      const ProfileStack = () => (
+        <Stack.Navigator>
+            <Stack.Screen name="ProfileStack" component={Profile} options={{ headerShown: false }} />
+           <Stack.Screen name="MyRecipes" component={MyRecipes} options={{ headerShown: false }} /> 
+           <Stack.Screen name="Intolerances" component={Intolerances} options={{ headerShown: false }} /> 
         </Stack.Navigator>
       )
 
@@ -85,7 +94,7 @@ export default function Navigation() {
                     <Tab.Screen name="Recipes" component={RecipeStack} />
                     <Tab.Screen name="Add recipe" component={AddRecipe} />
                     <Tab.Screen name="Favorites" component={Favorites} />
-                    <Tab.Screen name="Profile" component={Profile} />
+                    <Tab.Screen name="Profile" component={ProfileStack} />
                 </Tab.Navigator>
             </NavigationContainer>
         </PaperProvider>

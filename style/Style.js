@@ -179,5 +179,10 @@ export default StyleSheet.create({
     justifyContent: 'space-between',
     paddingRight: 30,
     marginTop: 30
+  },
+  profileBtn: {
+    backgroundColor: 'orange',
+    fontSize: 20,
+    padding: 0
   }
 });
