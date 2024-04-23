@@ -54,7 +54,7 @@ export default StyleSheet.create({
     color: '#5FD35D',
     fontSize: 16,
     marginLeft: 20,
-    marginTop: 15
+    marginTop: 15,
   },
   recipeTitle: {
     fontWeight: 'bold',
@@ -135,12 +135,15 @@ export default StyleSheet.create({
     marginHorizontal: 50
   },
   textInput: {
-    marginHorizontal: 40,
-    marginBottom: 10
+    // marginHorizontal: 40,
+    marginBottom: 10,
+    alignSelf: 'center',
+    width: 300,
   },
   profileContent: {
-    paddingLeft: 30,
-    gap: 10
+    // paddingLeft: 30,
+    gap: 10,
+    justifyContent: 'center'
   },
   profileImageBtn: {
     backgroundColor: '#E4F1E4',
