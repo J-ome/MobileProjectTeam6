@@ -54,7 +54,7 @@ export default StyleSheet.create({
     color: '#5FD35D',
     fontSize: 16,
     marginLeft: 20,
-    marginTop: 15
+    marginTop: 15,
   },
   recipeTitle: {
     fontWeight: 'bold',
@@ -122,7 +122,8 @@ export default StyleSheet.create({
     paddingBottom: 50
   },
   logo: {
-    alignSelf: 'center'
+    alignSelf: 'center',
+    margin: 20
   },
   divider: {
     marginHorizontal: 50,
@@ -135,12 +136,15 @@ export default StyleSheet.create({
     marginHorizontal: 50
   },
   textInput: {
-    marginHorizontal: 40,
-    marginBottom: 10
+    // marginHorizontal: 40,
+    marginBottom: 10,
+    alignSelf: 'center',
+    width: 300,
   },
   profileContent: {
-    paddingLeft: 30,
-    gap: 10
+    // paddingLeft: 30,
+    gap: 10,
+    justifyContent: 'center'
   },
   profileImageBtn: {
     backgroundColor: '#E4F1E4',
@@ -148,7 +152,8 @@ export default StyleSheet.create({
     padding: 12,
   },
   profileText: {
-    fontWeight: '500'
+    fontWeight: '500',
+    textAlign: 'center'
   },
   profileImageContent: {
     alignItems: 'center',
@@ -184,5 +189,25 @@ export default StyleSheet.create({
     backgroundColor: 'orange',
     fontSize: 20,
     padding: 0
+  },
+  addRecipeContent: {
+    padding: 20,
+    gap: 15,
+    alignItems: 'center'
+  },
+  addRecipeInput: {
+    height: 100,
+    width: 300
+  },
+  addRecipeImageBtn: {
+    backgroundColor: '#E4F1E4',
+    borderRadius: 20,
+    padding: 12,
+    width: 200,
+    // borderColor: '#5FD35D',
+    // borderWidth: 2
+  },
+  addRecipeBtn: {
+    marginTop: 40
   }
 });

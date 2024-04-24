@@ -127,13 +127,14 @@ const Recipes = () => {
   };
 
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    <View style={styles.container}>
       <ScrollView>
         {loading ? (
           <ActivityIndicator size="large" color="#0000ff" />
         ) : (
           <View>
-            <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 10 }}>Recipes</Text>
+            <Text style={styles.header}>Recipes</Text>
+            <View style={styles.screenContent}>
             {recipes.map((recipe, index) => (
               <TouchableOpacity key={recipe.id} style={{ marginBottom: 20 }} onPress={() => navigateToRecipe(recipe)}>
                 <View>
