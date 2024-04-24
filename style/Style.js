@@ -68,11 +68,11 @@ export default StyleSheet.create({
     elevation: 2,
     // padding: 10,
   },
-  articleTitle: {
-    fontWeight: 'bold',
-    fontSize: 16,
-    marginBottom: 5,
-  },
+  // articleTitle: {
+  //   fontWeight: 'bold',
+  //   fontSize: 16,
+  //   marginBottom: 5,
+  // },
   articleContent: {
     fontSize: 14,
     lineHeight: 20,
@@ -81,17 +81,17 @@ export default StyleSheet.create({
     flex: 1,
     margin: 20,
     padding: 20,
-    // paddingHorizontal: 15,
     alignItems: 'center',
     backgroundColor: '#E4F1E4',
-    borderRadius: 13
+    borderRadius: 13,
+    gap: 20
   },
-  articleHeading: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 10,
+  // articleHeading: {
+  //   fontSize: 20,
+  //   fontWeight: 'bold',
+  //   marginBottom: 10,
   
-  },
+  // },
   articleImage: {
     width: 80,
     height: 80,
@@ -108,9 +108,10 @@ export default StyleSheet.create({
       paddingTop: 20, 
   },
   goBackIcon: {
-    position: 'absolute', 
+    // position: 'absolute', 
     top: 20, 
     left: 20, 
+    marginBottom: 20
   },
   screenContent: {
     flex: 1,
@@ -209,5 +210,50 @@ export default StyleSheet.create({
   },
   addRecipeBtn: {
     marginTop: 40
+  },
+  articleHeading: {
+    fontSize: 15,
+    fontWeight: 'bold',
+    color: '#5FD35D',
+    textAlign: 'center',
+    marginBottom: 20,
+    paddingHorizontal: 20
+  },
+  articleTitle: {
+    fontWeight: 'bold',
+    marginHorizontal: 20
+  },
+  articleText: {
+    marginHorizontal: 20,
+    marginBottom: 15,
+  }, 
+  articleImage: {
+    width: 300,
+    height: 170,
+    alignSelf: 'center',
+    borderRadius: 20,
+    marginBottom: 20
+  },
+  articleCard: {
+    backgroundColor: '#ffffff',
+    flexDirection: 'row',
+    // marginHorizontal: 40,
+    borderRadius: 13,
+    width: 280,
+    justifyContent: 'space-between'
+  },
+  articleCardText: {
+    fontSize: 15,
+    fontWeight: 'bold',
+    color: '#645e5e',
+    textAlign: 'center',
+    padding: 20,
+    textAlignVertical: 'center'
+  },
+  articleCardImage: {
+    width: 140,
+    height: 100,
+    borderTopRightRadius: 13,
+    borderBottomRightRadius: 13
   }
 });

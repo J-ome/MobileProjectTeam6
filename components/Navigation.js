@@ -8,7 +8,7 @@ import Recipes from '../screens/Recipes';
 import AddRecipe from '../screens/AddRecipe';
 import Favorites from '../screens/Favorites';
 import Profile from '../screens/Profile';
-import Article1 from '../components/Article1'
+import Article1 from '../screens/Article1'
 import MyRecipes from '../screens/MyRecipes'
 import Style, {MyTheme} from '../style/Style';
 import { createDrawerNavigator } from '@react-navigation/drawer';

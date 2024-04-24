@@ -117,7 +117,7 @@ const Home = () => {
             <Divider bold={true} style={styles.divider} />
             <Text style={styles.title}>Articles</Text>
             <View style={styles.articleContainer}>
-                {articlesData.map((article, index) => (
+                {/* {articlesData.map((article, index) => (
                     <TouchableOpacity key={index} style={styles.articleItem} onPress={() => handleViewArticle(article.url)}>
                         <Card mode='contained'>
                             <Card.Content>
@@ -126,7 +126,15 @@ const Home = () => {
                             </Card.Content>
                         </Card>
                     </TouchableOpacity>
-                ))}
+                ))} */}
+                <TouchableOpacity style={styles.articleCard} onPress={() => handleViewArticle()}>
+                    <Text style={styles.articleCardText}>8 Ways To {"\n"} Cook Eggs</Text>
+                    <Image source={require('../assets/eggs.jpg')} style={styles.articleCardImage}/>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.articleCard} onPress={() => handleViewArticle()}>
+                    <Text style={styles.articleCardText}>8 Ways To {"\n"} Cook Eggs</Text>
+                    <Image source={require('../assets/eggs.jpg')} style={styles.articleCardImage}/>
+                </TouchableOpacity>
             </View>
             </View>
             </ScrollView>
