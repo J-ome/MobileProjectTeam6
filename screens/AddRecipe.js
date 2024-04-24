@@ -1,4 +1,5 @@
 import React, { useState, useEffect} from 'react';
+import { useNavigation } from "@react-navigation/native";
 import { doc, collection, addDoc,} from 'firebase/firestore';
 import { View, Text, TouchableOpacity, ScrollView, Image, Alert } from 'react-native';
 import {auth, onAuthStateChanged } from 'firebase/auth';
@@ -16,7 +17,7 @@ const AddRecipe = () => {
         instructions: '',
         image: '',
     });
-
+    const navigation = useNavigation();
 
 
     const handleChange = (name, value) => {
@@ -208,6 +209,13 @@ const AddRecipe = () => {
                 <Button onPress={handleSubmit} mode='contained' style={Style.addRecipeBtn}>Add recipe</Button>
             </View>
             </View>
+                
+                {/* Conditional rendering for not logged in users */}
+                {!user && (
+                    <View style={{marginTop: 20}}>
+                        <Text style={{ marginTop: 5 }}><Text onPress={() => navigation.navigate('Profile')} style={{ color: 'blue'}}> Log in</Text> or <Text onPress={() => navigation.navigate('Profile')} style={{ color: 'blue' }}>Sign up</Text> to add your own recipes</Text>
+                    </View>
+                )}
             </View>
         </ScrollView>
     );
