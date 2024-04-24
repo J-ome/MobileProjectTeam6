@@ -84,9 +84,7 @@ const Favorites = () => {
         );
       } else {
         return (
-          <>
-        <Text style={Style.header}>Recipes</Text>
-        <FlatList
+          <FlatList
             data={userFavorites}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => (
@@ -101,16 +99,12 @@ const Favorites = () => {
               </View>
             )}
           />
-          </>
-      );
+        );
       }
     } else {
       return (
-        <View>
-          <Text style={Style.header}>Recipes</Text>
         <View style={{ alignItems: "center" }}>
           <Text style={{ marginTop: 5 }}><Text onPress={() => navigation.navigate('Profile')} style={{ color: 'blue' }}> Log in</Text> or <Text onPress={() => navigation.navigate('Profile')} style={{ color: 'blue' }}>Sign up</Text> to view your favorites</Text>
-        </View>
         </View>
       );
     }
