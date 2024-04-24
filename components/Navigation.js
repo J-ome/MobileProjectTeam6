@@ -14,6 +14,7 @@ import Style, {MyTheme} from '../style/Style';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import Intolerances from './Intolerances';
 import { createStackNavigator } from '@react-navigation/stack';
+import { useNavigation } from "@react-navigation/native";
 
 const Tab = createMaterialBottomTabNavigator()
 const Drawer = createDrawerNavigator();

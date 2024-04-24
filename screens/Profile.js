@@ -112,6 +112,7 @@ const Profile = () => {
         name: name,
         email: email,
       });
+      setProfileImage(null);
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;

@@ -67,30 +67,44 @@ const Favorites = () => {
     }
   };
 
+  const navigateToRecipe = (recipeId) => {
+    // Navigate to the recipe screen with the specified recipeId
+    navigation.navigate("Recipe", { recipeId });
+  };
+
   const renderContent = () => {
     if (loading) {
       return <ActivityIndicator size="large" color="#0000ff" />;
     } else if (auth.currentUser) {
-      return (
-        <FlatList
-          data={userFavorites}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <View>
-              <Text>{item.title}</Text>
-              <Image source={{ uri: item.image }} style={{ width: 200, height: 200, marginBottom: 5 }} />
-              <Text>{renderSummary(item.fullSummary, item.id)}</Text>
-            </View>
-          )}
-        />
-      );
+      if (userFavorites.length === 0) {
+        return (
+          <View style={{ alignItems: "center" }}>
+            <Text style={{ marginVertical: 20 }}>You have no favorites yet</Text>
+          </View>
+        );
+      } else {
+        return (
+          <FlatList
+            data={userFavorites}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => (
+              <View>
+            <TouchableOpacity onPress={() => navigateToRecipe(item.id)}>
+                <Text>{item.title}</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => navigateToRecipe(item.id)}>
+                <Image source={{ uri: item.image }} style={{ width: 200, height: 200, marginBottom: 5 }} />
+              </TouchableOpacity>
+                <Text>{renderSummary(item.fullSummary, item.id)}</Text>
+              </View>
+            )}
+          />
+        );
+      }
     } else {
       return (
         <View style={{ alignItems: "center" }}>
-          <Text style={{ marginVertical: 20 }}>Log in or Sign Up to view your favorites</Text>
-          <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
-            <Text style={{ color: "blue" }}>Log In or Sign Up</Text>
-          </TouchableOpacity>
+          <Text style={{ marginTop: 5 }}><Text onPress={() => navigation.navigate('Profile')} style={{ color: 'blue' }}> Log in</Text> or <Text onPress={() => navigation.navigate('Profile')} style={{ color: 'blue' }}>Sign up</Text> to view your favorites</Text>
         </View>
       );
     }

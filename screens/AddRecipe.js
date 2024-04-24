@@ -1,4 +1,5 @@
 import React, { useState, useEffect} from 'react';
+import { useNavigation } from "@react-navigation/native";
 import { doc, collection, addDoc,} from 'firebase/firestore';
 import { View, Text, TextInput, TouchableOpacity, ScrollView, Image, Alert } from 'react-native';
 import {auth, onAuthStateChanged } from 'firebase/auth';
@@ -15,7 +16,7 @@ const AddRecipe = () => {
         instructions: '',
         image: '',
     });
-
+    const navigation = useNavigation();
 
 
     const handleChange = (name, value) => {
@@ -167,6 +168,7 @@ const AddRecipe = () => {
         <ScrollView>
             <Text style={Style.header}>Add Recipe</Text>
             <View style={{ padding: 20 }}>
+                {/* Title */}
                 <Text>Title:</Text>
                 <TextInput
                     style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 20 }}
@@ -175,6 +177,7 @@ const AddRecipe = () => {
                     placeholder="Enter title"
                 />
 
+                {/* Ingredients */}
                 <Text>Ingredients:</Text>
                 <TextInput
                     style={{ height: 100, borderColor: 'gray', borderWidth: 1, marginBottom: 20 }}
@@ -184,6 +187,7 @@ const AddRecipe = () => {
                     placeholder="Enter ingredients"
                 />
 
+                {/* Instructions */}
                 <Text>Instructions:</Text>
                 <TextInput
                     style={{ height: 100, borderColor: 'gray', borderWidth: 1, marginBottom: 20 }}
@@ -193,18 +197,27 @@ const AddRecipe = () => {
                     placeholder="Enter instructions"
                 />
 
+                {/* Image */}
                 <Text>Image:</Text>
                 {recipe.image && <Image source={{ uri: recipe.image }} style={{ width: 100, height: 100 }} />}
                 <TouchableOpacity onPress={pickImage} style={{ marginBottom: 20 }}>
                     <Text>Select Image</Text>
                 </TouchableOpacity>
 
+                {/* Add Recipe Button */}
                 <TouchableOpacity
                     style={{ backgroundColor: 'blue', padding: 10, alignItems: 'center', borderRadius: 5 }}
                     onPress={handleSubmit}
                 >
                     <Text style={{ color: 'white' }}>Add Recipe</Text>
                 </TouchableOpacity>
+                
+                {/* Conditional rendering for not logged in users */}
+                {!user && (
+                    <View style={{marginTop: 20}}>
+                        <Text style={{ marginTop: 5 }}><Text onPress={() => navigation.navigate('Profile')} style={{ color: 'blue'}}> Log in</Text> or <Text onPress={() => navigation.navigate('Profile')} style={{ color: 'blue' }}>Sign up</Text> to add your own recipes</Text>
+                    </View>
+                )}
             </View>
         </ScrollView>
     );
