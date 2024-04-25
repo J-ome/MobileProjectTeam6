@@ -6,6 +6,7 @@ import { collection, getDocs } from "firebase/firestore";
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import styles from '../style/Style';
+import { Divider } from "react-native-paper";
 
 const stripHtmlTags = (htmlString) => {
   return htmlString.replace(/<[^>]*>/g, '');
@@ -22,7 +23,7 @@ const Recipes = () => {
 
     const fetchRecipes = async () => {
       try {
-        const apiKey = '343362399fd04254a4c0c9bd92e35075';
+        const apiKey = 'd31ca19f0e184ec2882baf9f9b789303';
         const apiUrl = 'https://api.spoonacular.com/recipes/random';
         const numberOfRecipes = 1;
 
@@ -136,30 +137,30 @@ const Recipes = () => {
             <Text style={styles.header}>Recipes</Text>
             <View style={styles.screenContent}>
               {recipes.map((recipe, index) => (
-                <TouchableOpacity key={recipe.id} style={{ marginBottom: 20 }} onPress={() => navigateToRecipe(recipe)}>
+                <TouchableOpacity key={recipe.id} style={{ marginBottom: 10 }} onPress={() => navigateToRecipe(recipe)}>
                   <View>
-                    <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{recipe.title}</Text>
-                    <Image source={{ uri: recipe.image }} style={{ width: 200, height: 200, marginBottom: 10 }} />
-                    <Text>{recipe.summary}</Text>
+                    <Text style={styles.recipesHeading}>{recipe.title}</Text>
+                    <Image source={{ uri: recipe.image }} style={styles.recipesImage} />
+                    <Text style={styles.articleText}>{recipe.summary}</Text>
                     {recipe.fullSummary.length > 150 && (
                       <TouchableOpacity onPress={() => toggleSummary(index)}>
-                        <Text style={{ color: 'blue' }}>{recipe.summary === recipe.fullSummary ? 'View Less' : 'View More'}</Text>
+                        <Text style={styles.viewMore}>{recipe.summary === recipe.fullSummary ? 'View Less' : 'View More'}</Text>
                       </TouchableOpacity>
                     )}
-                    <Text>Ready in {recipe.readyInMinutes} minutes</Text>
+                    <Text style={styles.readyIn}>Ready in <Text style={styles.min}>{recipe.readyInMinutes}</Text> minutes</Text>
   
                     {/* Display nutrition details */}
-                    <View style={{ marginTop: 10 }}>
+                    {/* <View style={{ marginTop: 10 }}>
                       <Text>Carbs: {recipe.nutritionDetails.carbs.amount} {recipe.nutritionDetails.carbs.unit}</Text>
                       <Text>Fat: {recipe.nutritionDetails.fat.amount} {recipe.nutritionDetails.fat.unit}</Text>
                       <Text>Protein: {recipe.nutritionDetails.protein.amount} {recipe.nutritionDetails.protein.unit}</Text>
                       <Text>Kcals: {recipe.nutritionDetails.kcals.amount} {recipe.nutritionDetails.kcals.unit}</Text>
-                    </View>
+                    </View> */}
                   </View>
                 </TouchableOpacity>
               ))}
-            </View>
-            <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 10 }}>Community Recipes</Text>
+              <Divider style={styles.divider} />
+              <Text style={[styles.title, {color: 'black'}]}>Community Recipes</Text>
             {communityRecipes.map((recipe, index) => (
               <TouchableOpacity key={index} style={{ marginBottom: 20 }} onPress={() => navigateToRecipe(recipe)}>
                 <View>
@@ -170,6 +171,8 @@ const Recipes = () => {
                 </View>
               </TouchableOpacity>
             ))}
+            </View>
+            
           </View>
         )}
       </ScrollView>

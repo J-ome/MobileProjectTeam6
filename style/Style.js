@@ -52,7 +52,7 @@ export default StyleSheet.create({
     fontWeight: 'bold',
     paddingBottom: 20,
     color: '#5FD35D',
-    fontSize: 16,
+    fontSize: 18,
     marginLeft: 20,
     marginTop: 15,
   },
@@ -120,7 +120,7 @@ export default StyleSheet.create({
     borderTopRightRadius: 30,
     paddingTop: 20,
     marginTop: 20,
-    paddingBottom: 50
+    paddingBottom: 130
   },
   logo: {
     alignSelf: 'center',
@@ -255,5 +255,42 @@ export default StyleSheet.create({
     height: 100,
     borderTopRightRadius: 13,
     borderBottomRightRadius: 13
+  },
+  recipesHeading: {
+    fontSize: 15,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 20,
+    paddingHorizontal: 20
+  },
+  recipesImage: {
+    width: 310,
+    height:170,
+    borderRadius: 13,
+    alignSelf: 'center',
+    marginBottom: 15
+  },
+  viewMore: {
+    color: '#5FD35D',
+    fontWeight: '500',
+    marginHorizontal: 20
+  },
+  readyIn: {
+    textAlign: 'center',
+    // borderRadius: 20,
+    // borderWidth: 2,
+    // borderColor: '#5FD35D',
+    // padding: 10,
+    margin: 20,
+    // fontSize: 12,
+    width: 250,
+    alignSelf: 'center',
+    fontWeight: '500',
+    color: '#645e5e'
+  },
+  min: {
+    color: '#5FD35D',
+    fontSize: 15,
+    fontWeight: 'bold'
   }
 });
