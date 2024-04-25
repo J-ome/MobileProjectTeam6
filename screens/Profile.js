@@ -296,7 +296,7 @@ const Profile = () => {
           <View >
             <View style={style.profileImageContent}>
             <Pressable onPress={handleChooseProfilePicture} style={style.profileImageBtn}>
-              <Text style={style.profileText}>Choose profile picture</Text>
+              <Text style={style.profileImageText}>Choose profile picture</Text>
             </Pressable>
             {profileImage && <Image source={{ uri: profileImage }} style={style.profileImage} />}
             </View>

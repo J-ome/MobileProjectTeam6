@@ -52,7 +52,7 @@ export default StyleSheet.create({
     fontWeight: 'bold',
     paddingBottom: 20,
     color: '#5FD35D',
-    fontSize: 16,
+    fontSize: 18,
     marginLeft: 20,
     marginTop: 15,
   },
@@ -120,7 +120,7 @@ export default StyleSheet.create({
     borderTopRightRadius: 30,
     paddingTop: 20,
     marginTop: 20,
-    paddingBottom: 50
+    paddingBottom: 100
   },
   logo: {
     alignSelf: 'center',
@@ -145,7 +145,8 @@ export default StyleSheet.create({
   profileContent: {
     // paddingLeft: 30,
     gap: 10,
-    justifyContent: 'center'
+    // justifyContent: 'center',
+    marginHorizontal: 20
   },
   profileImageBtn: {
     backgroundColor: '#E4F1E4',
@@ -154,7 +155,12 @@ export default StyleSheet.create({
   },
   profileText: {
     fontWeight: '500',
-    textAlign: 'center'
+    // textAlign: 'center',
+    marginLeft: 20
+  },
+  profileImageText: {
+    textAlign: 'center',
+    fontWeight: '500'
   },
   profileImageContent: {
     alignItems: 'center',
@@ -167,14 +173,17 @@ export default StyleSheet.create({
     borderRadius: 60
   },
   profileInput: {
-    width: 300
+    width: 300,
+    alignSelf: 'center'
   },
   save: {
     backgroundColor: '#E4F1E4',
     borderRadius: 20,
     padding: 12,
     width: 100,
-    marginTop: 18
+    marginTop: 18,
+    alignSelf: 'center',
+    marginBottom: 20
   },
   saveText: {
     textAlign: "center",
@@ -183,8 +192,7 @@ export default StyleSheet.create({
   logoutDelete: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingRight: 30,
-    marginTop: 30
+    marginTop: 40,
   },
   profileBtn: {
     backgroundColor: 'orange',
@@ -255,5 +263,42 @@ export default StyleSheet.create({
     height: 100,
     borderTopRightRadius: 13,
     borderBottomRightRadius: 13
+  },
+  recipesHeading: {
+    fontSize: 15,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 20,
+    paddingHorizontal: 20
+  },
+  recipesImage: {
+    width: 310,
+    height:170,
+    borderRadius: 13,
+    alignSelf: 'center',
+    marginBottom: 15
+  },
+  viewMore: {
+    color: '#5FD35D',
+    fontWeight: '500',
+    marginHorizontal: 20
+  },
+  readyIn: {
+    textAlign: 'center',
+    // borderRadius: 20,
+    // borderWidth: 2,
+    // borderColor: '#5FD35D',
+    // padding: 10,
+    margin: 20,
+    // fontSize: 12,
+    width: 250,
+    alignSelf: 'center',
+    fontWeight: '500',
+    color: '#645e5e'
+  },
+  min: {
+    color: '#5FD35D',
+    fontSize: 15,
+    fontWeight: 'bold'
   }
 });
