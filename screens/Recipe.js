@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, TouchableOpacity, FlatList, ScrollView, SafeAreaView } from 'react-native';
-import { db } from '../Firebase/Config';
+import { View, Text, Image, TouchableOpacity, FlatList, SafeAreaView } from 'react-native';
+import { db } from '../firebase/Config';
 import { doc, collection, setDoc, deleteDoc, getDoc, addDoc } from 'firebase/firestore';
 import { useAuth } from '../components/AuthContext';
 import { useNavigation } from '@react-navigation/native';
@@ -12,11 +12,11 @@ import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler
 import FullWidthImage from 'react-native-fullwidth-image'
 
 
+
 const Recipe = ({ route }) => {
   const { recipe } = route.params;
   const navigation = useNavigation();
   const favoritesCollection = collection(db, 'favorites');
-  const { user } = useAuth();
   const { user } = useAuth();
 
   useEffect(() => {
