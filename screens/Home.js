@@ -19,69 +19,86 @@ const Home = () => {
     useEffect(() => {
         const fetchRecipesWithDetails = async () => {
             try {
-                // Fetch recipes
-                const response = await axios.get(
-                    'https://api.spoonacular.com/recipes/complexSearch',
+              // Fetch recipes
+              const response = await axios.get(
+                'https://api.spoonacular.com/recipes/complexSearch',
+                {
+                  params: {
+                    query: searchQuery,
+                    number: numDisplayedRecipes,
+                    apiKey: apiKey,
+                  },
+                }
+              );
+          
+              // Map over each recipe and fetch details
+              const recipesWithDetails = await Promise.all(
+                response.data.results.map(async (recipe) => {
+                  // Fetch ingredients
+                  const ingredientsResponse = await axios.get(`https://api.spoonacular.com/recipes/${recipe.id}/ingredientWidget.json`, {
+                    params: {
+                      apiKey,
+                    },
+                    
+                  });
+                  const detailsResponse = await axios.get(
+                    `https://api.spoonacular.com/recipes/${recipe.id}/information`,
                     {
-                        params: {
-                            query: searchQuery,
-                            number: numDisplayedRecipes,
-                            apiKey: apiKey,
-                        },
+                      params: {
+                        includeNutrition: false,
+                        apiKey: apiKey,
+                      },
                     }
-                );
-    
-                // Map over each recipe and fetch details
-                const recipesWithDetails = await Promise.all(
-                    response.data.results.map(async (recipe) => {
-                        // Fetch ingredients
-                        const ingredientsResponse = await axios.get(`https://api.spoonacular.com/recipes/${recipe.id}/ingredientWidget.json`, {
-                            params: {
-                                apiKey,
-                            },
-                        });
-                        const ingredients = ingredientsResponse.data.ingredients.map(ingredient => ingredient.name);
-    
-                        // Fetch instructions
-                        const instructionsResponse = await axios.get(`https://api.spoonacular.com/recipes/${recipe.id}/analyzedInstructions`, {
-                            params: {
-                                apiKey,
-                            },
-                        });
-                        const instructions = instructionsResponse.data[0]?.steps.map(step => step.step) || [];
-    
-                        // Fetch nutrition details
-                        const nutritionResponse = await axios.get(`https://api.spoonacular.com/recipes/${recipe.id}/nutritionWidget.json`, {
-                            params: {
-                                apiKey,
-                            },
-                        });
-                        const nutritionDetails = {
-                            carbs: nutritionResponse.data.nutrients.find(nutrient => nutrient.name === 'Carbohydrates'),
-                            fat: nutritionResponse.data.nutrients.find(nutrient => nutrient.name === 'Fat'),
-                            protein: nutritionResponse.data.nutrients.find(nutrient => nutrient.name === 'Protein'),
-                            kcals: nutritionResponse.data.nutrients.find(nutrient => nutrient.name === 'Calories'),
-                        };
-    
-                        return {
-                            ...recipe,
-                            ingredients,
-                            instructions,
-                            nutritionDetails,
-                        };
-                    })
-                );
-    
-                setRecipes(recipesWithDetails);
+                  );
+                  const details = detailsResponse.data;
+          
+                  const ingredients = ingredientsResponse.data.ingredients.map(ingredient => ({
+                    amount: ingredient.amount?.metric?.value || 0,
+                    unit: ingredient.amount?.metric?.unit || '',
+                    name: ingredient.name,
+                  }));
+          
+                  // Fetch instructions
+                  const instructionsResponse = await axios.get(`https://api.spoonacular.com/recipes/${recipe.id}/analyzedInstructions`, {
+                    params: {
+                      apiKey,
+                    },
+                  });
+                  const instructions = instructionsResponse.data[0]?.steps.map(step => step.step) || [];
+          
+                  // Fetch nutrition details
+                  const nutritionResponse = await axios.get(`https://api.spoonacular.com/recipes/${recipe.id}/nutritionWidget.json`, {
+                    params: {
+                      apiKey,
+                    },
+                  });
+                  const nutritionDetails = {
+                    carbs: nutritionResponse.data.nutrients.find(nutrient => nutrient.name === 'Carbohydrates'),
+                    fat: nutritionResponse.data.nutrients.find(nutrient => nutrient.name === 'Fat'),
+                    protein: nutritionResponse.data.nutrients.find(nutrient => nutrient.name === 'Protein'),
+                    kcals: nutritionResponse.data.nutrients.find(nutrient => nutrient.name === 'Calories'),
+                  };
+          
+                  return {
+                    ...recipe,
+                    ingredients,
+                    instructions,
+                    nutritionDetails,
+                    readyInMinutes: details.readyInMinutes,
+                  };
+                })
+              );
+              setRecipes(recipesWithDetails); // Update this line
             } catch (error) {
-                console.error('Error fetching recipes:', error);
+              console.error('Error fetching recipes:', error);
             }
-        };
-    
+          };
+          
+
         fetchRecipesWithDetails();
     }, [searchQuery, numDisplayedRecipes]);
-    
-    
+
+
 
     const fetchRecipes = async () => {
         try {
@@ -90,7 +107,7 @@ const Home = () => {
                 {
                     params: {
                         query: searchQuery,
-                        number: numDisplayedRecipes, 
+                        number: numDisplayedRecipes,
                         apiKey: apiKey,
                     },
                 }
@@ -101,8 +118,8 @@ const Home = () => {
         }
     };
 
-    
-    
+
+
 
     const handleViewRecipe = (url) => {
         Linking.openURL(url);
@@ -127,8 +144,8 @@ const Home = () => {
 
     const renderArticleItem = ({ item }) => (
         <TouchableOpacity style={styles.articleItem}
-         onPress={() => handleViewArticle(item.url)}
-         >
+            onPress={() => handleViewArticle(item.url)}
+        >
             <Card mode='contained'>
                 <Card.Content>
                     <Text style={styles.articleTitle}>{item.title}</Text>
@@ -140,50 +157,50 @@ const Home = () => {
 
     const handleViewArticle = (articleId) => {
         navigation.navigate('Article1', { articleId: articleId });
-      };
+    };
 
     const handleViewMore = () => {
-        setNumDisplayedRecipes(numDisplayedRecipes + 3); 
+        setNumDisplayedRecipes(numDisplayedRecipes + 3);
     };
 
     return (
         <View style={styles.container}>
             <StatusBar backgroundColor={'#5FD35D'} />
             <ScrollView>
-            <View>
-                <Image
-                    source={require('../assets/Ellipse1.png')}
-                    style={styles.logo} />
-            </View>
-            <View style={styles.screenContent}>
-            <View style={styles.searchContainer}>
-                <Searchbar
-                    placeholder="Search Recipes"
-                    onChangeText={handleSearch}
-                    value={searchQuery}
-                    style={{ backgroundColor: 'white', borderWidth: 1, borderColor: 'black' }}
-                />
-            </View>
-            <Text style={styles.title}>What are you planning to cook today?</Text>
-            <View style={styles.recipeContainer}>
-                {recipes.map((recipe, index) => (
-                    <TouchableOpacity key={index} style={styles.recipeItem} onPress={() => navigateToRecipe(recipe)}>
-                        <Card mode='contained'>
-                            <Card.Content>
-                                <Text style={styles.recipeTitle}>{recipe.title}</Text>
-                            </Card.Content>
-                            <Card.Cover source={{ uri: recipe.image }} style={styles.recipeImage} />
-                        </Card>
-                    </TouchableOpacity>
-                ))}
-                <TouchableOpacity onPress={handleViewMore} style={styles.viewMoreButton}>
-                    <Text style={styles.viewMoreButtonText}>View More</Text>
-                </TouchableOpacity>
-            </View>
-            <Divider bold={true} style={styles.divider} />
-            <Text style={styles.title}>Articles</Text>
-            <View style={styles.articleContainer}>
-                {/* {articlesData.map((article, index) => (
+                <View>
+                    <Image
+                        source={require('../assets/Ellipse1.png')}
+                        style={styles.logo} />
+                </View>
+                <View style={styles.screenContent}>
+                    <View style={styles.searchContainer}>
+                        <Searchbar
+                            placeholder="Search Recipes"
+                            onChangeText={handleSearch}
+                            value={searchQuery}
+                            style={{ backgroundColor: 'white', borderWidth: 1, borderColor: 'black' }}
+                        />
+                    </View>
+                    <Text style={styles.title}>What are you planning to cook today?</Text>
+                    <View style={styles.recipeContainer}>
+                        {recipes.map((recipe, index) => (
+                            <TouchableOpacity key={index} style={styles.recipeItem} onPress={() => navigateToRecipe(recipe)}>
+                                <Card mode='contained'>
+                                    <Card.Content>
+                                        <Text style={styles.recipeTitle}>{recipe.title}</Text>
+                                    </Card.Content>
+                                    <Card.Cover source={{ uri: recipe.image }} style={styles.recipeImage} />
+                                </Card>
+                            </TouchableOpacity>
+                        ))}
+                        <TouchableOpacity onPress={handleViewMore} style={styles.viewMoreButton}>
+                            <Text style={styles.viewMoreButtonText}>View More</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <Divider bold={true} style={styles.divider} />
+                    <Text style={styles.title}>Articles</Text>
+                    <View style={styles.articleContainer}>
+                        {/* {articlesData.map((article, index) => (
                     <TouchableOpacity key={index} style={styles.articleItem} onPress={() => handleViewArticle(article.url)}>
                         <Card mode='contained'>
                             <Card.Content>
@@ -193,16 +210,16 @@ const Home = () => {
                         </Card>
                     </TouchableOpacity>
                 ))} */}
-                <TouchableOpacity style={styles.articleCard} onPress={() => handleViewArticle()}>
-                    <Text style={styles.articleCardText}>8 Ways To {"\n"} Cook Eggs</Text>
-                    <Image source={require('../assets/eggs.jpg')} style={styles.articleCardImage}/>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.articleCard} onPress={() => handleViewArticle()}>
-                    <Text style={styles.articleCardText}>8 Ways To {"\n"} Cook Eggs</Text>
-                    <Image source={require('../assets/eggs.jpg')} style={styles.articleCardImage}/>
-                </TouchableOpacity>
-            </View>
-            </View>
+                        <TouchableOpacity style={styles.articleCard} onPress={() => handleViewArticle()}>
+                            <Text style={styles.articleCardText}>8 Ways To {"\n"} Cook Eggs</Text>
+                            <Image source={require('../assets/eggs.jpg')} style={styles.articleCardImage} />
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.articleCard} onPress={() => handleViewArticle()}>
+                            <Text style={styles.articleCardText}>8 Ways To {"\n"} Cook Eggs</Text>
+                            <Image source={require('../assets/eggs.jpg')} style={styles.articleCardImage} />
+                        </TouchableOpacity>
+                    </View>
+                </View>
             </ScrollView>
         </View>
     );

@@ -10,7 +10,7 @@ import Style from '../style/Style';
 import { TextInput, Button } from 'react-native-paper';
 
 const AddRecipe = () => {
-    const { user } = useAuth(); // Access current user from AuthContext
+    const { user } = useAuth();
     const [recipe, setRecipe] = useState({
         title: '',
         ingredients: '',

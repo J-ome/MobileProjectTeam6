@@ -4,6 +4,7 @@ import axios from "axios";
 import { db, auth } from "../firebase/Config";
 import { collection, getDocs } from "firebase/firestore";
 import { useNavigation } from '@react-navigation/native';
+import { Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import styles from '../style/Style';
 import { Divider } from "react-native-paper";
@@ -19,8 +20,6 @@ const Recipes = () => {
   const navigation = useNavigation();
 
   useEffect(() => {
-
-
     const fetchRecipes = async () => {
       try {
         const apiKey = '7e457288e56b40459a16348f380900c3';
@@ -97,15 +96,25 @@ const Recipes = () => {
   useEffect(() => {
     const fetchCommunityRecipes = async () => {
       try {
-        const currentUser = auth.currentUser;
-        if (currentUser) {
-          const userId = currentUser.uid;
-          const recipesCollectionRef = collection(db, `users/${userId}/myownrecipes`);
-          const recipesSnapshot = await getDocs(recipesCollectionRef);
-          const communityRecipesData = recipesSnapshot.docs.map(doc => doc.data());
-          setCommunityRecipes(communityRecipesData);
-          console.log("Communityrecipes data: ", communityRecipesData)
-        }
+        const usersCollectionRef = collection(db, "users");
+        const usersSnapshot = await getDocs(usersCollectionRef);
+
+        const promises = [];
+
+        usersSnapshot.forEach(userDoc => {
+          const userId = userDoc.id;
+          const userRecipesCollectionRef = collection(db, `users/${userId}/myownrecipes`);
+          const userRecipesPromise = getDocs(userRecipesCollectionRef).then(userRecipesSnapshot => {
+            return userRecipesSnapshot.docs.map(doc => doc.data());
+          });
+          promises.push(userRecipesPromise);
+        });
+
+        const allCommunityRecipes = await Promise.all(promises);
+        const flattenedRecipes = allCommunityRecipes.flat();
+
+        setCommunityRecipes(flattenedRecipes);
+        console.log("Community recipes data: ", flattenedRecipes);
       } catch (error) {
         console.error("Error fetching community recipes: ", error);
       }
@@ -114,10 +123,18 @@ const Recipes = () => {
     fetchCommunityRecipes();
   }, []);
 
+  const getImageUri = (uri) => {
+    if (Platform.OS === 'ios') {
+      return uri.replace('file://', '');
+    } else if (Platform.OS === 'android') {
+      return uri;
+    }
+  };
+
   const toggleSummary = (index) => {
     const updatedRecipes = [...recipes];
     updatedRecipes[index].summary = updatedRecipes[index].summary === updatedRecipes[index].fullSummary
-      ? updatedRecipes[index].summary.slice(0, 150) + '...' // Limit to 150 characters
+      ? updatedRecipes[index].summary.slice(0, 150) + '...'
       : updatedRecipes[index].fullSummary;
     setRecipes(updatedRecipes);
   };
@@ -165,7 +182,9 @@ const Recipes = () => {
               <TouchableOpacity key={index} style={{ marginBottom: 20 }} onPress={() => navigateToRecipe(recipe)}>
                 <View>
                   <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{recipe.title}</Text>
-                  <Image source={{ uri: recipe.image }} style={{ width: 200, height: 200, marginBottom: 10 }} />
+                  {recipe.image && (
+                    <Image source={{ uri: getImageUri(recipe.image) }} style={{ width: 200, height: 200, marginBottom: 10 }} />
+                  )}
                   <Text>Ingredients: {recipe.ingredients}</Text>
                   <Text>Instructions: {recipe.instructions}</Text>
                 </View>
