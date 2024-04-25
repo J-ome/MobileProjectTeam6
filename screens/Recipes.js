@@ -23,7 +23,7 @@ const Recipes = () => {
 
     const fetchRecipes = async () => {
       try {
-        const apiKey = 'd31ca19f0e184ec2882baf9f9b789303';
+        const apiKey = '7e457288e56b40459a16348f380900c3';
         const apiUrl = 'https://api.spoonacular.com/recipes/random';
         const numberOfRecipes = 1;
 
