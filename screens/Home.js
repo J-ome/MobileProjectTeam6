@@ -17,8 +17,71 @@ const Home = () => {
     const navigation = useNavigation();
 
     useEffect(() => {
-        fetchRecipes();
-    }, [searchQuery, numDisplayedRecipes]); 
+        const fetchRecipesWithDetails = async () => {
+            try {
+                // Fetch recipes
+                const response = await axios.get(
+                    'https://api.spoonacular.com/recipes/complexSearch',
+                    {
+                        params: {
+                            query: searchQuery,
+                            number: numDisplayedRecipes,
+                            apiKey: apiKey,
+                        },
+                    }
+                );
+    
+                // Map over each recipe and fetch details
+                const recipesWithDetails = await Promise.all(
+                    response.data.results.map(async (recipe) => {
+                        // Fetch ingredients
+                        const ingredientsResponse = await axios.get(`https://api.spoonacular.com/recipes/${recipe.id}/ingredientWidget.json`, {
+                            params: {
+                                apiKey,
+                            },
+                        });
+                        const ingredients = ingredientsResponse.data.ingredients.map(ingredient => ingredient.name);
+    
+                        // Fetch instructions
+                        const instructionsResponse = await axios.get(`https://api.spoonacular.com/recipes/${recipe.id}/analyzedInstructions`, {
+                            params: {
+                                apiKey,
+                            },
+                        });
+                        const instructions = instructionsResponse.data[0]?.steps.map(step => step.step) || [];
+    
+                        // Fetch nutrition details
+                        const nutritionResponse = await axios.get(`https://api.spoonacular.com/recipes/${recipe.id}/nutritionWidget.json`, {
+                            params: {
+                                apiKey,
+                            },
+                        });
+                        const nutritionDetails = {
+                            carbs: nutritionResponse.data.nutrients.find(nutrient => nutrient.name === 'Carbohydrates'),
+                            fat: nutritionResponse.data.nutrients.find(nutrient => nutrient.name === 'Fat'),
+                            protein: nutritionResponse.data.nutrients.find(nutrient => nutrient.name === 'Protein'),
+                            kcals: nutritionResponse.data.nutrients.find(nutrient => nutrient.name === 'Calories'),
+                        };
+    
+                        return {
+                            ...recipe,
+                            ingredients,
+                            instructions,
+                            nutritionDetails,
+                        };
+                    })
+                );
+    
+                setRecipes(recipesWithDetails);
+            } catch (error) {
+                console.error('Error fetching recipes:', error);
+            }
+        };
+    
+        fetchRecipesWithDetails();
+    }, [searchQuery, numDisplayedRecipes]);
+    
+    
 
     const fetchRecipes = async () => {
         try {
@@ -37,6 +100,9 @@ const Home = () => {
             console.error('Error fetching recipes:', error);
         }
     };
+
+    
+    
 
     const handleViewRecipe = (url) => {
         Linking.openURL(url);
