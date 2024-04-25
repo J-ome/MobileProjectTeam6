@@ -2,12 +2,13 @@ import React from 'react';
 import { View, Dimensions } from 'react-native';
 import Svg, { Circle, G, Text as SvgText, Path } from 'react-native-svg';
 
-const DonutChart = ({ data }) => {
+const DonutChart = ({ data, centerLabel }) => {
   const containerSize = 300; // Fixed container size
   const radius = containerSize * 0.25; // Adjust this to change the size of the outer circle
   const strokeWidth = containerSize * 0.1; // Adjust this to change the thickness of the donut
   const innerRadius = radius - strokeWidth * 0.7; // Adjust this to change the size of the inner circle
   const totalAmount = data.reduce((acc, curr) => acc + curr.number, 0); // Total amount of nutrients
+
   let cumulativePercent = 0;
 
   return (
@@ -46,6 +47,16 @@ const DonutChart = ({ data }) => {
           );
         })}
         <Circle cx="0" cy="0" r={innerRadius} fill="white" />
+        {/* Display center label */}
+        <SvgText
+          x="0"
+          y="8"
+          textAnchor="middle"
+          fontSize="20"
+          fontWeight="bold"
+        >
+          {centerLabel}
+        </SvgText>
       </G>
     </Svg>
   );

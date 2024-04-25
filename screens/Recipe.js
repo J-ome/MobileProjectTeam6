@@ -9,6 +9,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import styles from '../style/Style';
 import DonutChart from '../components/DonutChart';
 
+
 const Recipe = ({ route }) => {
   const { recipe } = route.params;
   const navigation = useNavigation();
@@ -17,7 +18,6 @@ const Recipe = ({ route }) => {
 
   useEffect(() => {
     checkFavoriteStatus();
-    console.log("Ready in minutes ", recipe.readyInMinutes);
   }, []);
 
   const checkFavoriteStatus = async () => {
@@ -76,6 +76,7 @@ const Recipe = ({ route }) => {
     { number: Math.round(recipe.nutritionDetails?.fat?.amount || 0), color: 'wheat' },
   ];
   const [isFavorite, setIsFavorite] = useState(false);
+  const totalCalories = Math.round(recipe.nutritionDetails.kcals?.amount || 0);
 
 
   if (!recipe) {
@@ -105,7 +106,7 @@ const Recipe = ({ route }) => {
           </TouchableOpacity>
           <Text>Add to favorites</Text>
           <Text>Ready in {recipe.readyInMinutes} minutes</Text>
-          <DonutChart data={donutChartData} />
+          <DonutChart data={donutChartData} centerLabel={`${totalCalories} kcal`} />
           <View style={{ marginLeft: 10, marginBottom: 20, flexDirection: 'row', alignItems: 'center' }}>
             <View style={{ width: 10, height: 10, borderRadius: 5, backgroundColor: 'green', marginRight: 5 }}></View>
             <Text>Carbs: {recipe.nutritionDetails?.carbs?.amount || 0} {recipe.nutritionDetails?.carbs?.unit || ''}</Text>
@@ -114,7 +115,7 @@ const Recipe = ({ route }) => {
             <View style={{ width: 10, height: 10, borderRadius: 5, backgroundColor: 'lightpink', marginRight: 5 }}></View>
             <Text>Protein: {recipe.nutritionDetails?.protein?.amount || 0} {recipe.nutritionDetails?.protein?.unit || ''}</Text>
           </View>
-          <View style={{ marginLeft: 10, marginBottom: 20, flexDirection: 'row', alignItems: 'center' }}>
+          <View style={{ marginLeft: 10, marginBottom: 40, flexDirection: 'row', alignItems: 'center' }}>
             <View style={{ width: 10, height: 10, borderRadius: 5, backgroundColor: 'wheat', marginRight: 5 }}></View>
             <Text>Fats: {recipe.nutritionDetails?.fat?.amount || 0} {recipe.nutritionDetails?.fat?.unit || ''}</Text>
           </View>
