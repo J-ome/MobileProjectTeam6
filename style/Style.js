@@ -19,7 +19,7 @@ export const MyTheme = {
 export default StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#5FD35D'
+    backgroundColor: '#5FD35D',
   },
   statusBar: {
     marginTop: Constants.statusBarHeight + 10
@@ -43,11 +43,11 @@ export default StyleSheet.create({
     marginBottom: 10,
     alignItems: 'center',
   },
-  recipeImage: {
-    width: '100%',
-    height: 150,
-    resizeMode: 'cover',
-  },
+  // recipeImage: {
+  //   width: '100%',
+  //   height: 150,
+  //   resizeMode: 'cover',
+  // },
   title: {
     fontWeight: 'bold',
     paddingBottom: 20,
@@ -300,5 +300,24 @@ export default StyleSheet.create({
     color: '#5FD35D',
     fontSize: 15,
     fontWeight: 'bold'
+  },
+  recipeImage: {
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    // position: 'absolute',
+  },
+  recipeScreenTitle: {
+    backgroundColor: '#e4f1e4df',
+    padding: 20,
+    marginTop: -30,
+    borderRadius: 13,
+    alignSelf: 'center'
+  },
+  recipeAddToFavorites: {
+    flexDirection: 'row',
+    marginHorizontal: 20,
+    marginTop: 20,
+    gap: 10
   }
+ 
 });

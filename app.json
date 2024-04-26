@@ -19,20 +19,21 @@
       ]
     ],
     "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "image": "./assets/donkeykong.png",
+      "backgroundColor": "#e4f1e4df",
+      "resizeMode": "contain"
     },
     "assetBundlePatterns": [
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "backgroundColor": "#e4f1e4df"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#e4f1e4df"
       }
     },
     "web": {

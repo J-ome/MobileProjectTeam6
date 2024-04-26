@@ -12,4 +12,6 @@
 //npm install expo-image-picker
 18.4.2024
 //npm install react-native-svg
-
+25.4.2024
+//npm install react-native-fullwidth-image
+//npm i react-native-splash-screen 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, Image, ActivityIndicator, ScrollView, TouchableOpacity } from "react-native";
 import axios from "axios";
-import { db, auth } from "../firebase/Config";
+import { db, auth } from "../Firebase/Config";
 import { collection, getDocs } from "firebase/firestore";
 import { useNavigation } from '@react-navigation/native';
 import { Platform } from 'react-native';
@@ -22,7 +22,7 @@ const Recipes = () => {
   useEffect(() => {
     const fetchRecipes = async () => {
       try {
-        const apiKey = 'd31ca19f0e184ec2882baf9f9b789303';
+        const apiKey = apiKey;
         const apiUrl = 'https://api.spoonacular.com/recipes/random';
         const numberOfRecipes = 1;
 
