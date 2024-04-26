@@ -219,6 +219,10 @@ export default StyleSheet.create({
   addRecipeBtn: {
     marginTop: 40
   },
+  addRecipeBtnText: {
+    textAlign: 'center',
+    fontWeight: '500'
+  },
   articleHeading: {
     fontSize: 15,
     fontWeight: 'bold',
