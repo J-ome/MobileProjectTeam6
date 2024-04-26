@@ -4,14 +4,23 @@ import { db, auth } from "../firebase/Config";
 import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from '@expo/vector-icons';
+import { getStorage, ref } from 'firebase/storage';
 
 import Style from "../style/Style";
 
 const MyRecipe = () => {
   const [userRecipes, setUserRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
-
   const navigation = useNavigation();
+
+  
+  const storage = getStorage();
+  const storageRef = ref(storage);
+  const imagesRef = ref(storage, 'images');
+  const spaceRef = ref(imagesRef, fileName);
+  const path = spaceRef.fullPath;
+  const name = spaceRef.name;
+  const imagesRefAgain = spaceRef.parent;
 
   useEffect(() => {
     const fetchOwnRecipes = async () => {

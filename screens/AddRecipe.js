@@ -1,6 +1,6 @@
 import React, { useState, useEffect} from 'react';
 import { useNavigation } from "@react-navigation/native";
-import { doc, collection, addDoc,} from 'firebase/firestore';
+import { doc, collection, addDoc, getDoc, setDoc } from 'firebase/firestore';
 import { View, Text, TouchableOpacity, ScrollView, Image, Alert } from 'react-native';
 import {auth, onAuthStateChanged } from 'firebase/auth';
 import { db } from '../firebase/Config';
@@ -8,6 +8,8 @@ import * as ImagePicker from 'expo-image-picker';
 import { useAuth } from '../components/AuthContext';
 import Style from '../style/Style';
 import { TextInput, Button } from 'react-native-paper';
+import { getStorage, ref, uploadString, getDownloadURL, uploadBytesResumable } from 'firebase/storage';
+import * as FileSystem from 'expo-file-system';
 
 const AddRecipe = () => {
     const { user } = useAuth();
@@ -17,8 +19,14 @@ const AddRecipe = () => {
         instructions: '',
         image: '',
     });
+    const [uploading, setUploading] = useState(false);
+    const [image, setImage] = useState(null);
     const navigation = useNavigation();
+    const storage = getStorage();
+    const storageRef = ref(storage);
+    const imagesRef = ref(storage, 'images');
 
+ 
 
     const handleChange = (name, value) => {
         setRecipe({
@@ -28,37 +36,16 @@ const AddRecipe = () => {
     };
 
     const handleSubmit = async () => {
+        if (!recipe.title || !recipe.ingredients || !recipe.instructions || !recipe.image) {
+            alert('Please fill in all fields');
+            return;
+        }
+
+        setUploading(true); // Start uploading
         try {
-            if (!user) {
-                alert('Please sign in to add a recipe.');
-                return;
-            }
-    
-            const { title, ingredients, instructions, image } = recipe;
-            if (!title || !ingredients || !instructions || !image) {
-                console.log('Recipe:', recipe);
-                console.log('Title:', title);
-                console.log('Ingredients:', ingredients);
-                console.log('Instructions:', instructions);
-                console.log('Image:', image);
-                alert('Please fill in all fields');
-                return;
-            }
-    
-            // Reference to the collection 'myownrecipes' under the user's document
-            const userDocRef = doc(db, 'users', user.uid);
-            const recipesCollectionRef = collection(userDocRef, 'myownrecipes');
-    
-            // Add recipe to 'myownrecipes' collection under the user's UID
-            await addDoc(recipesCollectionRef, {
-                title: title,
-                ingredients: ingredients,
-                instructions: instructions,
-                image: image,
-            });
-    
+            const imageUrl = await uploadImage(recipe.image);
+            await addRecipeToFirestore(imageUrl); // Add recipe to Firestore
             alert('Recipe added successfully!');
-            // Clear form
             setRecipe({
                 title: '',
                 ingredients: '',
@@ -68,7 +55,44 @@ const AddRecipe = () => {
         } catch (error) {
             console.error('Error adding recipe: ', error);
             alert('An error occurred while adding the recipe.');
+        } finally {
+            setUploading(false); // Stop uploading
         }
+    };
+
+    const addRecipeToFirestore = async (imageUrl) => {
+        // Reference to the collection 'myownrecipes' under the user's document
+        const userDocRef = doc(db, 'users', user.uid);
+        const userDocSnap = await getDoc(userDocRef);
+        if (userDocSnap.exists()) {
+            const userDocData = userDocSnap.data();
+            if (!userDocData.myownrecipes) {
+                userDocData.myownrecipes = [];
+            }
+            const recipesCollectionRef = collection(userDocRef, 'myownrecipes');
+            await addDoc(recipesCollectionRef, {
+                title: recipe.title,
+                ingredients: recipe.ingredients,
+                instructions: recipe.instructions,
+                imageUrl: imageUrl,
+            });
+    
+            // Reference to the collection 'communityrecipes'
+            const communityRecipesCollectionRef = collection(db, 'communityrecipes');
+            await addDoc(communityRecipesCollectionRef, {
+                userName: userDocData.username, // Assuming the user document contains the userName field
+                title: recipe.title,
+                ingredients: recipe.ingredients,
+                instructions: recipe.instructions,
+            });
+        }
+    };
+
+    const uploadImage = async (imageUri) => {
+        const storageRef = ref(storage, `images/${Date.now()}`);
+        const snapshot = await uploadBytesResumable(storageRef, imageUri, { contentType: 'image/jpeg' });
+        const downloadURL = await getDownloadURL(snapshot.ref);
+        return downloadURL;
     };
 
     const handleLaunchCamera = async () => {
@@ -85,9 +109,15 @@ const AddRecipe = () => {
                 console.log('Picked image:', pickedImage);
                 if (pickedImage && pickedImage.uri) {
                     console.log('Image picked from camera:', pickedImage.uri);
+                    // Convert the image URI to Base64
+                    const base64Image = await FileSystem.readAsStringAsync(pickedImage.uri, { encoding: FileSystem.EncodingType.Base64 });
+                    
+                    // Create a data URL
+                    const dataUrl = `data:image/jpeg;base64,${base64Image}`;
+    
                     setRecipe({
                         ...recipe,
-                        image: pickedImage.uri,
+                        image: dataUrl,
                     });
                 } else {
                     console.log('No URI found in the picked image');
@@ -112,9 +142,15 @@ const AddRecipe = () => {
                 console.log('Picked image:', pickedImage);
                 if (pickedImage && pickedImage.uri) {
                     console.log('Image picked from library:', pickedImage.uri);
+                    // Convert the image URI to Base64
+                    const base64Image = await FileSystem.readAsStringAsync(pickedImage.uri, { encoding: FileSystem.EncodingType.Base64 });
+                    
+                    // Create a data URL
+                    const dataUrl = `data:image/jpeg;base64,${base64Image}`;
+    
                     setRecipe({
                         ...recipe,
-                        image: pickedImage.uri,
+                        image: dataUrl,
                     });
                 } else {
                     console.log('No URI found in the picked image');
@@ -168,54 +204,47 @@ const AddRecipe = () => {
     return (
         <ScrollView>
             <View style={Style.container}>
-            <Text style={Style.header}>Add Recipe</Text>
-            <View style={Style.screenContent}>
-                <View style={Style.addRecipeContent}>
-                <TextInput
-                    value={recipe.title}
-                    onChangeText={(text) => handleChange('title', text)}
-                    mode='outlined'
-                    style={Style.profileInput}
-                    label={'Enter title'}
-                />
-                <TextInput
-                    value={recipe.ingredients}
-                    onChangeText={(text) => handleChange('ingredients', text)}
-                    multiline={true}
-                    mode='outlined'
-                    style={Style.addRecipeInput}
-                    label={'Enter ingredients'}
-                />
-                <TextInput
-                    value={recipe.instructions}
-                    onChangeText={(text) => handleChange('instructions', text)}
-                    multiline={true}
-                    mode='outlined'
-                    style={Style.addRecipeInput}
-                    label={'Enter instructions'}
-                />
-
-                {recipe.image && <Image source={{ uri: recipe.image }} style={{ width: 100, height: 100 }} />}
-                <TouchableOpacity onPress={pickImage} style={Style.addRecipeImageBtn}>
-                    <Text style={Style.profileText}>Select Image</Text>
-                </TouchableOpacity>
-
-                {/* <TouchableOpacity
-                    style={{ backgroundColor: 'blue', padding: 10, alignItems: 'center', borderRadius: 5 }}
-                    onPress={handleSubmit}
-                >
-                    <Text style={{ color: 'white' }}>Add Recipe</Text>
-                </TouchableOpacity> */}
-                <Button onPress={handleSubmit} mode='contained' style={Style.addRecipeBtn}>Add recipe</Button>
-            </View>
-            </View>
-                
-                {/* Conditional rendering for not logged in users */}
-                {!user && (
-                    <View style={{marginTop: 20}}>
-                        <Text style={{ marginTop: 5 }}><Text onPress={() => navigation.navigate('Profile')} style={{ color: 'blue'}}> Log in</Text> or <Text onPress={() => navigation.navigate('Profile')} style={{ color: 'blue' }}>Sign up</Text> to add your own recipes</Text>
+                <Text style={Style.header}>Add Recipe</Text>
+                <View style={Style.screenContent}>
+                    <View style={Style.addRecipeContent}>
+                        {user ? (
+                            <>
+                                <TextInput
+                                    value={recipe.title}
+                                    onChangeText={(text) => handleChange('title', text)}
+                                    mode='outlined'
+                                    style={Style.profileInput}
+                                    label={'Enter title'}
+                                />
+                                <TextInput
+                                    value={recipe.ingredients}
+                                    onChangeText={(text) => handleChange('ingredients', text)}
+                                    multiline={true}
+                                    mode='outlined'
+                                    style={Style.addRecipeInput}
+                                    label={'Enter ingredients'}
+                                />
+                                <TextInput
+                                    value={recipe.instructions}
+                                    onChangeText={(text) => handleChange('instructions', text)}
+                                    multiline={true}
+                                    mode='outlined'
+                                    style={Style.addRecipeInput}
+                                    label={'Enter instructions'}
+                                />
+                                {recipe.image && <Image source={{ uri: recipe.image }} style={{ width: 100, height: 100 }} />}
+                                <TouchableOpacity onPress={pickImage} style={Style.addRecipeImageBtn}>
+                                    <Text style={Style.profileText}>Select Image</Text>
+                                </TouchableOpacity>
+                                <Button onPress={handleSubmit} mode='contained' style={Style.addRecipeBtn}>Add recipe</Button>
+                            </>
+                        ) : (
+                            <View style={{marginTop: 20}}>
+                                <Text style={{ marginTop: 5 }}><Text onPress={() => navigation.navigate('Profile')} style={{ color: 'blue'}}> Log in</Text> or <Text onPress={() => navigation.navigate('Profile')} style={{ color: 'blue' }}>Sign up</Text> to add your own recipes</Text>
+                            </View>
+                        )}
                     </View>
-                )}
+                </View>
             </View>
         </ScrollView>
     );
