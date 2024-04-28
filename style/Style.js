@@ -156,7 +156,7 @@ export default StyleSheet.create({
   },
   profileText: {
     fontWeight: '500',
-    // textAlign: 'center',
+    textAlign: 'center',
     marginLeft: 20,
     fontSize: 15
   },
@@ -214,6 +214,7 @@ export default StyleSheet.create({
     backgroundColor: '#E4F1E4',
     borderRadius: 20,
     padding: 12,
+    paddingRight: 30,
     width: 200,
     // borderColor: '#5FD35D',
     // borderWidth: 2
