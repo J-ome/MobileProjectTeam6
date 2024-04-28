@@ -8,7 +8,8 @@ import Recipes from '../screens/Recipes';
 import AddRecipe from '../screens/AddRecipe';
 import Favorites from '../screens/Favorites';
 import Profile from '../screens/Profile';
-import Article1 from '../screens/Article1'
+import Article1 from '../screens/Article1';
+import Article2 from '../screens/Article2';
 import MyRecipes from '../screens/MyRecipes'
 import Style, {MyTheme} from '../style/Style';
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -33,7 +34,8 @@ export default function Navigation() {
       const ArticleStack = () => (
         <Stack.Navigator>
             <Stack.Screen name="HomeArticle" component={Home} options={{ headerShown: false }} />
-           <Stack.Screen name="Article1" component={Article1} options={{ headerShown: false }} />  
+           <Stack.Screen name="Article1" component={Article1} options={{ headerShown: false }} />
+           <Stack.Screen name="Article2" component={Article2} options={{ headerShown: false }} />
         </Stack.Navigator>
       )
 

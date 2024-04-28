@@ -78,8 +78,11 @@ const Favorites = () => {
     } else if (auth.currentUser) {
       if (userFavorites.length === 0) {
         return (
-          <View style={{ alignItems: "center" }}>
-            <Text style={{ marginVertical: 20 }}>You have no favorites yet</Text>
+          <View style={{backgroundColor: '#5FD35D'}}>
+            <Text style={Style.header}>Favorites</Text>
+            <View style={Style.screenContentFavorites}>
+              <Text style={Style.logInOrSignUp}>You have no favorites yet</Text>
+            </View>
           </View>
         );
       } else {
@@ -103,8 +106,11 @@ const Favorites = () => {
       }
     } else {
       return (
-        <View style={{ alignItems: "center" }}>
-          <Text style={{ marginTop: 5 }}><Text onPress={() => navigation.navigate('Profile')} style={{ color: 'blue' }}> Log in</Text> or <Text onPress={() => navigation.navigate('Profile')} style={{ color: 'blue' }}>Sign up</Text> to view your favorites</Text>
+        <View style={{backgroundColor: '#5FD35D'}}>
+          <Text style={Style.header}>Favorites</Text>
+        <View style={Style.screenContentFavorites}>
+          <Text style={Style.logInOrSignUp}><Text onPress={() => navigation.navigate('Profile')} style={{ color: '#5FD35D' }}> Log in</Text> or <Text onPress={() => navigation.navigate('Profile')} style={{ color: '#5FD35D' }}>Sign up</Text> to view your favorites</Text>
+        </View>
         </View>
       );
     }

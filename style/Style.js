@@ -12,7 +12,8 @@ export const MyTheme = {
     // onSurfaceVariant: '#b73a9e',
     outline: 'black',
     secondaryContainer: '#5FD35D',
-    surfaceVariant: '#E4F1E4'
+    surfaceVariant: '#E4F1E4',
+    // background: '#E4F1E4'
   }
 }
 
@@ -45,7 +46,7 @@ export default StyleSheet.create({
   },
   // recipeImage: {
   //   width: '100%',
-  //   height: 150,
+  //   height: 100,
   //   resizeMode: 'cover',
   // },
   title: {
@@ -156,7 +157,8 @@ export default StyleSheet.create({
   profileText: {
     fontWeight: '500',
     // textAlign: 'center',
-    marginLeft: 20
+    marginLeft: 20,
+    fontSize: 15
   },
   profileImageText: {
     textAlign: 'center',
@@ -224,7 +226,7 @@ export default StyleSheet.create({
     fontWeight: '500'
   },
   articleHeading: {
-    fontSize: 15,
+    fontSize: 17,
     fontWeight: 'bold',
     color: '#5FD35D',
     textAlign: 'center',
@@ -238,6 +240,7 @@ export default StyleSheet.create({
   articleText: {
     marginHorizontal: 20,
     marginBottom: 15,
+    fontSize: 15
   }, 
   articleImage: {
     width: 300,
@@ -264,7 +267,7 @@ export default StyleSheet.create({
   },
   articleCardImage: {
     width: 140,
-    height: 100,
+    height: 130,
     borderTopRightRadius: 13,
     borderBottomRightRadius: 13
   },
@@ -322,6 +325,20 @@ export default StyleSheet.create({
     marginHorizontal: 20,
     marginTop: 20,
     gap: 10
+  },
+  screenContentFavorites: {
+    backgroundColor: '#ffffff',
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    paddingTop: 20,
+    marginTop: 20,
+    paddingBottom: 100
+  },
+  logInOrSignUp: {
+    textAlign: 'center',
+    fontWeight: '500',
+    fontSize: 17,
+    padding: 20
   }
  
 });

@@ -330,7 +330,7 @@ const Profile = () => {
               <Text style={style.saveText}>Save</Text>
             </Pressable>
             <Text>You can find your own recipes <Pressable onPress={handleViewMyRecipes}><Text style={style.profileBtn}>HERE</Text></Pressable>.</Text>
-            <Text>You can find the meaning of intolerances <Pressable onPress={handleViewIntolerances}><Text>HERE</Text></Pressable>.</Text>
+            <Text>You can find the meanings of dietaries <Pressable onPress={handleViewIntolerances}><Text>HERE</Text></Pressable>.</Text>
             {/* <Button onPress={handleSave} style={style.save} mode='contained-tonal'>Save</Button> */}
             <View style={style.logoutDelete}>
             {/* <Pressable onPress={handleLogout}>
