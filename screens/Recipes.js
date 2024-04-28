@@ -8,27 +8,41 @@ import { Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import styles from '../style/Style';
 import { Divider } from "react-native-paper";
+import RecipeModal from "../components/RecipeModal";
+import apiKey from '../apikey';
 
 const stripHtmlTags = (htmlString) => {
   return htmlString.replace(/<[^>]*>/g, '');
 };
 
 const Recipes = () => {
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedRecipe, setSelectedRecipe] = useState(null);
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [communityRecipes, setCommunityRecipes] = useState([]);
   const navigation = useNavigation();
 
+  const openModal = (recipe) => {
+    setSelectedRecipe(recipe);
+    setModalVisible(true);
+  };
+
+  // Function to close the modal
+  const closeModal = () => {
+    setSelectedRecipe(null);
+    setModalVisible(false);
+  };
+
   useEffect(() => {
     const fetchRecipes = async () => {
       try {
-        const apiKey = apiKey;
         const apiUrl = 'https://api.spoonacular.com/recipes/random';
         const numberOfRecipes = 1;
 
         const response = await axios.get(apiUrl, {
           params: {
-            apiKey,
+            apiKey: apiKey,
             number: numberOfRecipes,
           },
         });
@@ -177,26 +191,27 @@ const Recipes = () => {
                 </TouchableOpacity>
               ))}
               <Divider style={styles.divider} />
-              <Text style={[styles.title, {color: 'black'}]}>Community Recipes</Text>
-            {communityRecipes.map((recipe, index) => (
-              <TouchableOpacity key={index} style={{ marginBottom: 20 }} onPress={() => navigateToRecipe(recipe)}>
-                <View>
-                  <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{recipe.title}</Text>
-                  {recipe.image && (
-                    <Image source={{ uri: getImageUri(recipe.image) }} style={{ width: 200, height: 200, marginBottom: 10 }} />
-                  )}
-                  <Text>Ingredients: {recipe.ingredients}</Text>
-                  <Text>Instructions: {recipe.instructions}</Text>
-                </View>
-              </TouchableOpacity>
-            ))}
+              <Text style={[styles.title, { color: 'black' }]}>Community Recipes</Text>
+              {communityRecipes.map((recipe, index) => (
+                <TouchableOpacity key={index} style={{ marginBottom: 20 }} onPress={() => openModal(recipe)}>
+                  <View>
+                    <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{recipe.title}</Text>
+                    {recipe.image && (
+                      <Image source={{ uri: getImageUri(recipe.image) }} style={{ width: 200, height: 200, marginBottom: 10 }} />
+                    )}
+                    {/* Display only a brief summary or name for community recipes */}
+                    {/* Optionally, you can display more details in the modal */}
+                  </View>
+                </TouchableOpacity>
+              ))}
             </View>
-            
           </View>
         )}
+        {/* Modal to display community recipe details */}
+        <RecipeModal isVisible={modalVisible} onClose={closeModal} recipe={selectedRecipe} />
       </ScrollView>
     </View>
   );
+  
 };
-
 export default Recipes;

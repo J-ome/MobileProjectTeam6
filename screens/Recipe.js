@@ -9,7 +9,8 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import styles from '../style/Style';
 import DonutChart from '../components/DonutChart';
 import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler';
-import FullWidthImage from 'react-native-fullwidth-image'
+import FullWidthImage from 'react-native-fullwidth-image';
+
 
 
 
@@ -22,6 +23,7 @@ const Recipe = ({ route }) => {
   useEffect(() => {
     checkFavoriteStatus();
   }, []);
+
 
   const checkFavoriteStatus = async () => {
     try {
