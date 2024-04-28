@@ -5,6 +5,7 @@ import { useNavigation } from "@react-navigation/native";
 import { auth, db } from "../firebase/Config";
 import { collection, getDocs } from "firebase/firestore";
 import Style from "../style/Style";
+import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler';
 
 const Favorites = () => {
   const [userFavorites, setUserFavorites] = useState([]);
@@ -49,7 +50,7 @@ const Favorites = () => {
           {summary}
           {isExpanded && (
             <TouchableOpacity onPress={() => toggleExpandedSummary(id)}>
-              <Text style={{ color: "blue" }}> View less</Text>
+              <Text style={Style.viewMore}> View less</Text>
             </TouchableOpacity>
           )}
         </>
@@ -60,7 +61,7 @@ const Favorites = () => {
         <>
           {truncatedSummary}
           <TouchableOpacity onPress={() => toggleExpandedSummary(id)}>
-            <Text style={{ color: "blue" }}> View more</Text>
+            <Text style={Style.viewMore}> View more</Text>
           </TouchableOpacity>
         </>
       );
@@ -78,7 +79,7 @@ const Favorites = () => {
     } else if (auth.currentUser) {
       if (userFavorites.length === 0) {
         return (
-          <View style={{backgroundColor: '#5FD35D'}}>
+          <View style={{ backgroundColor: '#5FD35D' }}>
             <Text style={Style.header}>Favorites</Text>
             <View style={Style.screenContentFavorites}>
               <Text style={Style.logInOrSignUp}>You have no favorites yet</Text>
@@ -87,30 +88,39 @@ const Favorites = () => {
         );
       } else {
         return (
-          <FlatList
-            data={userFavorites}
-            keyExtractor={(item) => item.id}
-            renderItem={({ item }) => (
-              <View>
-            <TouchableOpacity onPress={() => navigateToRecipe(item.id)}>
-                <Text>{item.title}</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => navigateToRecipe(item.id)}>
-                <Image source={{ uri: item.image }} style={{ width: 200, height: 200, marginBottom: 5 }} />
-              </TouchableOpacity>
-                <Text>{renderSummary(item.fullSummary, item.id)}</Text>
-              </View>
-            )}
-          />
+          <View style={{ backgroundColor: '#5FD35D' }}>
+            <Text style={Style.header}>Favorites</Text>
+            <View style={Style.screenContentFavorites}>
+              <GestureHandlerRootView>
+                <ScrollView>
+                  <FlatList
+                    data={userFavorites}
+                    keyExtractor={(item) => item.id}
+                    renderItem={({ item }) => (
+                      <View>
+                        <TouchableOpacity onPress={() => navigateToRecipe(item.id)}>
+                          <Text style={Style.recipesHeading}>{item.title}</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => navigateToRecipe(item.id)}>
+                          <Image source={{ uri: item.image }} style={Style.recipesImage} />
+                        </TouchableOpacity>
+                        <Text style={Style.articleText}>{renderSummary(item.fullSummary, item.id)}</Text>
+                      </View>
+                    )}
+                  />
+                </ScrollView>
+              </GestureHandlerRootView>
+            </View>
+          </View>
         );
       }
     } else {
       return (
-        <View style={{backgroundColor: '#5FD35D'}}>
+        <View style={{ backgroundColor: '#5FD35D' }}>
           <Text style={Style.header}>Favorites</Text>
-        <View style={Style.screenContentFavorites}>
-          <Text style={Style.logInOrSignUp}><Text onPress={() => navigation.navigate('Profile')} style={{ color: '#5FD35D' }}> Log in</Text> or <Text onPress={() => navigation.navigate('Profile')} style={{ color: '#5FD35D' }}>Sign up</Text> to view your favorites</Text>
-        </View>
+          <View style={Style.screenContentFavorites}>
+            <Text style={Style.logInOrSignUp}><Text onPress={() => navigation.navigate('Profile')} style={{ color: '#5FD35D' }}> Log in</Text> or <Text onPress={() => navigation.navigate('Profile')} style={{ color: '#5FD35D' }}>Sign up</Text> to view your favorites</Text>
+          </View>
         </View>
       );
     }
