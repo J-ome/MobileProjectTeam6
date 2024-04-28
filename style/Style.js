@@ -337,7 +337,7 @@ export default StyleSheet.create({
   logInOrSignUp: {
     textAlign: 'center',
     fontWeight: '500',
-    fontSize: 17,
+    fontSize: 16,
     padding: 20
   }
  
