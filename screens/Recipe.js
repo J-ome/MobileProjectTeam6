@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, TouchableOpacity, FlatList, SafeAreaView } from 'react-native';
+import { View, Text, Image, TouchableOpacity, FlatList, SafeAreaView, Switch } from 'react-native';
 import { db } from '../firebase/Config';
 import { doc, collection, setDoc, deleteDoc, getDoc, addDoc } from 'firebase/firestore';
 import { useAuth } from '../components/AuthContext';
@@ -20,23 +20,29 @@ const Recipe = ({ route }) => {
   const { user } = useAuth();
 
   const [allIngredients, setAllIngredients] = useState([]); // State to hold all ingredient details
+  const [unitSystem, setUnitSystem] = useState('metric');
 
   useEffect(() => {
     fetchIngredientDetails(); // Fetch ingredient details when component mounts
     checkFavoriteStatus();
-  }, []);
+  }, [recipe]); // Re-fetch ingredients when recipe changes
+
+  useEffect(() => {
+    fetchIngredientDetails(); // Re-fetch ingredients when unit system changes
+  }, [unitSystem]);
 
   const fetchIngredientDetails = async () => {
     try {
       const ingredientsResponse = await axios.get(`https://api.spoonacular.com/recipes/${recipe.id}/ingredientWidget.json`, {
         params: {
           apiKey,
+          unit: unitSystem
         },
       });
 
       const ingredients = ingredientsResponse.data.ingredients.map(ingredient => ({
-        amount: ingredient.amount?.metric?.value || 0,
-        unit: ingredient.amount?.metric?.unit || '',
+        amount: ingredient.amount[unitSystem]?.value || 0, // Use selected unit system for amounts
+        unit: ingredient.amount[unitSystem]?.unit || '',
         name: ingredient.name,
       }));
 
@@ -45,6 +51,12 @@ const Recipe = ({ route }) => {
       console.error('Error fetching ingredient details:', error);
     }
   };
+
+  const toggleUnitSystem = () => {
+    const newUnitSystem = unitSystem === 'us' ? 'metric' : 'us'; // Toggle between US and Metric
+    setUnitSystem(newUnitSystem);
+  };
+
 
   const checkFavoriteStatus = async () => {
     try {
@@ -129,7 +141,7 @@ const Recipe = ({ route }) => {
               <View style={styles.recipeScreenTitle}>
                 <Text>{recipe.title}</Text>
               </View>
-  
+
               {/* Display heart icon based on whether recipe is in favorites */}
               <View style={styles.recipeAddToFavorites}>
                 <TouchableOpacity onPress={toggleFavorite} style={styles.favoriteIcon}>
@@ -141,17 +153,29 @@ const Recipe = ({ route }) => {
                 </TouchableOpacity>
                 <Text style={{ fontWeight: 'bold' }}>Add to favorites</Text>
               </View>
-  
+
               <View style={styles.recipeItemContainer}>
                 <Text style={styles.readyIn}>Ready in {recipe.readyInMinutes} minutes</Text>
-  
+
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}>
+                  <Switch
+                    trackColor={{ false: "#767577", true: "#81b0ff" }}
+                    thumbColor={unitSystem === 'metric' ? "#f4f3f4" : "#f4f3f4"}
+                    ios_backgroundColor="#3e3e3e"
+                    onValueChange={toggleUnitSystem}
+                    value={unitSystem === 'metric'}
+                  />
+                  <Text style={{ marginLeft: 10 }}>{unitSystem === 'metric' ? 'Metric' : 'US'}</Text>
+                </View>
+
                 <Text style={{ fontWeight: 'bold', fontSize: 18, marginBottom: 10 }}>Ingredients:</Text>
                 <FlatList
-                  data={allIngredients || []} 
+                  data={allIngredients || []}
                   keyExtractor={(item, index) => index.toString()}
                   renderItem={({ item }) => {
                     return (
                       <Text style={{ marginBottom: 5, fontSize: 15 }}>
+                        {/* Display ingredient amounts based on selected unit system */}
                         {`${item.amount} ${item.unit} ${item.name}`}
                       </Text>
                     );
@@ -165,7 +189,7 @@ const Recipe = ({ route }) => {
                     <Text style={{ marginHorizontal: 20, fontSize: 15, marginBottom: 5 }}>{`${index + 1}. ${item}`}</Text>
                   )}
                 />
-  
+
                 <DonutChart data={donutChartData} centerLabel={`${totalCalories} kcal`} />
                 <View style={{ marginLeft: 10, marginBottom: 20, flexDirection: 'row', alignItems: 'center' }}>
                   <View style={{ width: 10, height: 10, borderRadius: 5, backgroundColor: 'green', marginRight: 5 }}></View>
@@ -186,7 +210,7 @@ const Recipe = ({ route }) => {
       </GestureHandlerRootView>
     </SafeAreaView>
   );
-  
+
 };
 
 export default Recipe;
