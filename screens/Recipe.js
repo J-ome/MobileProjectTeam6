@@ -33,25 +33,29 @@ const Recipe = ({ route }) => {
 
   const fetchIngredientDetails = async () => {
     try {
-      const ingredientsResponse = await axios.get(`https://api.spoonacular.com/recipes/${recipe.id}/ingredientWidget.json`, {
-        params: {
-          apiKey,
-          unit: unitSystem
-        },
-      });
-
-      const ingredients = ingredientsResponse.data.ingredients.map(ingredient => ({
-        amount: ingredient.amount[unitSystem]?.value || 0, // Use selected unit system for amounts
-        unit: ingredient.amount[unitSystem]?.unit || '',
-        name: ingredient.name,
-      }));
-
-      setAllIngredients(ingredients);
+      // Check if ingredients with the current unit system have already been fetched
+      const ingredientsExist = allIngredients.some(ingredient => ingredient.unit === unitSystem);
+  
+      if (!ingredientsExist) {
+        const ingredientsResponse = await axios.get(`https://api.spoonacular.com/recipes/${recipe.id}/ingredientWidget.json`, {
+          params: {
+            apiKey,
+            unit: unitSystem
+          },
+        });
+  
+        const ingredients = ingredientsResponse.data.ingredients.map(ingredient => ({
+          amount: ingredient.amount[unitSystem]?.value || 0, // Use selected unit system for amounts
+          unit: ingredient.amount[unitSystem]?.unit || '',
+          name: ingredient.name,
+        }));
+  
+        setAllIngredients(ingredients);
+      }
     } catch (error) {
       console.error('Error fetching ingredient details:', error);
     }
   };
-
   const toggleUnitSystem = () => {
     const newUnitSystem = unitSystem === 'us' ? 'metric' : 'us'; // Toggle between US and Metric
     setUnitSystem(newUnitSystem);
