@@ -8,7 +8,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { useAuth } from '../components/AuthContext';
 import Style from '../style/Style';
 import { TextInput, Button } from 'react-native-paper';
-import { getStorage, ref, uploadString, getDownloadURL, uploadBytesResumable } from 'firebase/storage';
+import { getStorage, ref, uploadString, getDownloadURL, uploadBytesResumable, fetch, response } from 'firebase/storage';
 import * as FileSystem from 'expo-file-system';
 
 const AddRecipe = () => {
@@ -36,21 +36,21 @@ const AddRecipe = () => {
     };
 
     const handleSubmit = async () => {
-        if (!recipe.title || !recipe.ingredients || !recipe.instructions || !recipe.image) {
-            alert('Please fill in all fields');
+        if (!recipe.title || !recipe.ingredients || !recipe.instructions || !image) {
+            alert('Please fill in all fields and select an image');
             return;
         }
-
-        setUploading(true); // Start uploading
+    
         try {
-            const imageUrl = await uploadImage(recipe.image);
-            await addRecipeToFirestore(imageUrl); // Add recipe to Firestore
+            setUploading(true); // Start uploading
+            const imageUrl = await uploadImage(); // Upload image to Firebase Storage and get the download URL
+            await addRecipeToFirestore(imageUrl); // Add recipe to Firestore with the uploaded image URL
             alert('Recipe added successfully!');
             setRecipe({
                 title: '',
                 ingredients: '',
                 instructions: '',
-                image: null,
+                image: '',
             });
         } catch (error) {
             console.error('Error adding recipe: ', error);
@@ -74,9 +74,9 @@ const AddRecipe = () => {
                 title: recipe.title,
                 ingredients: recipe.ingredients,
                 instructions: recipe.instructions,
-                imageUrl: imageUrl,
+                imageUrl: imageUrl.toString(), // Add the imageUrl field here
             });
-    
+
             // Reference to the collection 'communityrecipes'
             const communityRecipesCollectionRef = collection(db, 'communityrecipes');
             await addDoc(communityRecipesCollectionRef, {
@@ -84,81 +84,152 @@ const AddRecipe = () => {
                 title: recipe.title,
                 ingredients: recipe.ingredients,
                 instructions: recipe.instructions,
+                imageUrl: imageUrl.toString(), // Add the imageUrl field here
             });
         }
     };
 
-    const uploadImage = async (imageUri) => {
-        const storageRef = ref(storage, `images/${Date.now()}`);
-        const snapshot = await uploadBytesResumable(storageRef, imageUri, { contentType: 'image/jpeg' });
-        const downloadURL = await getDownloadURL(snapshot.ref);
-        return downloadURL;
+    // const uploadImage = async () => {
+    //     const response = await fetch(image.uri);
+    //     const blob = await response.blob();
+    //     const filename = image.uri.substring(image.uri.lastIndexOf('/') + 1);
+    //     const storageRef = ref(storage, "images" + filename);
+    //     const uploadTask = uploadBytesResumable(storageRef, blob, metadata);
+    
+    //     // Listen for state changes, errors, and completion of the upload.
+    //     uploadTask.on('state_changed',
+    //         (snapshot) => {
+    //             // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+    //             const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+    //             console.log('Upload is ' + progress + '% done');
+    //             switch (snapshot.state) {
+    //                 case 'paused':
+    //                     console.log('Upload is paused');
+    //                     break;
+    //                 case 'running':
+    //                     console.log('Upload is running');
+    //                     break;
+    //             }
+    //         },
+    //         (error) => {
+    //             // A full list of error codes is available at
+    //             // https://firebase.google.com/docs/storage/web/handle-errors
+    //             switch (error.code) {
+    //                 case 'storage/unauthorized':
+    //                     // User doesn't have permission to access the object
+    //                     break;
+    //                 case 'storage/canceled':
+    //                     // User canceled the upload
+    //                     break;
+    //                 case 'storage/unknown':
+    //                     // Unknown error occurred, inspect error.serverResponse
+    //                     break;
+    //             }
+    //         },
+    //         () => {
+    //             // Upload completed successfully, now we can get the download URL
+    //             getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+    //                 console.log('File available at', downloadURL);
+    //                 setRecipe(prevRecipe => ({
+    //                     ...prevRecipe,
+    //                     image: downloadURL, // Set the image URL in the recipe state
+    //                 }));
+    
+    //                 // Call handleSubmit here, passing the image URL
+    //                 handleSubmit(downloadURL);
+    //             }).catch((error) => {
+    //                 console.error('Error getting download URL: ', error);
+    //                 // Handle error here
+    //             });
+    //         }
+    //     );
+    // };
+
+    const uploadImage = async () => {
+        const blob = await new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+            xhr.onload = function () {
+                resolve(xhr.response);
+            };
+            xhr.onerror = function (e) {
+                console.error(e);
+                reject(new TypeError('Network request failed'));
+            };
+            xhr.responseType = 'blob';
+            xhr.open('GET', image.uri, true);
+            xhr.send(null);
+        });
+        
+        const filename = image.uri.substring(image.uri.lastIndexOf('/') + 1);
+        const storageRef = ref(storage, "images/" + filename);
+        const uploadTask = uploadBytesResumable(storageRef, blob);
+    
+        return new Promise((resolve, reject) => {
+            uploadTask.on('state_changed',
+                (snapshot) => {
+                    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    console.log('Upload is ' + progress + '% done');
+                    switch (snapshot.state) {
+                        case 'paused':
+                            console.log('Upload is paused');
+                            break;
+                        case 'running':
+                            console.log('Upload is running');
+                            break;
+                    }
+                },
+                (error) => {
+                    // A full list of error codes is available at
+                    // https://firebase.google.com/docs/storage/web/handle-errors
+                    switch (error.code) {
+                        case 'storage/unauthorized':
+                            // User doesn't have permission to access the object
+                            break;
+                        case 'storage/canceled':
+                            // User canceled the upload
+                            break;
+                        case 'storage/unknown':
+                            // Unknown error occurred, inspect error.serverResponse
+                            break;
+                    }
+                },
+                () => {
+                    // Upload completed successfully, now we can get the download URL
+                    getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                        resolve(downloadURL); // Resolve promise with download URL
+                    }).catch((error) => {
+                        reject(error); // Reject promise if getting download URL fails
+                    });
+                }
+            );
+        });
     };
+    console.log("Here is recipe:", recipe)
+    console.log("Here is image uri:",image)
 
     const handleLaunchCamera = async () => {
-        try {
-            const result = await ImagePicker.launchCameraAsync({
-                mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        
+            let result = await ImagePicker.launchCameraAsync({
+                mediaTypes: ImagePicker.MediaTypeOptions.All,
                 allowsEditing: true,
                 aspect: [4, 3],
                 quality: 1,
             });
-    
-            if (!result.cancelled) {
-                const pickedImage = result.assets[0];
-                console.log('Picked image:', pickedImage);
-                if (pickedImage && pickedImage.uri) {
-                    console.log('Image picked from camera:', pickedImage.uri);
-                    // Convert the image URI to Base64
-                    const base64Image = await FileSystem.readAsStringAsync(pickedImage.uri, { encoding: FileSystem.EncodingType.Base64 });
-                    
-                    // Create a data URL
-                    const dataUrl = `data:image/jpeg;base64,${base64Image}`;
-    
-                    setRecipe({
-                        ...recipe,
-                        image: dataUrl,
-                    });
-                } else {
-                    console.log('No URI found in the picked image');
-                }
-            }
-        } catch (error) {
-            console.log('Error picking image from camera:', error);
+            const source = {uri: result.assets[0].uri}
+            console.log("Here is source for camera: ",source);
+            setImage(source);
         }
-    };
     
     const handleLaunchImageLibrary = async () => {
-        try {
-            const result = await ImagePicker.launchImageLibraryAsync({
-                mediaTypes: ImagePicker.MediaTypeOptions.Images,
-                allowsEditing: true,
-                aspect: [4, 3],
-                quality: 1,
-            });
-    
-            if (!result.cancelled) {
-                const pickedImage = result.assets[0];
-                console.log('Picked image:', pickedImage);
-                if (pickedImage && pickedImage.uri) {
-                    console.log('Image picked from library:', pickedImage.uri);
-                    // Convert the image URI to Base64
-                    const base64Image = await FileSystem.readAsStringAsync(pickedImage.uri, { encoding: FileSystem.EncodingType.Base64 });
-                    
-                    // Create a data URL
-                    const dataUrl = `data:image/jpeg;base64,${base64Image}`;
-    
-                    setRecipe({
-                        ...recipe,
-                        image: dataUrl,
-                    });
-                } else {
-                    console.log('No URI found in the picked image');
-                }
-            }
-        } catch (error) {
-            console.log('Error picking image from library:', error);
-        }
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1
+        });
+        const source = {uri: result.assets[0].uri}
+        console.log("Here is source: ", source)
+        setImage(source);
     };
 
     const pickImage = async () => {
@@ -232,7 +303,7 @@ const AddRecipe = () => {
                                     style={Style.addRecipeInput}
                                     label={'Enter instructions'}
                                 />
-                                {recipe.image && <Image source={{ uri: recipe.image }} style={{ width: 100, height: 100 }} />}
+                                {image && <Image source={{ uri: image.uri}} style={{ width: 100, height: 100 }} />}
                                 <TouchableOpacity onPress={pickImage} style={Style.addRecipeImageBtn}>
                                     <Text style={Style.profileText}>Select Image</Text>
                                 </TouchableOpacity>
