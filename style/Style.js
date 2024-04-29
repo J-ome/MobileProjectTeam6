@@ -69,11 +69,6 @@ export default StyleSheet.create({
     elevation: 2,
     // padding: 10,
   },
-  // articleTitle: {
-  //   fontWeight: 'bold',
-  //   fontSize: 16,
-  //   marginBottom: 5,
-  // },
   articleContent: {
     fontSize: 14,
     lineHeight: 20,
@@ -236,7 +231,8 @@ export default StyleSheet.create({
   },
   articleTitle: {
     fontWeight: 'bold',
-    marginHorizontal: 20
+    marginHorizontal: 20,
+    marginBottom: 10
   },
   articleText: {
     marginHorizontal: 20,
@@ -319,7 +315,10 @@ export default StyleSheet.create({
     padding: 20,
     marginTop: -30,
     borderRadius: 13,
-    alignSelf: 'center'
+    alignSelf: 'center',
+    fontSize: 15, 
+    fontWeight: 'bold', 
+    marginBottom: 10
   },
   recipeAddToFavorites: {
     flexDirection: 'row',
@@ -344,6 +343,24 @@ export default StyleSheet.create({
   addRecipeImageBtnText: {
     textAlign: 'center',
     fontWeight: '500'
+  },
+  myRecipeTitle: {
+    fontSize: 17,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 20
+  },
+  deleteRecipe: {
+    color: 'red',
+    fontWeight: 'bold',
+    marginLeft: 20
+  },
+  myRecipeContent: {
+    backgroundColor: '#ffffff',
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    paddingTop: 20,
+    marginTop: 20,
   }
  
 });

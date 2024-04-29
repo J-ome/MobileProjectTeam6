@@ -43,7 +43,7 @@ const MyRecipe = () => {
         console.error("Error rendering recipes: ", error);
       }
     };
-  
+
     if (!loading) {
       loadRecipes();
     }
@@ -103,45 +103,49 @@ const MyRecipe = () => {
       return <ActivityIndicator size="large" color="#0000ff" />;
     } else if (userRecipes.length > 0) {
       return (
-        <FlatList
-          data={userRecipes}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <View style={{ padding: 10, borderBottomWidth: 1, borderBottomColor: "#ccc" }}>
-              <TouchableOpacity onPress={() => navigateToRecipe(item.id)}>
-                <Text style={{ fontSize: 18, fontWeight: "bold", marginBottom: 5 }}>{item.title}</Text>
-              </TouchableOpacity>
-              {item.imageUrl && (
+        <View style={Style.myRecipeContent}>
+          <FlatList
+            data={userRecipes}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => (
+              <View style={{height: 1000}}>
                 <TouchableOpacity onPress={() => navigateToRecipe(item.id)}>
-                  <Image source={{ uri: item.imageUrl }} style={{ width: 200, height: 200, marginBottom: 5 }} />
+                  <Text style={Style.myRecipeTitle}>{item.title}</Text>
                 </TouchableOpacity>
-              )}
-              <Text style={{ marginBottom: 5 }}>Ingredients: {item.ingredients}</Text>
-              <Text>Instructions: {item.instructions}</Text>
-              <TouchableOpacity onPress={() => confirmDeleteRecipe(item.id)}>
-                <Text style={{ color: "red", marginTop: 5 }}>Delete Recipe</Text>
-              </TouchableOpacity>
-            </View>
-          )}
-        />
+                {item.imageUrl && (
+                  <TouchableOpacity onPress={() => navigateToRecipe(item.id)}>
+                    <Image source={{ uri: item.imageUrl }} style={Style.recipesImage} />
+                  </TouchableOpacity>
+                )}
+                <Text style={Style.articleTitle}>Ingredients: </Text>
+                <Text style={Style.articleText}>{item.ingredients}</Text>
+                <Text style={Style.articleTitle}>Instructions:</Text>
+                <Text style={Style.articleText}> {item.instructions}</Text>
+                <TouchableOpacity onPress={() => confirmDeleteRecipe(item.id)}>
+                  <Text style={Style.deleteRecipe}>Delete Recipe</Text>
+                </TouchableOpacity>
+              </View>
+            )}
+          />
+        </View>
       );
     } else {
       return (
-        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-          <Text style={{ fontSize: 16, marginBottom: 10 }}>You have not created your own recipes yet.</Text>
-          <Text style={{ fontSize: 16, marginBottom: 10 }}>Create your own recipes at <Text onPress={() => navigation.navigate("AddRecipe")} style={{ fontSize: 16, marginBottom: 10, color: "blue" }}>Add Recipe</Text></Text> 
+        <View style={[Style.screenContent, { flex: 1, justifyContent: "center", alignItems: "center" }]}>
+          <Text style={{ fontSize: 16, marginBottom: 10, fontWeight: '500'}}>You have not created your own recipes yet.</Text>
+          <Text style={{ fontSize: 16, marginBottom: 10, fontWeight: '500' }}>Create your own recipes at <Text onPress={() => navigation.navigate("AddRecipe")} style={{ fontSize: 16, marginBottom: 10, color: '#5FD35D' }}>Add Recipe</Text></Text>
         </View>
       );
     }
   };
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={Style.container}>
       <View style={{ flexDirection: "row", alignItems: "center", paddingHorizontal: 10 }}>
         <TouchableOpacity onPress={() => navigation.goBack()} style={Style.goBackIcon}>
           <Ionicons name="chevron-back-outline" size={24} color="black" />
         </TouchableOpacity>
-        <Text style={{ fontSize: 18, fontWeight: "bold", marginLeft: 10 }}>My Recipes</Text>
+        <Text style={{ fontSize: 18, fontWeight: "bold", marginLeft: 40, paddingTop: 18 }}>My Recipes</Text>
       </View>
       {renderContent()}
     </View>

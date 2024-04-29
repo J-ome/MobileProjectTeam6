@@ -20,7 +20,7 @@
     ],
     "splash": {
       "image": "./assets/donkeykong.png",
-      "backgroundColor": "#e4f1e4df",
+      "backgroundColor": "#E4F1E4",
       "resizeMode": "contain"
     },
     "assetBundlePatterns": [
