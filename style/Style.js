@@ -170,9 +170,9 @@ export default StyleSheet.create({
     marginBottom: 40
   },
   profileImage: {
-    width: 110,
-    height: 110,
-    borderRadius: 60
+    width: 130,
+    height: 130,
+    borderRadius: 70
   },
   profileInput: {
     width: 300,

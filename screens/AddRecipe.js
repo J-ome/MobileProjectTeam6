@@ -303,7 +303,7 @@ const AddRecipe = () => {
                                     style={Style.addRecipeInput}
                                     label={'Enter instructions'}
                                 />
-                                {image && <Image source={{ uri: image.uri}} style={{ width: 100, height: 100 }} />}
+                                {image && <Image source={{ uri: image.uri}} style={{ width: 200, height: 100, borderRadius: 30 }} />}
                                 <TouchableOpacity onPress={pickImage} style={Style.addRecipeImageBtn}>
                                     <Text style={Style.addRecipeImageBtnText}>Select Image</Text>
                                 </TouchableOpacity>
