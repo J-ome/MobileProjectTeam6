@@ -305,7 +305,7 @@ const AddRecipe = () => {
                                 />
                                 {image && <Image source={{ uri: image.uri}} style={{ width: 100, height: 100 }} />}
                                 <TouchableOpacity onPress={pickImage} style={Style.addRecipeImageBtn}>
-                                    <Text style={Style.profileText}>Select Image</Text>
+                                    <Text style={Style.addRecipeImageBtnText}>Select Image</Text>
                                 </TouchableOpacity>
                                 <Button onPress={handleSubmit} mode='contained' style={Style.addRecipeBtn}>Add recipe</Button>
                             </>

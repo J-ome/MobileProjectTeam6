@@ -156,7 +156,7 @@ export default StyleSheet.create({
   },
   profileText: {
     fontWeight: '500',
-    textAlign: 'center',
+    // textAlign: 'center',
     marginLeft: 20,
     fontSize: 15
   },
@@ -214,13 +214,13 @@ export default StyleSheet.create({
     backgroundColor: '#E4F1E4',
     borderRadius: 20,
     padding: 12,
-    paddingRight: 30,
+    paddingRight: 20,
     width: 200,
     // borderColor: '#5FD35D',
     // borderWidth: 2
   },
   addRecipeBtn: {
-    marginTop: 40
+    marginTop: 40,
   },
   addRecipeBtnText: {
     textAlign: 'center',
@@ -340,6 +340,10 @@ export default StyleSheet.create({
     fontWeight: '500',
     fontSize: 16,
     padding: 20
+  },
+  addRecipeImageBtnText: {
+    textAlign: 'center',
+    fontWeight: '500'
   }
  
 });
