@@ -207,7 +207,7 @@ export default StyleSheet.create({
     alignItems: 'center'
   },
   addRecipeInput: {
-    height: 100,
+    height: 200,
     width: 300
   },
   addRecipeImageBtn: {
