@@ -310,8 +310,8 @@ const AddRecipe = () => {
                                 <Button onPress={handleSubmit} mode='contained' style={Style.addRecipeBtn}>Add recipe</Button>
                             </>
                         ) : (
-                            <View style={{marginTop: 20}}>
-                                <Text style={{ marginTop: 5 }}><Text onPress={() => navigation.navigate('Profile')} style={{ color: 'blue'}}> Log in</Text> or <Text onPress={() => navigation.navigate('Profile')} style={{ color: 'blue' }}>Sign up</Text> to add your own recipes</Text>
+                            <View>
+                                <Text style={[Style.logInOrSignUp, {margin: -10}]}><Text onPress={() => navigation.navigate('Profile')} style={{ color: '#5FD35D'}}> Log in</Text> or <Text onPress={() => navigation.navigate('Profile')} style={{ color: '#5FD35D' }}>Sign up</Text> to add your own recipes</Text>
                             </View>
                         )}
                     </View>

@@ -155,8 +155,12 @@ const Home = () => {
         </TouchableOpacity>
     );
 
-    const handleViewArticle = (articleId) => {
+    const handleViewArticle1 = (articleId) => {
         navigation.navigate('Article1', { articleId: articleId });
+    };
+
+    const handleViewArticle2 = (articleId) => {
+        navigation.navigate('Article2', { articleId: articleId });
     };
 
     const handleViewMore = () => {
@@ -210,13 +214,13 @@ const Home = () => {
                         </Card>
                     </TouchableOpacity>
                 ))} */}
-                        <TouchableOpacity style={styles.articleCard} onPress={() => handleViewArticle()}>
+                        <TouchableOpacity style={styles.articleCard} onPress={() => handleViewArticle1()}>
                             <Text style={styles.articleCardText}>8 Ways To {"\n"} Cook Eggs</Text>
                             <Image source={require('../assets/eggs.jpg')} style={styles.articleCardImage} />
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.articleCard} onPress={() => handleViewArticle()}>
-                            <Text style={styles.articleCardText}>8 Ways To {"\n"} Cook Eggs</Text>
-                            <Image source={require('../assets/eggs.jpg')} style={styles.articleCardImage} />
+                        <TouchableOpacity style={styles.articleCard} onPress={() => handleViewArticle2()}>
+                            <Text style={styles.articleCardText}>How To Use {"\n"} Nuts In {"\n"} Cooking</Text>
+                            <Image source={require('../assets/peanut.jpg')} style={styles.articleCardImage} />
                         </TouchableOpacity>
                     </View>
                 </View>
