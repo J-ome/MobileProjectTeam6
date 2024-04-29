@@ -9,9 +9,12 @@ const Article1 = () => {
 
     return (
       <View style= {styles.container}>
+        <View style={{ flexDirection: "row", alignItems: "center", paddingHorizontal: 10 }}>
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.goBackIcon}>
           <Ionicons name="chevron-back-outline" size={24} color="black" />
         </TouchableOpacity>
+        <Text style={{ fontSize: 18, fontWeight: "bold", marginLeft: 40, paddingTop: 18 }}>Articles</Text>
+        </View>
         <ScrollView>
           <View style={styles.screenContent}>
             <Text style={styles.articleHeading}>Exploring the World of Egg Cookery: Eight Different Ways To Cook Eggs</Text>
