@@ -69,11 +69,6 @@ export default StyleSheet.create({
     elevation: 2,
     // padding: 10,
   },
-  // articleTitle: {
-  //   fontWeight: 'bold',
-  //   fontSize: 16,
-  //   marginBottom: 5,
-  // },
   articleContent: {
     fontSize: 14,
     lineHeight: 20,
@@ -156,7 +151,7 @@ export default StyleSheet.create({
   },
   profileText: {
     fontWeight: '500',
-    textAlign: 'center',
+    // textAlign: 'center',
     marginLeft: 20,
     fontSize: 15
   },
@@ -170,9 +165,9 @@ export default StyleSheet.create({
     marginBottom: 40
   },
   profileImage: {
-    width: 110,
-    height: 110,
-    borderRadius: 60
+    width: 130,
+    height: 130,
+    borderRadius: 70
   },
   profileInput: {
     width: 300,
@@ -214,13 +209,13 @@ export default StyleSheet.create({
     backgroundColor: '#E4F1E4',
     borderRadius: 20,
     padding: 12,
-    paddingRight: 30,
+    paddingRight: 20,
     width: 200,
     // borderColor: '#5FD35D',
     // borderWidth: 2
   },
   addRecipeBtn: {
-    marginTop: 40
+    marginTop: 40,
   },
   addRecipeBtnText: {
     textAlign: 'center',
@@ -236,7 +231,8 @@ export default StyleSheet.create({
   },
   articleTitle: {
     fontWeight: 'bold',
-    marginHorizontal: 20
+    marginHorizontal: 20,
+    marginBottom: 10
   },
   articleText: {
     marginHorizontal: 20,
@@ -319,7 +315,10 @@ export default StyleSheet.create({
     padding: 20,
     marginTop: -30,
     borderRadius: 13,
-    alignSelf: 'center'
+    alignSelf: 'center',
+    fontSize: 15, 
+    fontWeight: 'bold', 
+    marginBottom: 10
   },
   recipeAddToFavorites: {
     flexDirection: 'row',
@@ -340,6 +339,28 @@ export default StyleSheet.create({
     fontWeight: '500',
     fontSize: 16,
     padding: 20
+  },
+  addRecipeImageBtnText: {
+    textAlign: 'center',
+    fontWeight: '500'
+  },
+  myRecipeTitle: {
+    fontSize: 17,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 20
+  },
+  deleteRecipe: {
+    color: 'red',
+    fontWeight: 'bold',
+    marginLeft: 20
+  },
+  myRecipeContent: {
+    backgroundColor: '#ffffff',
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    paddingTop: 20,
+    marginTop: 20,
   }
  
 });

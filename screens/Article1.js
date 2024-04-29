@@ -9,14 +9,17 @@ const Article1 = () => {
 
     return (
       <View style= {styles.container}>
+        <View style={{ flexDirection: "row", alignItems: "center", paddingHorizontal: 10 }}>
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.goBackIcon}>
           <Ionicons name="chevron-back-outline" size={24} color="black" />
         </TouchableOpacity>
+        <Text style={{ fontSize: 18, fontWeight: "bold", marginLeft: 40, paddingTop: 18 }}>Articles</Text>
+        </View>
         <ScrollView>
           <View style={styles.screenContent}>
             <Text style={styles.articleHeading}>Exploring the World of Egg Cookery: Eight Different Ways To Cook Eggs</Text>
             <Image source={require('../assets/eggs.jpg')} style={styles.articleImage}/>
-            <Text style={styles.articleText}>Eggs are a versatile and nutritious ingredient that grace breakfast tables, enrich savory dishes, and even star in elegant desserts. Whether you prefer them scrambled, poached, or sunny-side up, there's a myriad of ways to enjoy the humble egg. Join us on a culinary journey as we explore some of the most delightful methods to cook eggs.</Text>
+            <Text style={[styles.articleText, {marginBottom: 30}]}>Eggs are a versatile and nutritious ingredient that grace breakfast tables, enrich savory dishes, and even star in elegant desserts. Whether you prefer them scrambled, poached, or sunny-side up, there's a myriad of ways to enjoy the humble egg. Join us on a culinary journey as we explore some of the most delightful methods to cook eggs.</Text>
             <Text style={styles.articleTitle}>1. Sunny-Side Up: </Text>
             <Text style={styles.articleText}>Simple yet sublime, the sunny-side-up egg showcases the golden yolk in all its glory. To prepare, crack an egg into a hot, greased skillet and cook until the white sets while leaving the yolk soft and runny. Serve with toast for a classic breakfast delight.</Text>
             <Text style={styles.articleTitle}>2. Scrambled Eggs:</Text>

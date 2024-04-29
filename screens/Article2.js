@@ -9,12 +9,15 @@ const Article2 = () => {
 
     return (
       <View style= {styles.container}>
+        <View style={{ flexDirection: "row", alignItems: "center", paddingHorizontal: 10 }}>
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.goBackIcon}>
           <Ionicons name="chevron-back-outline" size={24} color="black" />
         </TouchableOpacity>
+        <Text style={{ fontSize: 18, fontWeight: "bold", marginLeft: 40, paddingTop: 18 }}>Articles</Text>
+        </View>
         <ScrollView>
           <View style={styles.screenContent}>
-            <Text style={styles.articleHeading}>Ideas for using different types of nuts in your cooking</Text>
+            <Text style={[styles.articleText, {marginBottom: 30}]}>Ideas for using different types of nuts in your cooking</Text>
             <Image source={require('../assets/peanut.jpg')} style={styles.articleImage}/>
             <Text style={styles.articleText}>Different types of nuts are very good for you and in this article we will explore 5 different ideas to use them in your cooking.</Text>
             <Text style={styles.articleText}>1. You can grate them using a grater and add them to a salad or use it as a coating/breading for meat or vegetables.</Text>
