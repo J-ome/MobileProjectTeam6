@@ -110,7 +110,7 @@ const Recipes = () => {
               kcals: nutritionResponse.data.nutrients.find(nutrient => nutrient.name === 'Calories'),
             };
 
-            return { ...recipe, summary, ingredients, instructions, nutritionDetails, fullSummary: summary };
+            return { ...recipe, summary, ingredients, instructions, nutritionDetails, fullSummary: summary,};
           })
         );
 
@@ -142,7 +142,7 @@ const Recipes = () => {
         console.error("Error fetching community recipes: ", error);
       }
     };
-  
+
     fetchCommunityRecipes();
   }, []);
 
@@ -207,6 +207,8 @@ const RecipeItem = ({ recipe, getImageUri, openModal }) => {
         {imageUrl && typeof imageUrl === 'string' && (
           <Image source={{ uri: imageUrl }} style={{ width: 200, height: 200, marginBottom: 10 }} />
         )}
+        <Text>{recipe.summary}</Text>
+        <Text>Creator: {recipe.userName}</Text>
       </View>
     </TouchableOpacity>
   );
