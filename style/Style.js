@@ -147,9 +147,10 @@ export default StyleSheet.create({
     marginHorizontal: 20
   },
   profileImageBtn: {
-    backgroundColor: '#E4F1E4',
+    backgroundColor: '#ffffff',
     borderRadius: 20,
     padding: 12,
+    marginTop: 20
   },
   profileText: {
     fontWeight: '500',
@@ -172,7 +173,7 @@ export default StyleSheet.create({
     borderRadius: 70
   },
   profileInput: {
-    width: 300,
+    width: 280,
     alignSelf: 'center'
   },
   save: {
@@ -187,12 +188,16 @@ export default StyleSheet.create({
   saveText: {
     textAlign: "center",
     fontWeight: '500',
-    color: '#E4F1E4'
+    color: '#000000'
   },
   logoutDelete: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+  //   flexDirection: 'row',
+  //   justifyContent: 'space-between',
     marginTop: 40,
+  width: 200,
+  gap: 50,
+  margin: 15,
+  alignSelf: 'center'
     
   },
   profileBtn: {
@@ -377,15 +382,23 @@ export default StyleSheet.create({
     // color: '#5FD35D',
     fontWeight: 'bold',
     textAlign: 'center',
-    width: 120
+    width: 130
   },
   profileLinksContent: {
     backgroundColor: '#E4F1E4',
-    borderRadius: 13,
+    borderRadius: 20,
     padding: 20,
     flexDirection: 'row',
-    justifyContent: 'space-between'
-
+    justifyContent: 'space-between',
+    margin: 15
+  },
+  profileInformation: {
+    // borderWidth: 3,
+    borderRadius: 20,
+    margin: 15,
+    paddingTop: 15,
+    borderColor: '#E4F1E4',
+    backgroundColor: '#E4F1E4'
   }
  
 });
