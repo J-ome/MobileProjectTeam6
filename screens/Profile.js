@@ -292,8 +292,10 @@ const Profile = () => {
         <ScrollView>
       <Text style={style.header}>Profile</Text>
       <View style={style.screenContent}>
+        <View></View>
         {loggedIn ? (
           <View >
+            <View style={style.profileInformation}>
             <View style={style.profileImageContent}>
             <Pressable onPress={handleChooseProfilePicture} style={style.profileImageBtn}>
               <Text style={style.profileImageText}>Choose profile picture</Text>
@@ -329,8 +331,20 @@ const Profile = () => {
             <Pressable onPress={handleSave} style={style.save}>
               <Text style={style.saveText}>Save</Text>
             </Pressable>
-            <Text>You can find your own recipes <Pressable onPress={handleViewMyRecipes}><Text style={style.profileBtn}>HERE</Text></Pressable>.</Text>
-            <Text>You can find the meanings of dietaries <Pressable onPress={handleViewIntolerances}><Text>HERE</Text></Pressable>.</Text>
+            </View> 
+            </View>
+
+            <View style={style.profileLinksContent}>
+              <Pressable onPress={handleViewMyRecipes} style={style.profileLinks}>
+                <Text style={style.profileLinksText}>My Recipes</Text>
+              </Pressable>
+              <Pressable onPress={handleViewIntolerances} style={style.profileLinks}>
+                <Text style={style.profileLinksText}>Dietary Meanings</Text>
+              </Pressable>
+            </View>
+
+            {/* <Text>You can find your own recipes <Pressable onPress={handleViewMyRecipes}><Text style={style.profileBtn}>HERE</Text></Pressable>.</Text>
+            <Text>You can find the meanings of dietaries <Pressable onPress={handleViewIntolerances}><Text>HERE</Text></Pressable>.</Text> */}
             {/* <Button onPress={handleSave} style={style.save} mode='contained-tonal'>Save</Button> */}
             <View style={style.logoutDelete}>
             {/* <Pressable onPress={handleLogout}>
@@ -344,7 +358,7 @@ const Profile = () => {
             // style={{backgroundColor: '#efa0a0'}} 
             mode='contained-tonal'>Delete Account</Button>
             </View>
-            </View>
+            
           </View>
         ) : (
           <View style={style.profileContent}>

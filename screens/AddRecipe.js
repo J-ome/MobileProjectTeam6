@@ -233,7 +233,7 @@ const AddRecipe = () => {
                                     value={recipe.title}
                                     onChangeText={(text) => handleChange('title', text)}
                                     mode='outlined'
-                                    style={Style.profileInput}
+                                    style={Style.addRecipeTitleInput}
                                     label={'Enter title'}
                                 />
                                 <TextInput
