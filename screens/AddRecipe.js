@@ -15,6 +15,7 @@ const AddRecipe = () => {
     const { user } = useAuth();
     const [recipe, setRecipe] = useState({
         title: '',
+        summary: '',
         ingredients: '',
         instructions: '',
         image: '',
@@ -36,7 +37,7 @@ const AddRecipe = () => {
     };
 
     const handleSubmit = async () => {
-        if (!recipe.title || !recipe.ingredients || !recipe.instructions || !image) {
+        if (!recipe.title || !recipe.ingredients || !recipe.instructions || !image || !recipe.summary) {
             alert('Please fill in all fields and select an image');
             return;
         }
@@ -50,6 +51,7 @@ const AddRecipe = () => {
                 title: '',
                 ingredients: '',
                 instructions: '',
+                summary: '',
                 image: null,
             });
         } catch (error) {
@@ -74,6 +76,7 @@ const AddRecipe = () => {
                 title: recipe.title,
                 ingredients: recipe.ingredients,
                 instructions: recipe.instructions,
+                summary: recipe.summary,
                 imageUrl: imageUrl.toString(), // Add the imageUrl field here
             });
 
@@ -84,6 +87,7 @@ const AddRecipe = () => {
                 title: recipe.title,
                 ingredients: recipe.ingredients,
                 instructions: recipe.instructions,
+                summary: recipe.summary,
                 imageUrl: imageUrl.toString(), // Add the imageUrl field here
             });
         }
@@ -247,6 +251,14 @@ const AddRecipe = () => {
                                     mode='outlined'
                                     style={Style.addRecipeInput}
                                     label={'Enter instructions'}
+                                />
+                                <TextInput
+                                    value={recipe.summary}
+                                    onChangeText={(text) => handleChange('summary', text)}
+                                    multiline={true}
+                                    mode='outlined'
+                                    style={Style.addRecipeInput}
+                                    label={'Summary'}
                                 />
                                 {image && <Image source={{ uri: image.uri}} style={{ width: 200, height: 100, borderRadius: 30 }} />}
                                 <TouchableOpacity onPress={pickImage} style={Style.addRecipeImageBtn}>

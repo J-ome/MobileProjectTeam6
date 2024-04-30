@@ -78,7 +78,7 @@ const Home = () => {
                     protein: nutritionResponse.data.nutrients.find(nutrient => nutrient.name === 'Protein'),
                     kcals: nutritionResponse.data.nutrients.find(nutrient => nutrient.name === 'Calories'),
                   };
-          
+
                   return {
                     ...recipe,
                     ingredients,
@@ -88,6 +88,7 @@ const Home = () => {
                   };
                 })
               );
+
               setRecipes(recipesWithDetails); // Update this line
             } catch (error) {
               console.error('Error fetching recipes:', error);

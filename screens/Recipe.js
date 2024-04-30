@@ -193,7 +193,6 @@ const Recipe = ({ route }) => {
                     <Text style={{ marginHorizontal: 20, fontSize: 15, marginBottom: 5 }}>{`${index + 1}. ${item}`}</Text>
                   )}
                 />
-
                 <DonutChart data={donutChartData} centerLabel={`${totalCalories} kcal`} />
                 <View style={{ marginLeft: 10, marginBottom: 20, flexDirection: 'row', alignItems: 'center' }}>
                   <View style={{ width: 10, height: 10, borderRadius: 5, backgroundColor: 'green', marginRight: 5 }}></View>
