@@ -3,11 +3,12 @@ import { View, Text, Image, ActivityIndicator, ScrollView, TouchableOpacity } fr
 import axios from "axios";
 import { db, auth } from "../firebase/Config";
 import { collection, getDocs } from "firebase/firestore";
+import { getStorage, ref, getDownloadURL } from 'firebase/storage';
 import { useNavigation } from '@react-navigation/native';
+import { Divider } from "react-native-paper";
 import { Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import styles from '../style/Style';
-import { Divider } from "react-native-paper";
 import RecipeModal from "../components/RecipeModal";
 import apiKey from '../apikey';
 
@@ -32,6 +33,29 @@ const Recipes = () => {
   const closeModal = () => {
     setSelectedRecipe(null);
     setModalVisible(false);
+  };
+
+  const getImageUri = async (imageUrl) => {
+    try {
+      if (!imageUrl) {
+        return null; // Return null if imageUrl is empty or null
+      }
+      const storage = getStorage();
+      // Use the imageUrl directly without any modifications
+      const storageRef = ref(storage, imageUrl);
+      const url = await getDownloadURL(storageRef);
+      return url; // Return the download URL string
+    } catch (error) {
+      console.error("Getting image error:", error);
+      return null;
+    }
+  };
+  const toggleSummary = (index) => {
+    const updatedRecipes = [...recipes];
+    updatedRecipes[index].summary = updatedRecipes[index].summary === updatedRecipes[index].fullSummary
+      ? updatedRecipes[index].summary.slice(0, 150) + '...'
+      : updatedRecipes[index].fullSummary;
+    setRecipes(updatedRecipes);
   };
 
   useEffect(() => {
@@ -110,53 +134,17 @@ const Recipes = () => {
   useEffect(() => {
     const fetchCommunityRecipes = async () => {
       try {
-        const usersCollectionRef = collection(db, "users");
-        const usersSnapshot = await getDocs(usersCollectionRef);
-
-        const promises = [];
-
-        usersSnapshot.forEach(userDoc => {
-          const userId = userDoc.id;
-          const userRecipesCollectionRef = collection(db, `users/${userId}/myownrecipes`);
-          const userRecipesPromise = getDocs(userRecipesCollectionRef).then(userRecipesSnapshot => {
-            return userRecipesSnapshot.docs.map(doc => doc.data());
-          });
-          promises.push(userRecipesPromise);
-        });
-
-        const allCommunityRecipes = await Promise.all(promises);
-        const flattenedRecipes = allCommunityRecipes.flat();
-
-        setCommunityRecipes(flattenedRecipes);
-        console.log("Community recipes data: ", flattenedRecipes);
+        const communityRecipesCollectionRef = collection(db, "communityrecipes");
+        const communityRecipesSnapshot = await getDocs(communityRecipesCollectionRef);
+        const communityRecipesData = communityRecipesSnapshot.docs.map(doc => doc.data());
+        setCommunityRecipes(communityRecipesData);
       } catch (error) {
         console.error("Error fetching community recipes: ", error);
       }
     };
-
+  
     fetchCommunityRecipes();
   }, []);
-
-  const getImageUri = (uri) => {
-    if (Platform.OS === 'ios') {
-      return uri.replace('file://', '');
-    } else if (Platform.OS === 'android') {
-      return uri;
-    }
-  };
-
-  const toggleSummary = (index) => {
-    const updatedRecipes = [...recipes];
-    updatedRecipes[index].summary = updatedRecipes[index].summary === updatedRecipes[index].fullSummary
-      ? updatedRecipes[index].summary.slice(0, 150) + '...'
-      : updatedRecipes[index].fullSummary;
-    setRecipes(updatedRecipes);
-  };
-
-  const navigateToRecipe = (recipe) => {
-    console.log("Navigating to Recipe:", recipe);
-    navigation.navigate('Recipe', { recipe });
-  };
 
   return (
     <View style={styles.container}>
@@ -168,7 +156,7 @@ const Recipes = () => {
             <Text style={styles.header}>Recipes</Text>
             <View style={styles.screenContent}>
               {recipes.map((recipe, index) => (
-                <TouchableOpacity key={recipe.id} style={{ marginBottom: 10 }} onPress={() => navigateToRecipe(recipe)}>
+                <TouchableOpacity key={recipe.id} style={{ marginBottom: 10 }} onPress={() => navigation.navigate('Recipe', { recipe })}>
                   <View>
                     <Text style={styles.recipesHeading}>{recipe.title}</Text>
                     <Image source={{ uri: recipe.image }} style={styles.recipesImage} />
@@ -178,40 +166,50 @@ const Recipes = () => {
                         <Text style={styles.viewMore}>{recipe.summary === recipe.fullSummary ? 'View Less' : 'View More'}</Text>
                       </TouchableOpacity>
                     )}
-                    <Text style={styles.readyIn}>Ready in <Text style={styles.min}>{recipe.readyInMinutes}</Text> minutes</Text>
-  
-                    {/* Display nutrition details */}
-                    {/* <View style={{ marginTop: 10 }}>
-                      <Text>Carbs: {recipe.nutritionDetails.carbs.amount} {recipe.nutritionDetails.carbs.unit}</Text>
-                      <Text>Fat: {recipe.nutritionDetails.fat.amount} {recipe.nutritionDetails.fat.unit}</Text>
-                      <Text>Protein: {recipe.nutritionDetails.protein.amount} {recipe.nutritionDetails.protein.unit}</Text>
-                      <Text>Kcals: {recipe.nutritionDetails.kcals.amount} {recipe.nutritionDetails.kcals.unit}</Text>
-                    </View> */}
+                    <Text style={styles.readyIn}>Ready in <Text>{recipe.readyInMinutes}</Text> minutes</Text>
                   </View>
                 </TouchableOpacity>
               ))}
               <Divider style={styles.divider} />
               <Text style={[styles.title, { color: 'black' }]}>Community Recipes</Text>
               {communityRecipes.map((recipe, index) => (
-                <TouchableOpacity key={index} style={{ marginBottom: 20 }} onPress={() => openModal(recipe)}>
-                  <View>
-                    <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{recipe.title}</Text>
-                    {recipe.image && (
-                      <Image source={{ uri: getImageUri(recipe.image) }} style={{ width: 200, height: 200, marginBottom: 10 }} />
-                    )}
-                    {/* Display only a brief summary or name for community recipes */}
-                    {/* Optionally, you can display more details in the modal */}
-                  </View>
-                </TouchableOpacity>
+                <RecipeItem key={index} recipe={recipe} getImageUri={getImageUri} openModal={openModal} />
               ))}
             </View>
           </View>
         )}
-        {/* Modal to display community recipe details */}
-        <RecipeModal isVisible={modalVisible} onClose={closeModal} recipe={selectedRecipe} />
       </ScrollView>
+      <RecipeModal isVisible={modalVisible} onClose={closeModal} recipe={selectedRecipe} />
     </View>
   );
-  
 };
+
+const RecipeItem = ({ recipe, getImageUri, openModal }) => {
+  const [imageUrl, setImageUrl] = useState(null);
+
+  useEffect(() => {
+    const fetchImageUrl = async () => {
+      try {
+        const url = await getImageUri(recipe.imageUrl);
+        setImageUrl(url);
+      } catch (error) {
+        console.error('Error fetching image URL:', error);
+      }
+    };
+
+    fetchImageUrl();
+  }, [recipe.imageUrl]);
+
+  return (
+    <TouchableOpacity style={{ marginBottom: 20 }} onPress={() => openModal(recipe)}>
+      <View>
+        <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{recipe.title}</Text>
+        {imageUrl && typeof imageUrl === 'string' && (
+          <Image source={{ uri: imageUrl }} style={{ width: 200, height: 200, marginBottom: 10 }} />
+        )}
+      </View>
+    </TouchableOpacity>
+  );
+};
+
 export default Recipes;
