@@ -3,7 +3,7 @@ import { Modal, View, Text, Image, Button, TouchableOpacity} from "react-native"
 import { Ionicons } from '@expo/vector-icons';
 import styles from '../style/Style'
 
-const RecipeModal = ({ isVisible, onClose, recipe }) => {
+const RecipeModal = ({ isVisible, onClose, recipe, }) => {
     if (!recipe) {
       return null; // If recipe is null, return null to prevent rendering the modal
     }
@@ -15,9 +15,10 @@ const RecipeModal = ({ isVisible, onClose, recipe }) => {
             <Ionicons name="chevron-back-outline" size={24} color="black" />
           </TouchableOpacity>
           <View style={styles.screenContent}>
-          {recipe.image && (
-            <Image source={{ uri: recipe.image }} style={{ width: 200, height: 200 }} />
+          {recipe.imageUrl && ( // Check if the imageUrl property exists in the recipe object
+            <Image source={{ uri: recipe.imageUrl }} style={{ width: 200, height: 200 }} />
           )}
+          <Text>Creator: {recipe.userName}</Text>
           <Text style={styles.recipesHeading}>{recipe.title}</Text>
           <Text>Ingredients: {recipe.ingredients}</Text>
           <Text>Instructions: {recipe.instructions}</Text>

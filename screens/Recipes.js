@@ -24,9 +24,14 @@ const Recipes = () => {
   const [communityRecipes, setCommunityRecipes] = useState([]);
   const navigation = useNavigation();
 
-  const openModal = (recipe) => {
-    setSelectedRecipe(recipe);
-    setModalVisible(true);
+  const openModal = async (recipe) => {
+    try {
+      const imageUrl = await getImageUri(recipe.imageUrl); // Fetch the image URL
+      setSelectedRecipe({ ...recipe, imageUrl }); // Pass the entire recipe object along with the imageUrl
+      setModalVisible(true);
+    } catch (error) {
+      console.error('Error fetching image URL:', error);
+    }
   };
 
   // Function to close the modal
@@ -110,7 +115,7 @@ const Recipes = () => {
               kcals: nutritionResponse.data.nutrients.find(nutrient => nutrient.name === 'Calories'),
             };
 
-            return { ...recipe, summary, ingredients, instructions, nutritionDetails, fullSummary: summary };
+            return { ...recipe, summary, ingredients, instructions, nutritionDetails, fullSummary: summary,};
           })
         );
 
@@ -142,7 +147,7 @@ const Recipes = () => {
         console.error("Error fetching community recipes: ", error);
       }
     };
-  
+
     fetchCommunityRecipes();
   }, []);
 
@@ -207,6 +212,8 @@ const RecipeItem = ({ recipe, getImageUri, openModal }) => {
         {imageUrl && typeof imageUrl === 'string' && (
           <Image source={{ uri: imageUrl }} style={{ width: 200, height: 200, marginBottom: 10 }} />
         )}
+        <Text>{recipe.summary}</Text>
+        <Text>Creator: {recipe.userName}</Text>
       </View>
     </TouchableOpacity>
   );
