@@ -24,9 +24,14 @@ const Recipes = () => {
   const [communityRecipes, setCommunityRecipes] = useState([]);
   const navigation = useNavigation();
 
-  const openModal = (recipe) => {
-    setSelectedRecipe(recipe);
-    setModalVisible(true);
+  const openModal = async (recipe) => {
+    try {
+      const imageUrl = await getImageUri(recipe.imageUrl); // Fetch the image URL
+      setSelectedRecipe({ ...recipe, imageUrl }); // Pass the entire recipe object along with the imageUrl
+      setModalVisible(true);
+    } catch (error) {
+      console.error('Error fetching image URL:', error);
+    }
   };
 
   // Function to close the modal
