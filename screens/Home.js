@@ -174,7 +174,7 @@ const Home = () => {
             <ScrollView>
                 <View>
                     <Image
-                        source={require('../assets/Ellipse1.png')}
+                        source={require('../assets/Logo.png')}
                         style={styles.logo} />
                 </View>
                 <View style={styles.screenContent}>

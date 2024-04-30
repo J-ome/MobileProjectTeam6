@@ -19,7 +19,7 @@
       ]
     ],
     "splash": {
-      "image": "./assets/donkeykong.png",
+      "image": "./assets/Logo.png",
       "backgroundColor": "#E4F1E4",
       "resizeMode": "contain"
     },

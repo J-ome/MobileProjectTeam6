@@ -120,7 +120,9 @@ export default StyleSheet.create({
   },
   logo: {
     alignSelf: 'center',
-    margin: 20
+    marginTop: 20,
+    height: 200,
+    width: 200
   },
   divider: {
     marginHorizontal: 50,
@@ -174,7 +176,7 @@ export default StyleSheet.create({
     alignSelf: 'center'
   },
   save: {
-    backgroundColor: '#E4F1E4',
+    backgroundColor: '#5FD35D',
     borderRadius: 20,
     padding: 12,
     width: 100,
@@ -184,12 +186,14 @@ export default StyleSheet.create({
   },
   saveText: {
     textAlign: "center",
-    fontWeight: '500'
+    fontWeight: '500',
+    color: '#E4F1E4'
   },
   logoutDelete: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: 40,
+    
   },
   profileBtn: {
     backgroundColor: 'orange',
@@ -361,6 +365,27 @@ export default StyleSheet.create({
     borderTopRightRadius: 30,
     paddingTop: 20,
     marginTop: 20,
+  },
+  profileLinks: {
+    borderRadius: 13,
+    color: '#5FD35D',
+    justifyContent: 'center',
+    backgroundColor: '#ffffff'
+  },
+  profileLinksText: {
+    padding: 10,
+    // color: '#5FD35D',
+    fontWeight: 'bold',
+    textAlign: 'center',
+    width: 120
+  },
+  profileLinksContent: {
+    backgroundColor: '#E4F1E4',
+    borderRadius: 13,
+    padding: 20,
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+
   }
  
 });
