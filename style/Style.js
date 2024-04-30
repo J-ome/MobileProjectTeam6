@@ -399,6 +399,10 @@ export default StyleSheet.create({
     paddingTop: 15,
     borderColor: '#E4F1E4',
     backgroundColor: '#E4F1E4'
+  },
+  addRecipeTitleInput: {
+    alignSelf: 'center',
+    width: 300
   }
  
 });
