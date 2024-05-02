@@ -320,7 +320,7 @@ export default StyleSheet.create({
     // position: 'absolute',
   },
   recipeScreenTitle: {
-    backgroundColor: '#e4f1e4df',
+    backgroundColor: '#e4f1e4e8',
     padding: 20,
     marginTop: -30,
     borderRadius: 13,

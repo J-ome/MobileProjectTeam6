@@ -163,7 +163,7 @@ const Recipe = ({ route }) => {
 
                 <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}>
                   <Switch
-                    trackColor={{ false: "#767577", true: "#81b0ff" }}
+                    trackColor={{ false: '#E4F1E4', true: '#5FD35D' }}
                     thumbColor={unitSystem === 'metric' ? "#f4f3f4" : "#f4f3f4"}
                     ios_backgroundColor="#3e3e3e"
                     onValueChange={toggleUnitSystem}
@@ -178,7 +178,7 @@ const Recipe = ({ route }) => {
                   keyExtractor={(item, index) => index.toString()}
                   renderItem={({ item }) => {
                     return (
-                      <Text style={{ marginBottom: 5, fontSize: 15 }}>
+                      <Text style={{ marginBottom: 5, fontSize: 16 }}>
                         {/* Display ingredient amounts based on selected unit system */}
                         {`${item.amount} ${item.unit} ${item.name}`}
                       </Text>
@@ -190,7 +190,7 @@ const Recipe = ({ route }) => {
                   data={recipe.instructions || []}
                   keyExtractor={(item, index) => index.toString()}
                   renderItem={({ item, index }) => (
-                    <Text style={{ marginHorizontal: 20, fontSize: 15, marginBottom: 5 }}>{`${index + 1}. ${item}`}</Text>
+                    <Text style={{ marginHorizontal: 20, fontSize: 16, marginBottom: 5 }}>{`${index + 1}. ${item}`}</Text>
                   )}
                 />
                 <DonutChart data={donutChartData} centerLabel={`${totalCalories} kcal`} />
