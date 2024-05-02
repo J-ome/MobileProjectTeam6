@@ -321,7 +321,7 @@ export default StyleSheet.create({
   },
   recipeScreenTitle: {
     backgroundColor: '#e4f1e4e8',
-    padding: 20,
+    padding: 25,
     marginTop: -30,
     borderRadius: 13,
     alignSelf: 'center',
@@ -411,6 +411,12 @@ export default StyleSheet.create({
     marginHorizontal: 20,
     marginBottom: 15,
     fontSize: 15
+  },
+  modalText: {
+    marginBottom: 5, 
+    fontSize: 16, 
+    fontWeight: '400',
+    marginHorizontal: 20
   }
  
 });
