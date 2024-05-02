@@ -161,7 +161,7 @@ const Recipes = () => {
             <Text style={styles.header}>Recipes</Text>
             <View style={styles.screenContent}>
               {recipes.map((recipe, index) => (
-                <TouchableOpacity key={recipe.id} style={{ marginBottom: 10 }} onPress={() => navigation.navigate('Recipe', { recipe })}>
+                <TouchableOpacity key={recipe.id}  onPress={() => navigation.navigate('Recipe', { recipe })}>
                   <View>
                     <Text style={styles.recipesHeading}>{recipe.title}</Text>
                     <Image source={{ uri: recipe.image }} style={styles.recipesImage} />
@@ -176,7 +176,7 @@ const Recipes = () => {
                 </TouchableOpacity>
               ))}
               <Divider style={styles.divider} />
-              <Text style={[styles.title, { color: 'black' }]}>Community Recipes</Text>
+              <Text style={[styles.title, { color: 'black', marginBottom: 20 }]}>Community Recipes</Text>
               {communityRecipes.map((recipe, index) => (
                 <RecipeItem key={index} recipe={recipe} getImageUri={getImageUri} openModal={openModal} />
               ))}
@@ -208,12 +208,12 @@ const RecipeItem = ({ recipe, getImageUri, openModal }) => {
   return (
     <TouchableOpacity style={{ marginBottom: 20 }} onPress={() => openModal(recipe)}>
       <View>
-        <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{recipe.title}</Text>
+        <Text style={styles.recipesHeading}>{recipe.title}</Text>
         {imageUrl && typeof imageUrl === 'string' && (
-          <Image source={{ uri: imageUrl }} style={{ width: 200, height: 200, marginBottom: 10 }} />
+          <Image source={{ uri: imageUrl }} style={styles.recipesImage} />
         )}
-        <Text>{recipe.summary}</Text>
-        <Text>Creator: {recipe.userName}</Text>
+        <Text style={styles.articleText}>{recipe.summary}</Text>
+        <Text style={[styles.articleText, {fontWeight: '500'}]}>Creator: <Text style={styles.creator}>{recipe.userName}</Text></Text>
       </View>
     </TouchableOpacity>
   );
