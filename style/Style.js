@@ -188,7 +188,7 @@ export default StyleSheet.create({
   saveText: {
     textAlign: "center",
     fontWeight: '500',
-    color: '#000000'
+    color: '#E4F1E4'
   },
   logoutDelete: {
   //   flexDirection: 'row',
@@ -320,7 +320,7 @@ export default StyleSheet.create({
     // position: 'absolute',
   },
   recipeScreenTitle: {
-    backgroundColor: '#e4f1e4df',
+    backgroundColor: '#e4f1e4e8',
     padding: 20,
     marginTop: -30,
     borderRadius: 13,
@@ -362,7 +362,8 @@ export default StyleSheet.create({
   deleteRecipe: {
     color: 'red',
     fontWeight: 'bold',
-    marginLeft: 20
+    marginLeft: 20,
+    marginTop: 15
   },
   myRecipeContent: {
     backgroundColor: '#ffffff',
@@ -403,6 +404,13 @@ export default StyleSheet.create({
   addRecipeTitleInput: {
     alignSelf: 'center',
     width: 300
+  },
+  creator: {
+    color: '#5FD35D',
+    fontWeight: '500',
+    marginHorizontal: 20,
+    marginBottom: 15,
+    fontSize: 15
   }
  
 });
