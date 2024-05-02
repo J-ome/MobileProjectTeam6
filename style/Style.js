@@ -188,7 +188,7 @@ export default StyleSheet.create({
   saveText: {
     textAlign: "center",
     fontWeight: '500',
-    color: '#000000'
+    color: '#E4F1E4'
   },
   logoutDelete: {
   //   flexDirection: 'row',
@@ -362,7 +362,8 @@ export default StyleSheet.create({
   deleteRecipe: {
     color: 'red',
     fontWeight: 'bold',
-    marginLeft: 20
+    marginLeft: 20,
+    marginTop: 15
   },
   myRecipeContent: {
     backgroundColor: '#ffffff',

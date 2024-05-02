@@ -196,7 +196,7 @@ const Favorites = () => {
                       <TouchableOpacity onPress={() => navigateToRecipe(item)}>
                         <Image source={{ uri: item.image }} style={Style.recipesImage} />
                       </TouchableOpacity>
-                      <Text style={Style.articleText}>{renderSummary(item.fullSummary, item.id)}</Text>
+                      <Text style={[Style.articleText, {marginBottom: 40}]}>{renderSummary(item.fullSummary, item.id)}</Text>
                     </View>
                   )}
                 />

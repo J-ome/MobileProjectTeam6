@@ -350,13 +350,12 @@ const Profile = () => {
             {/* <Pressable onPress={handleLogout}>
               <Text>Logout</Text>
             </Pressable> */}
-            <Button onPress={handleLogout} mode='contained-tonal'>Logout</Button>
+            <Button onPress={handleLogout} mode='contained'>Logout</Button>
             {/* <Pressable onPress={handleDeleteAccount}>
               <Text>Delete Account</Text>
             </Pressable> */}
-            <Button onPress={handleDeleteAccount} 
-            // style={{backgroundColor: '#efa0a0'}} 
-            mode='contained-tonal'>Delete Account</Button>
+            <Button onPress={handleDeleteAccount}  
+            mode='contained'>Delete Account</Button>
             </View>
             
           </View>
