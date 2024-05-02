@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Alert, Pressable, Image } from 'react-native';
+import { View, Text, Pressable, Image } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { auth, db, USERS } from '../firebase/Config';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, deleteUser } from "firebase/auth";
@@ -13,6 +13,7 @@ import { TextInput, Button } from 'react-native-paper';
 import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler';
 import MyRecipes from '../screens/MyRecipes'
 import { useNavigation } from '@react-navigation/native';
+import { Alert } from 'react-native';
 
 const Profile = () => {
   const [userData, setUserData] = useState(null);
