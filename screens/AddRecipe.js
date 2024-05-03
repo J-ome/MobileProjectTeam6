@@ -1,8 +1,8 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigation } from "@react-navigation/native";
 import { doc, collection, addDoc, getDoc, setDoc } from 'firebase/firestore';
 import { View, Text, TouchableOpacity, ScrollView, Image, Alert } from 'react-native';
-import {auth, onAuthStateChanged } from 'firebase/auth';
+import { auth, onAuthStateChanged } from 'firebase/auth';
 import { db } from '../firebase/Config';
 import * as ImagePicker from 'expo-image-picker';
 import { useAuth } from '../components/AuthContext';
@@ -27,7 +27,7 @@ const AddRecipe = () => {
     const storageRef = ref(storage);
     const imagesRef = ref(storage, 'images');
 
- 
+
 
     const handleChange = (name, value) => {
         setRecipe({
@@ -41,7 +41,7 @@ const AddRecipe = () => {
             alert('Please fill in all fields and select an image');
             return;
         }
-    
+
         try {
             setUploading(true); // Start uploading
             const imageUrl = await uploadImage(); // Upload image to Firebase Storage and get the download URL
@@ -108,11 +108,11 @@ const AddRecipe = () => {
             xhr.open('GET', image.uri, true);
             xhr.send(null);
         });
-        
+
         const filename = image.uri.substring(image.uri.lastIndexOf('/') + 1);
         const storageRef = ref(storage, "images/" + filename);
         const uploadTask = uploadBytesResumable(storageRef, blob);
-    
+
         return new Promise((resolve, reject) => {
             uploadTask.on('state_changed',
                 (snapshot) => {
@@ -128,8 +128,6 @@ const AddRecipe = () => {
                     }
                 },
                 (error) => {
-                    // A full list of error codes is available at
-                    // https://firebase.google.com/docs/storage/web/handle-errors
                     switch (error.code) {
                         case 'storage/unauthorized':
                             // User doesn't have permission to access the object
@@ -154,21 +152,21 @@ const AddRecipe = () => {
         });
     };
     console.log("Here is recipe:", recipe)
-    console.log("Here is image uri:",image)
+    console.log("Here is image uri:", image)
 
     const handleLaunchCamera = async () => {
-        
-            let result = await ImagePicker.launchCameraAsync({
-                mediaTypes: ImagePicker.MediaTypeOptions.All,
-                allowsEditing: true,
-                aspect: [4, 3],
-                quality: 1,
-            });
-            const source = {uri: result.assets[0].uri}
-            console.log("Here is source for camera: ",source);
-            setImage(source);
-        }
-    
+
+        let result = await ImagePicker.launchCameraAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+        });
+        const source = { uri: result.assets[0].uri }
+        console.log("Here is source for camera: ", source);
+        setImage(source);
+    }
+
     const handleLaunchImageLibrary = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -176,7 +174,7 @@ const AddRecipe = () => {
             aspect: [4, 3],
             quality: 1
         });
-        const source = {uri: result.assets[0].uri}
+        const source = { uri: result.assets[0].uri }
         console.log("Here is source: ", source)
         setImage(source);
     };
@@ -260,7 +258,7 @@ const AddRecipe = () => {
                                     style={Style.addRecipeInput}
                                     label={'Summary'}
                                 />
-                                {image && <Image source={{ uri: image.uri}} style={{ width: 200, height: 100, borderRadius: 30 }} />}
+                                {image && <Image source={{ uri: image.uri }} style={{ width: 200, height: 100, borderRadius: 30 }} />}
                                 <TouchableOpacity onPress={pickImage} style={Style.addRecipeImageBtn}>
                                     <Text style={Style.addRecipeImageBtnText}>Select Image</Text>
                                 </TouchableOpacity>
@@ -268,7 +266,7 @@ const AddRecipe = () => {
                             </>
                         ) : (
                             <View>
-                                <Text style={[Style.logInOrSignUp, {margin: -10}]}><Text onPress={() => navigation.navigate('Profile')} style={{ color: '#5FD35D'}}> Log in</Text> or <Text onPress={() => navigation.navigate('Profile')} style={{ color: '#5FD35D' }}>Sign up</Text> to add your own recipes</Text>
+                                <Text style={[Style.logInOrSignUp, { margin: -10 }]}><Text onPress={() => navigation.navigate('Profile')} style={{ color: '#5FD35D' }}> Log in</Text> or <Text onPress={() => navigation.navigate('Profile')} style={{ color: '#5FD35D' }}>Sign up</Text> to add your own recipes</Text>
                             </View>
                         )}
                     </View>

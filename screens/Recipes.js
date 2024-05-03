@@ -67,7 +67,7 @@ const Recipes = () => {
     const fetchRecipes = async () => {
       try {
         const apiUrl = 'https://api.spoonacular.com/recipes/random';
-        const numberOfRecipes = 1;
+        const numberOfRecipes = 3;
 
         const response = await axios.get(apiUrl, {
           params: {
@@ -115,7 +115,7 @@ const Recipes = () => {
               kcals: nutritionResponse.data.nutrients.find(nutrient => nutrient.name === 'Calories'),
             };
 
-            return { ...recipe, summary, ingredients, instructions, nutritionDetails, fullSummary: summary,};
+            return { ...recipe, summary, ingredients, instructions, nutritionDetails, fullSummary: summary, };
           })
         );
 
@@ -161,7 +161,7 @@ const Recipes = () => {
             <Text style={styles.header}>Recipes</Text>
             <View style={styles.screenContent}>
               {recipes.map((recipe, index) => (
-                <TouchableOpacity key={recipe.id}  onPress={() => navigation.navigate('Recipe', { recipe })}>
+                <TouchableOpacity key={recipe.id} onPress={() => navigation.navigate('Recipe', { recipe })}>
                   <View>
                     <Text style={styles.recipesHeading}>{recipe.title}</Text>
                     <Image source={{ uri: recipe.image }} style={styles.recipesImage} />
@@ -213,7 +213,7 @@ const RecipeItem = ({ recipe, getImageUri, openModal }) => {
           <Image source={{ uri: imageUrl }} style={styles.recipesImage} />
         )}
         <Text style={styles.articleText}>{recipe.summary}</Text>
-        <Text style={[styles.articleText, {fontWeight: '500'}]}>Creator: <Text style={styles.creator}>{recipe.userName}</Text></Text>
+        <Text style={[styles.articleText, { fontWeight: '500' }]}>Creator: <Text style={styles.creator}>{recipe.userName}</Text></Text>
       </View>
     </TouchableOpacity>
   );

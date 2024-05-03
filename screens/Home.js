@@ -19,82 +19,82 @@ const Home = () => {
     useEffect(() => {
         const fetchRecipesWithDetails = async () => {
             try {
-              // Fetch recipes
-              const response = await axios.get(
-                'https://api.spoonacular.com/recipes/complexSearch',
-                {
-                  params: {
-                    query: searchQuery,
-                    number: numDisplayedRecipes,
-                    apiKey: apiKey,
-                  },
-                }
-              );
-          
-              // Map over each recipe and fetch details
-              const recipesWithDetails = await Promise.all(
-                response.data.results.map(async (recipe) => {
-                  // Fetch ingredients
-                  const ingredientsResponse = await axios.get(`https://api.spoonacular.com/recipes/${recipe.id}/ingredientWidget.json`, {
-                    params: {
-                      apiKey,
-                    },
-                    
-                  });
-                  const detailsResponse = await axios.get(
-                    `https://api.spoonacular.com/recipes/${recipe.id}/information`,
+                // Fetch recipes
+                const response = await axios.get(
+                    'https://api.spoonacular.com/recipes/complexSearch',
                     {
-                      params: {
-                        includeNutrition: false,
-                        apiKey: apiKey,
-                      },
+                        params: {
+                            query: searchQuery,
+                            number: numDisplayedRecipes,
+                            apiKey: apiKey,
+                        },
                     }
-                  );
-                  const details = detailsResponse.data;
-          
-                  const ingredients = ingredientsResponse.data.ingredients.map(ingredient => ({
-                    amount: ingredient.amount?.metric?.value || 0,
-                    unit: ingredient.amount?.metric?.unit || '',
-                    name: ingredient.name,
-                  }));
-          
-                  // Fetch instructions
-                  const instructionsResponse = await axios.get(`https://api.spoonacular.com/recipes/${recipe.id}/analyzedInstructions`, {
-                    params: {
-                      apiKey,
-                    },
-                  });
-                  const instructions = instructionsResponse.data[0]?.steps.map(step => step.step) || [];
-          
-                  // Fetch nutrition details
-                  const nutritionResponse = await axios.get(`https://api.spoonacular.com/recipes/${recipe.id}/nutritionWidget.json`, {
-                    params: {
-                      apiKey,
-                    },
-                  });
-                  const nutritionDetails = {
-                    carbs: nutritionResponse.data.nutrients.find(nutrient => nutrient.name === 'Carbohydrates'),
-                    fat: nutritionResponse.data.nutrients.find(nutrient => nutrient.name === 'Fat'),
-                    protein: nutritionResponse.data.nutrients.find(nutrient => nutrient.name === 'Protein'),
-                    kcals: nutritionResponse.data.nutrients.find(nutrient => nutrient.name === 'Calories'),
-                  };
+                );
 
-                  return {
-                    ...recipe,
-                    ingredients,
-                    instructions,
-                    nutritionDetails,
-                    readyInMinutes: details.readyInMinutes,
-                  };
-                })
-              );
+                // Map over each recipe and fetch details
+                const recipesWithDetails = await Promise.all(
+                    response.data.results.map(async (recipe) => {
+                        // Fetch ingredients
+                        const ingredientsResponse = await axios.get(`https://api.spoonacular.com/recipes/${recipe.id}/ingredientWidget.json`, {
+                            params: {
+                                apiKey,
+                            },
 
-              setRecipes(recipesWithDetails); // Update this line
+                        });
+                        const detailsResponse = await axios.get(
+                            `https://api.spoonacular.com/recipes/${recipe.id}/information`,
+                            {
+                                params: {
+                                    includeNutrition: false,
+                                    apiKey: apiKey,
+                                },
+                            }
+                        );
+                        const details = detailsResponse.data;
+
+                        const ingredients = ingredientsResponse.data.ingredients.map(ingredient => ({
+                            amount: ingredient.amount?.metric?.value || 0,
+                            unit: ingredient.amount?.metric?.unit || '',
+                            name: ingredient.name,
+                        }));
+
+                        // Fetch instructions
+                        const instructionsResponse = await axios.get(`https://api.spoonacular.com/recipes/${recipe.id}/analyzedInstructions`, {
+                            params: {
+                                apiKey,
+                            },
+                        });
+                        const instructions = instructionsResponse.data[0]?.steps.map(step => step.step) || [];
+
+                        // Fetch nutrition details
+                        const nutritionResponse = await axios.get(`https://api.spoonacular.com/recipes/${recipe.id}/nutritionWidget.json`, {
+                            params: {
+                                apiKey,
+                            },
+                        });
+                        const nutritionDetails = {
+                            carbs: nutritionResponse.data.nutrients.find(nutrient => nutrient.name === 'Carbohydrates'),
+                            fat: nutritionResponse.data.nutrients.find(nutrient => nutrient.name === 'Fat'),
+                            protein: nutritionResponse.data.nutrients.find(nutrient => nutrient.name === 'Protein'),
+                            kcals: nutritionResponse.data.nutrients.find(nutrient => nutrient.name === 'Calories'),
+                        };
+
+                        return {
+                            ...recipe,
+                            ingredients,
+                            instructions,
+                            nutritionDetails,
+                            readyInMinutes: details.readyInMinutes,
+                        };
+                    })
+                );
+
+                setRecipes(recipesWithDetails); // Update this line
             } catch (error) {
-              console.error('Error fetching recipes:', error);
+                console.error('Error fetching recipes:', error);
             }
-          };
-          
+        };
+
 
         fetchRecipesWithDetails();
     }, [searchQuery, numDisplayedRecipes]);
@@ -205,16 +205,6 @@ const Home = () => {
                     <Divider bold={true} style={styles.divider} />
                     <Text style={styles.title}>Articles</Text>
                     <View style={styles.articleContainer}>
-                        {/* {articlesData.map((article, index) => (
-                    <TouchableOpacity key={index} style={styles.articleItem} onPress={() => handleViewArticle(article.url)}>
-                        <Card mode='contained'>
-                            <Card.Content>
-                                <Text style={styles.articleTitle}>{article.title}</Text>
-                                <Text>{article.content}</Text>
-                            </Card.Content>
-                        </Card>
-                    </TouchableOpacity>
-                ))} */}
                         <TouchableOpacity style={styles.articleCard} onPress={() => handleViewArticle1()}>
                             <Text style={styles.articleCardText}>8 Ways To {"\n"} Cook Eggs</Text>
                             <Image source={require('../assets/eggs.jpg')} style={styles.articleCardImage} />

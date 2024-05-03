@@ -35,7 +35,7 @@ const Recipe = ({ route }) => {
     try {
       // Check if ingredients with the current unit system have already been fetched
       const ingredientsExist = allIngredients.some(ingredient => ingredient.unit === unitSystem);
-  
+
       if (!ingredientsExist) {
         const ingredientsResponse = await axios.get(`https://api.spoonacular.com/recipes/${recipe.id}/ingredientWidget.json`, {
           params: {
@@ -43,13 +43,13 @@ const Recipe = ({ route }) => {
             unit: unitSystem
           },
         });
-  
+
         const ingredients = ingredientsResponse.data.ingredients.map(ingredient => ({
           amount: ingredient.amount[unitSystem]?.value || 0, // Use selected unit system for amounts
           unit: ingredient.amount[unitSystem]?.unit || '',
           name: ingredient.name,
         }));
-  
+
         setAllIngredients(ingredients);
       }
     } catch (error) {
@@ -145,8 +145,6 @@ const Recipe = ({ route }) => {
               <View style={styles.recipeScreenTitle}>
                 <Text>{recipe.title}</Text>
               </View>
-
-              {/* Display heart icon based on whether recipe is in favorites */}
               <View style={styles.recipeAddToFavorites}>
                 <TouchableOpacity onPress={toggleFavorite} style={styles.favoriteIcon}>
                   {isFavorite ? (
@@ -179,7 +177,6 @@ const Recipe = ({ route }) => {
                   renderItem={({ item }) => {
                     return (
                       <Text style={{ marginBottom: 5, fontSize: 16 }}>
-                        {/* Display ingredient amounts based on selected unit system */}
                         {`${item.amount} ${item.unit} ${item.name}`}
                       </Text>
                     );

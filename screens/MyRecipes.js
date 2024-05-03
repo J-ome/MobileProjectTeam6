@@ -108,7 +108,7 @@ const MyRecipe = () => {
             data={userRecipes}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => (
-              <View style={{height: 1000}}>
+              <View style={{ height: 1000 }}>
                 <TouchableOpacity onPress={() => navigateToRecipe(item.id)}>
                   <Text style={Style.myRecipeTitle}>{item.title}</Text>
                 </TouchableOpacity>
@@ -132,8 +132,8 @@ const MyRecipe = () => {
     } else {
       return (
         <View style={[Style.screenContent, { flex: 1, justifyContent: "center", alignItems: "center" }]}>
-          <Text style={{ fontSize: 16, marginBottom: 10, fontWeight: '500'}}>You have not created your own recipes yet.</Text>
-          <Text style={{ fontSize: 16, marginBottom: 10, fontWeight: '500' }}>Create your own recipes at <Text onPress={() => navigation.navigate("AddRecipe")} style={{ fontSize: 16, marginBottom: 10, color: '#5FD35D' }}>Add Recipe</Text></Text>
+          <Text style={{ fontSize: 16, marginBottom: 10, fontWeight: '500' }}>You have not created your own recipes yet.</Text>
+          <Text style={{ fontSize: 16, marginBottom: 10, fontWeight: '500' }}>Create your own recipes at <Text onPress={() => navigation.navigate("Add recipe")} style={{ fontSize: 16, marginBottom: 10, color: '#5FD35D' }}>Add Recipe</Text></Text>
         </View>
       );
     }

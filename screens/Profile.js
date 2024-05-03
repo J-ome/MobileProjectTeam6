@@ -30,7 +30,7 @@ const Profile = () => {
   const navigation = useNavigation();
 
   const { user, logout } = useAuth
-  ();
+    ();
 
   useEffect(() => {
     // Check if user is authenticated
@@ -180,7 +180,11 @@ const Profile = () => {
       .then(() => {
         console.log("User was removed")
         setSignInEmail("");
+        setEmail("");
         setSignInPassword("");
+        setUsername("");
+        setName("");
+        setPassword("");
       }).catch((error) => {
         console.log("User delete error: ", error.message)
       })
@@ -194,7 +198,7 @@ const Profile = () => {
         aspect: [4, 3],
         quality: 1,
       });
-  
+
       if (!result.cancelled) {
         const pickedImage = result.assets[0];
         console.log('Picked image:', pickedImage);
@@ -220,7 +224,7 @@ const Profile = () => {
         aspect: [4, 3],
         quality: 1,
       });
-  
+
       if (!result.cancelled) {
         const pickedImage = result.assets[0];
         console.log('Picked image:', pickedImage);
@@ -284,153 +288,131 @@ const Profile = () => {
   const handleViewIntolerances = () => {
     navigation.navigate('Intolerances');
   };
-  
+
 
   return (
     <>
       <View style={style.container}>
         <GestureHandlerRootView>
-        <ScrollView>
-      <Text style={style.header}>Profile</Text>
-      <View style={style.screenContent}>
-        <View></View>
-        {loggedIn ? (
-          <View >
-            <View style={style.profileInformation}>
-            <View style={style.profileImageContent}>
-            <Pressable onPress={handleChooseProfilePicture} style={style.profileImageBtn}>
-              <Text style={style.profileImageText}>Choose profile picture</Text>
-            </Pressable>
-            {profileImage && <Image source={{ uri: profileImage }} style={style.profileImage} />}
+          <ScrollView>
+            <Text style={style.header}>Profile</Text>
+            <View style={style.screenContent}>
+              <View></View>
+              {loggedIn ? (
+                <View >
+                  <View style={style.profileInformation}>
+                    <View style={style.profileImageContent}>
+                      <Pressable onPress={handleChooseProfilePicture} style={style.profileImageBtn}>
+                        <Text style={style.profileImageText}>Choose profile picture</Text>
+                      </Pressable>
+                      {profileImage && <Image source={{ uri: profileImage }} style={style.profileImage} />}
+                    </View>
+                    <View style={style.profileContent}>
+                      {userData && (
+                        <>
+                          <Text style={style.profileText}>Name: {userData.name}</Text>
+                          <Text style={style.profileText}>Username: {userData.username}</Text>
+                          <Text style={style.profileText}>Email: {userData.email}</Text>
+                        </>
+                      )}
+                      <Text style={style.profileText}>Links:</Text>
+                      <TextInput
+                        value={links}
+                        onChangeText={setLinks}
+                        multiline
+                        mode='outlined'
+                        style={style.profileInput}
+                        label={'Enter links'}
+                      />
+                      <Text style={style.profileText}>Bio:</Text>
+                      <TextInput
+                        value={bio}
+                        onChangeText={setBio}
+                        multiline
+                        mode='outlined'
+                        style={style.profileInput}
+                        label={'Enter bio'}
+                      />
+                      <Pressable onPress={handleSave} style={style.save}>
+                        <Text style={style.saveText}>Save</Text>
+                      </Pressable>
+                    </View>
+                  </View>
+                  <View style={style.profileLinksContent}>
+                    <Pressable onPress={handleViewMyRecipes} style={style.profileLinks}>
+                      <Text style={style.profileLinksText}>My Recipes</Text>
+                    </Pressable>
+                    <Pressable onPress={handleViewIntolerances} style={style.profileLinks}>
+                      <Text style={style.profileLinksText}>Dietary Meanings</Text>
+                    </Pressable>
+                  </View>
+                  <View style={style.logoutDelete}>
+                    <Button onPress={handleLogout} mode='contained'>Logout</Button>
+                    <Button onPress={handleDeleteAccount}
+                      mode='contained'>Delete Account</Button>
+                  </View>
+                </View>
+              ) : (
+                <View style={style.profileContent}>
+                  <Text style={style.title}>Please log in or sign up to view your profile</Text>
+                  <TextInput
+                    value={signInEmail}
+                    onChangeText={setSignInEmail}
+                    inputMode="email"
+                    autoCapitalize="none"
+                    mode='outlined'
+                    style={style.textInput}
+                    label={'Enter email'}
+                  />
+                  <TextInput
+                    value={signInPassword}
+                    onChangeText={setSignInPassword}
+                    secureTextEntry
+                    mode='outlined'
+                    style={style.textInput}
+                    label={'Enter password'}
+                  />
+                  <Button
+                    onPress={handleLogin}
+                    style={style.btn}
+                    mode='contained'>Log in</Button>
+                  <TextInput
+                    value={name}
+                    onChangeText={setName}
+                    mode='outlined'
+                    style={style.textInput}
+                    label={'Enter name'}
+                  />
+                  <TextInput
+                    value={username}
+                    onChangeText={setUsername}
+                    mode='outlined'
+                    style={style.textInput}
+                    label={'Enter username'}
+                  />
+                  <TextInput
+                    value={email}
+                    onChangeText={setEmail}
+                    mode='outlined'
+                    style={style.textInput}
+                    label={'Enter email'}
+                  />
+                  <TextInput
+                    value={password}
+                    onChangeText={setPassword}
+                    secureTextEntry
+                    mode='outlined'
+                    style={style.textInput}
+                    label={'Enter password'}
+                  />
+                  <Button
+                    onPress={handleSignUp}
+                    style={style.btn}
+                    mode='contained'>Sign up</Button>
+                </View>
+              )}
             </View>
-            <View style={style.profileContent}>
-            {userData && (
-              <>
-                <Text style={style.profileText}>Name: {userData.name}</Text>
-                <Text style={style.profileText}>Username: {userData.username}</Text>
-                <Text style={style.profileText}>Email: {userData.email}</Text>
-              </>
-            )}
-            <Text style={style.profileText}>Links:</Text>
-            <TextInput
-              value={links}
-              onChangeText={setLinks}
-              multiline
-              mode='outlined'
-              style={style.profileInput}
-              label={'Enter links'}
-            />
-            <Text style={style.profileText}>Bio:</Text>
-            <TextInput 
-              value={bio}
-              onChangeText={setBio}
-              multiline
-              mode='outlined'
-              style={style.profileInput}
-              label={'Enter bio'}
-            />
-            <Pressable onPress={handleSave} style={style.save}>
-              <Text style={style.saveText}>Save</Text>
-            </Pressable>
-            </View> 
-            </View>
-
-            <View style={style.profileLinksContent}>
-              <Pressable onPress={handleViewMyRecipes} style={style.profileLinks}>
-                <Text style={style.profileLinksText}>My Recipes</Text>
-              </Pressable>
-              <Pressable onPress={handleViewIntolerances} style={style.profileLinks}>
-                <Text style={style.profileLinksText}>Dietary Meanings</Text>
-              </Pressable>
-            </View>
-
-            {/* <Text>You can find your own recipes <Pressable onPress={handleViewMyRecipes}><Text style={style.profileBtn}>HERE</Text></Pressable>.</Text>
-            <Text>You can find the meanings of dietaries <Pressable onPress={handleViewIntolerances}><Text>HERE</Text></Pressable>.</Text> */}
-            {/* <Button onPress={handleSave} style={style.save} mode='contained-tonal'>Save</Button> */}
-            <View style={style.logoutDelete}>
-            {/* <Pressable onPress={handleLogout}>
-              <Text>Logout</Text>
-            </Pressable> */}
-            <Button onPress={handleLogout} mode='contained'>Logout</Button>
-            {/* <Pressable onPress={handleDeleteAccount}>
-              <Text>Delete Account</Text>
-            </Pressable> */}
-            <Button onPress={handleDeleteAccount}  
-            mode='contained'>Delete Account</Button>
-            </View>
-            
-          </View>
-        ) : (
-          <View style={style.profileContent}>
-            <Text style={style.title}>Please log in or sign up to view your profile</Text>
-            <TextInput
-              value={signInEmail}
-              onChangeText={setSignInEmail}
-              inputMode="email"
-              autoCapitalize="none"
-              mode='outlined'
-              style={style.textInput}
-              label={'Enter email'}
-            />
-            <TextInput
-              value={signInPassword}
-              onChangeText={setSignInPassword}
-              secureTextEntry
-              mode='outlined'
-              style={style.textInput}
-              label={'Enter password'}
-            />
-            {/* <Pressable 
-              onPress={handleLogin} 
-              style={style.btn}>
-              <Text style={style.title}>Log in</Text>
-            </Pressable> */}
-            <Button
-              onPress={handleLogin}
-              style={style.btn}
-              mode='contained'>Log in</Button>
-            <TextInput
-              value={name}
-              onChangeText={setName}
-              mode='outlined'
-              style={style.textInput}
-              label={'Enter name'}
-            />
-            <TextInput
-              value={username}
-              onChangeText={setUsername}
-              mode='outlined'
-              style={style.textInput}
-              label={'Enter username'}
-            />
-            <TextInput
-              value={email}
-              onChangeText={setEmail}
-              mode='outlined'
-              style={style.textInput}
-              label={'Enter email'}
-            />
-            <TextInput
-              value={password}
-              onChangeText={setPassword}
-              secureTextEntry
-              mode='outlined'
-              style={style.textInput}
-              label={'Enter password'}
-            />
-            {/* <Pressable 
-              onPress={handleSignUp}
-              style={style.btn}>
-              <Text style={style.title}>Sign Up</Text>
-            </Pressable> */}
-            <Button
-              onPress={handleSignUp}
-              style={style.btn}
-              mode='contained'>Sign up</Button>
-          </View>
-        )}
-        </View>
-        </ScrollView>
+          </ScrollView>
         </GestureHandlerRootView>
       </View>
     </>
