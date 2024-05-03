@@ -143,7 +143,7 @@ const Recipe = ({ route }) => {
             <View style={[styles.screenContent, { paddingTop: 0 }]}>
               <FullWidthImage source={{ uri: recipe.image }} style={styles.recipeImage} />
               <View style={styles.recipeScreenTitle}>
-                <Text>{recipe.title}</Text>
+                <Text style={{fontWeight: 'bold', fontSize: 16}}>{recipe.title}</Text>
               </View>
               <View style={styles.recipeAddToFavorites}>
                 <TouchableOpacity onPress={toggleFavorite} style={styles.favoriteIcon}>
